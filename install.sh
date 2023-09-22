@@ -121,8 +121,3 @@ echo "--------------------------------------------END---------------------------
 
 #sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 
-#wpa_cli -i wlan0 reconfigure
-# OR
-#sudo ifdown wlan0
-#sudo ifup wlan0
-
