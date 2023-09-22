@@ -1,0 +1,25 @@
+# sudo netstat --all --timers --program --numeric | grep ssh
+# sudo ss -ltp | grep sshd
+
+Host github.com
+	User git
+	Port 22
+	Hostname github.com
+	IdentityFile ~/.ssh/id_ed25519
+	TCPKeepAlive yes
+	IdentitiesOnly yes
+
+Host 31.116.134.20
+	User tunkey
+	IdentityFile ~/.ssh/tunkey
+	TCPKeepAlive yes
+	IdentitiesOnly yes
+	GatewayPorts yes
+	RemoteForward 14455 localhost:14455
+	RemoteForward 8080 localhost:8080
+#Host 13.50.210.14
+#	IdentityFile ~/.ssh/tunaws.pem
+#	ControlMaster auto
+#       ControlPersist 1m
+#        ServerAliveCountMax 2
+#        ServerAliveInterval 20

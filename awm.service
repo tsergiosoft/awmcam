@@ -1,0 +1,13 @@
+[Unit]
+Description=Mav
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=idle
+User=pi
+WorkingDirectory=/home/pi/awm
+ExecStart=/home/pi/awm/awmrun.sh
+
+[Install]
+WantedBy=multi-user.target
