@@ -7,6 +7,7 @@ import os
 #import argparse  
 #parser = argparse.ArgumentParser()
 #parser.add_argument('--connect', default='127.0.0.1:5160')
+
 #args = parser.parse_args()
 
       
@@ -22,16 +23,15 @@ MAV_MASTER	=config['DEFAULT']['MAV_MASTER']
 MAV_BAUD	=config['DEFAULT']['MAV_BAUD']
 #MAVPROXY_IP_PORT=config['DEFAULT']['MAVPROXY_IP_PORT'] #may be delete and use 127.0.0.1:14550
 MAV_DRONEKIT	=config['DEFAULT']['MAV_DRONEKIT']
-print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP+" MAVPROXY_IP_PORT="+MAVPROXY_IP_PORT)
+print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
 os.system('pkill screen')
 time.sleep(2)
-os.system('screen -S ssh22 -d -m bash -c "/home/pi/awmcam/ssh22.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+'"')
+#os.system('screen -S ssh22 -d -m bash -c "/home/pi/awmcam/ssh22.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+'"')
 cmd='screen -S mavproxy -d -m bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"'
-print("Try "+cmd)
 os.system(cmd)
 
 LinkOK=False
-vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=False, heartbeat_timeout=-1)
+vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_timeout=100,timeout=100)
 @vehicle.on_attribute('last_heartbeat')
 def listener(self, attr_name, value):
     global LinkOK
@@ -44,6 +44,7 @@ def listener(self, attr_name, value):
 while True:
     time.sleep(2)
     print(LinkOK)
+    print(vehicle.parameters['AFS_ENABLE'])
     #print(vehicle.mode.name)
     
 print ('Connecting ON')

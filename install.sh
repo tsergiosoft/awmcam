@@ -108,15 +108,11 @@ echo "--------------------------------------------END---------------------------
 #$ ./install.sh
 # git pull origin main
 
-#sudo ip link set wlan0 down
 ################################
 #on GitHub create repo tsergiosoft/arp.git
 #$ git clone git@github.com:tsergiosoft/arp.git
 #$ git config alias.acp '! git add . && git commit -a -m "commit" && git push'
 #	Usage!!!!: git acp
-
-
-################################# On Ubuntu - create ssh
 #ssh-keygen -t ed25519 -C "sergtarasenko76@gmail.com"
 
 #sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
