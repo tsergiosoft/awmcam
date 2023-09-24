@@ -3,9 +3,10 @@
 #screen -S mavproxy -d -m bash -c "/home/pi/awm/mavproxy_run.sh"
 #screen -S cam -d -m bash -c "/home/pi/awm/cam_run.sh"
 #screen -S sshmav -d -m bash -c "/home/pi/awm/ssh_mav.sh"
-
-#screen -dmS dk bash -c "python3 /home/pi/awmcam/dk.py"
-screen -S dk -d -m bash -c "/home/pi/awmcam/service/dk.sh"
+sleep 1
+screen -dmS dk bash -c "python3 /home/pi/awmcam/dk.py"
+sleep 2
+#scren -S dk -d -m bash -c "/home/pi/awmcam/service/dk.sh"
 
 #screen -dmS pystream python3 /home/pi/awmcam/pystream.py
 
