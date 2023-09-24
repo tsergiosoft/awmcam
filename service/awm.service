@@ -6,8 +6,8 @@ Wants=network-online.target
 [Service]
 Type=idle
 User=pi
-WorkingDirectory=/home/pi/awm
-ExecStart=/home/pi/awm/awmrun.sh
+WorkingDirectory=/home/pi/awmcam/service
+ExecStart=/home/pi/awmcam/service/awmrun.sh
 
 [Install]
 WantedBy=multi-user.target

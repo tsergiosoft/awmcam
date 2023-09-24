@@ -1,6 +1,5 @@
 #!/bin/sh
-#/boot/config.txt entries to disable both Bluetooth and WiFi.
-#dtoverlay=disable-bt
+
 #sudo nano ./wpa_supplicant/wpa_supplicant.conf 
 #ON Cygwin ./tools/autotest/sim_vehicle.py -v ArduPlane -N -L KSFO --map --console --out 192.168.14.225:14550
 
@@ -47,37 +46,15 @@ echo "----------Install ZeroTier"
 
 echo "----------Create service mav"
 #https://github.com/mustafa-gokce/ardupilot-software-development/blob/main/mavproxy/automated-forwarding-services.md
-sudo cp $HOME/awm/awm.service /etc/systemd/system
+sudo cp $HOME/awmcam/service/awm.service /etc/systemd/system
 sudo systemctl enable awm.service
 echo "----------Start service mav"
 sudo systemctl start awm.service
 echo "----------Install finish OK"
 echo "--------------------------------------------END----------------------------------------------"
 
-#raspivid -t 0 -s -b 987654 -sg 5000 -o -|tee ~/video1.h264 | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8160}' :demux=h264
-
-#raspivid -o - -t 0 -hf -w 800 -h 600 -fps 12 |cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8160}' :demux=h264
-#raspivid -t 0 -w 640 -h 480  -b 987654 -sg 5000 -o ~/video%03d.h264 | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8160}' :demux=h264
-#raspivid -t 0 -w 640 -h 480  -b 200000 -sg 5000 -wr 20 -o ~/test%03d.h264 | gst-launch-1.0 -v fdsrc !  h264parse ! gdppay ! udpsink host=127.0.0.1 port=8160
-#raspivid -t 0 -w 640 -h 480  -b 200000 -sg 5000 -wr 20 -o ~/test%03d.h264 | gst-launch-1.0 -v fdsrc !  decodebin ! x264enc ! rtph264pay config-interval=1 pt=96 ! udpsink host=127.0.0.1 port=8160
-#gst-launch-1.0 filesrc location=C:/Users/me/Desktop/big_buck_bunny.mp4 ! decodebin ! x264enc ! rtph264pay config-interval=1 pt=96 ! udpsink port=1234
-#raspivid -t 0 | gst-launch-1.0 -v fdsrc ! video/x-raw,width=640,height=480,framerate=24/1 ! x264enc key-int-max=30 insert-vui=1 tune=zerolatency ! h264parse config-interval=1 ! mpegtsmux ! rtpmp2tpay ! udpsink host=127.0.0.1 port=8160
-#raspivid -n -w 1280 -h 720 -fps 24 -b 4500000 -a 12 -t 0 -o - | gst-launch-1.0 -v fdsrc ! video/x-h264, width=1280, height=720, framerate=24/1 ! h264parse config-interval=1 ! mpegtsmux ! rtpmp2tpay ! udpsink host=127.0.0.1 port=8160
-#raspivid -n -w 640 -h 480 -fps 24 -b 4500000 -a 12 -t 0 -o - | gst-launch-1.0 -v fdsrc ! video/x-h264, width=640, height=480, framerate=24/1 ! h264parse config-interval=-1 ! mpegtsmux ! udpsink host=127.0.0.1 port=8160
-
  
-  
-# .git\config [alias]	acp = ! git add . && git commit -a -m \"commit\" && git push
-# chmod 400 ~/.ssh/id_rsa
-# ssh-add
 #on AWS\Google -> sudo nano /etc/ssh/sshd_config -> GatewayEnable yes ClientAliveInterval 15 ClientAliveCountMax 2
-
-#RasPi ssh -N -i ~/.ssh/tunaws.pem -R 0.0.0.0:5000:localhost:8080 ubuntu@13.50.210.14 -v
-#sudo systemctl status\stop\start awm.service
-#
-#Check from any host: Ubuntu: ssh -i ~/.ssh/tunaws.pem ubuntu@13.50.210.14
-#----AWS terminal: $ sudo netstat --all --timers --program --numeric | grep ssh
-
 
 
 # Mission Planner -> Video->SetMJPEG source -> http://13.50.210.14:5000/?action=stream
@@ -89,18 +66,6 @@ echo "--------------------------------------------END---------------------------
 # ssh pi@13.50.210.14 -v -i ~\.ssh\authorized_keys -p 5022
 
 
-#cd ~/mjpg-streamer/mjpg-streamer-experimental
-#export LD_LIBRARY_PATH=.
-#mjpg_streamer -i 'input_uvc.so -d /dev/video0  -f 15 -y -n' -o 'output_http.so -w ./www -p 8080'
-
-
-#put line to /etc/rc.local for autorun: 
-#sudo sed -i "\$i sh ~/arp/mavrun.sh &" /etc/rc.local
-#sudo chmod +x /etc/rc.local
-#sudo systemctl enable rc-local.service
-#sudo nano /etc/rc.local
-
-
 ####   Raspberry Pi   ############################
 #sudo raspi-config -> serial port enable, (autologin pi)
 #$ git clone https://github.com/tsergiosoft/arp.git
@@ -108,12 +73,28 @@ echo "--------------------------------------------END---------------------------
 #$ ./install.sh
 # git pull origin main
 
+#/boot/config.txt entries to disable both Bluetooth and WiFi.
+#dtoverlay=disable-bt
+#dtoverlay=imx477 ##FOR HQ Camera 
+
 ################################
 #on GitHub create repo tsergiosoft/arp.git
 #$ git clone git@github.com:tsergiosoft/arp.git
 #$ git config alias.acp '! git add . && git commit -a -m "commit" && git push'
 #	Usage!!!!: git acp
+
 #ssh-keygen -t ed25519 -C "sergtarasenko76@gmail.com"
+# .git\config [alias]	acp = ! git add . && git commit -a -m \"commit\" && git push
+# chmod 400 ~/.ssh/id_rsa
+# ssh-add
 
 #sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+
+
+#-------------------------
+#put line to /etc/rc.local for autorun: 
+#sudo sed -i "\$i sh ~/arp/mavrun.sh &" /etc/rc.local
+#sudo chmod +x /etc/rc.local
+#sudo systemctl enable rc-local.service
+#sudo nano /etc/rc.local
 
