@@ -1,4 +1,9 @@
 #!/bin/bash
+#One instance only check
+me="$(basename "$0")";
+running=$(ps h -C "$me" | grep -wv $$ | wc -l);
+[[ $running > 1 ]] && exit;
+
 KEY="tunaws.pem"
 CLOUDHOST="13.50.210.14"
 USER="ubuntu"

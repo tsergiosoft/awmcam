@@ -1,6 +1,11 @@
 #!/bin/bash
 #./ssh22.sh -cloud_ip=11.22.33.44 -cloud_user=ubuntu -port=5022
 
+#One instance only check
+me="$(basename "$0")";
+running=$(ps h -C "$me" | grep -wv $$ | wc -l);
+[[ $running > 1 ]] && exit;
+
 KEY="tunaws.pem"
 LOCPORT="22"
 
