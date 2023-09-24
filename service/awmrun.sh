@@ -1,5 +1,5 @@
 #!/bin/bash
-screen -S ssh22 -d -m bash -c "/home/pi/awmcam/ssh_22.sh"
+screen -S ssh22 -d -m bash -c "/home/pi/awmcam/ssh/ssh_22.sh"
 
 
 #screen -S mavproxy -d -m bash -c "/home/pi/awmcam/mavproxy_run.sh"
