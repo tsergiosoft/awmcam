@@ -24,7 +24,7 @@ MAV_BAUD	=config['DEFAULT']['MAV_BAUD']
 #MAVPROXY_IP_PORT=config['DEFAULT']['MAVPROXY_IP_PORT'] #may be delete and use 127.0.0.1:14550
 MAV_DRONEKIT	=config['DEFAULT']['MAV_DRONEKIT']
 print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
-os.system('pkill screen')
+#os.system('pkill screen')
 time.sleep(2)
 os.system('screen -S ssh22 -d -m bash -c "/home/pi/awmcam/ssh/ssh22.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+'"')
 cmd='screen -S mavproxy -d -m bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"'
