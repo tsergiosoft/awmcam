@@ -1,15 +1,11 @@
 #!/bin/sh
 
-#sudo nano ./wpa_supplicant/wpa_supplicant.conf 
-#ON Cygwin ./tools/autotest/sim_vehicle.py -v ArduPlane -N -L KSFO --map --console --out 192.168.14.225:14550
-
-
 HOME=/home/pi
 echo "home folder is"=$HOME
 echo "----------SSH copy"
 mkdir $HOME/.ssh
 mkdir $HOME/mavlogs
-cp -R $HOME/awm/ssh/* $HOME/.ssh
+cp -R $HOME/awmcam/ssh/* $HOME/.ssh
 sudo chmod -R 400 $HOME/.ssh
 sudo chmod 755 $HOME/.ssh
 sudo ssh-copy-id -i ~/.ssh/tunkey.pub pi@127.0.0.1 
@@ -91,6 +87,8 @@ echo "--------------------------------------------END---------------------------
 #sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 
 
+#sudo nano ./wpa_supplicant/wpa_supplicant.conf 
+#ON Cygwin ./tools/autotest/sim_vehicle.py -v ArduPlane -N -L KSFO --map --console --out 192.168.14.225:14550
 #-------------------------
 #put line to /etc/rc.local for autorun: 
 #sudo sed -i "\$i sh ~/arp/mavrun.sh &" /etc/rc.local
