@@ -12,7 +12,7 @@ KEY="tunaws.pem"
 #USER="ubuntu"
 #REMOTE_PORT="5022"
 
-#while echo $1 | grep ^- > /dev/null; do declare $( echo $1 | sed 's/-//g' | sed 's/=.*//g' | tr -d '\012')=$( echo $1 | sed 's/.*=//g' | tr -d '\012'); shift; done
+while echo $1 | grep ^- > /dev/null; do declare $( echo $1 | sed 's/-//g' | sed 's/=.*//g' | tr -d '\012')=$( echo $1 | sed 's/.*=//g' | tr -d '\012'); shift; done
 
 echo CLOUDHOST = $cloud_ip
 echo USER = $cloud_user
