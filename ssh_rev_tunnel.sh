@@ -2,9 +2,9 @@
 #./ssh_rev_tunnel.sh -cloud_ip=11.22.33.44 -cloud_user=ubuntu -cloud_port=5022 -local_port=22
 
 #One instance only check
-me="$(basename "$0")";
-running=$(ps h -C "$me" | grep -wv $$ | wc -l);
-[[ $running > 1 ]] && exit;
+#me="$(basename "$0")";
+#running=$(ps h -C "$me" | grep -wv $$ | wc -l);
+#[[ $running > 1 ]] && exit;
 
 KEY="tunaws.pem"
 
