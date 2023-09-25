@@ -24,7 +24,7 @@ MAV_BAUD	=config['DEFAULT']['MAV_BAUD']
 MAV_DRONEKIT=config['DEFAULT']['MAV_DRONEKIT']
 PICAM	    =config['DEFAULT']['PICAM']
 
-PICAM=False;
+#PICAM=False;
 #pi=True;
 if (PICAM):
     from picamera2 import Picamera2
