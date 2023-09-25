@@ -22,7 +22,7 @@ PAGE = """\
 </head>
 <body>
 <h1>Picamera2 MJPEG Streaming Demo</h1>
-<img src="stream.mjpg" width="1024" height="768" />
+<img src="stream.mjpg" width="800" height="600" />
 </body>
 </html>
 """
@@ -92,7 +92,7 @@ host = args.host
 port = args.port
 
 picam2 = Picamera2()
-picam2.configure(picam2.create_video_configuration(main={"size": (1024, 768)}))
+picam2.configure(picam2.create_video_configuration(main={"size": (800, 600)}))
 output = StreamingOutput()
 picam2.start_recording(JpegEncoder(), FileOutput(output))
 
