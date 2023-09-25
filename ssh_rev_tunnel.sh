@@ -1,5 +1,5 @@
 #!/bin/bash
-#./ssh22.sh -cloud_ip=11.22.33.44 -cloud_user=ubuntu -port=5022
+#./ssh22.sh -cloud_ip=11.22.33.44 -cloud_user=ubuntu -cloud_port=5022 -local_port=22
 
 #One instance only check
 me="$(basename "$0")";
@@ -18,8 +18,9 @@ while echo $1 | grep ^- > /dev/null; do declare $( echo $1 | sed 's/-//g' | sed 
 echo CLOUDHOST = $cloud_ip
 echo USER = $cloud_user
 echo REMOTE_PORT = $cloud_port
+echo LOCPORT=$local_port
 
-SSH_COMMAND="ssh -N -i ~/.ssh/$KEY -o ServerAliveCountMax=2 -o ServerAliveInterval=15 -R $cloud_port:localhost:$LOCPORT $cloud_user@$cloud_ip"
+SSH_COMMAND="ssh -N -i ~/.ssh/$KEY -o ServerAliveCountMax=2 -o ServerAliveInterval=15 -R $cloud_port:localhost:$local_port $cloud_user@$cloud_ip"
 
 
 function ssh_remote_connect {
@@ -52,5 +53,6 @@ trap handle_ssh_error ERR
 
 sleep 5
 ssh_remote_connect
+
 
 
