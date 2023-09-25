@@ -82,6 +82,13 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
 
+parser = argparse.ArgumentParser(description="Custom HTTP Server")
+parser.add_argument("--host", default="localhost", help="Host name to listen on (default: localhost)")
+parser.add_argument("--port", type=int, default=8080, help="Port number to listen on (default: 8080)")
+args = parser.parse_args()
+
+host = args.host
+port = args.port
 
 picam2 = Picamera2()
 picam2.configure(picam2.create_video_configuration(main={"size": (800, 600)}))
@@ -89,7 +96,8 @@ output = StreamingOutput()
 picam2.start_recording(JpegEncoder(), FileOutput(output))
 
 try:
-    address = ('', 8080)
+    address = (host, port)
+    print("WEB PICAMERA HQ http://" + host + ":" + str(port))
     server = StreamingServer(address, StreamingHandler)
     server.serve_forever()
 finally:
