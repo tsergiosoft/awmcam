@@ -7,7 +7,6 @@ running=$(ps h -C "$me" | grep -wv $$ | wc -l);
 [[ $running > 1 ]] && exit;
 
 KEY="tunaws.pem"
-LOCPORT="22"
 
 #CLOUDHOST="13.50.210.14"
 #USER="ubuntu"
@@ -21,7 +20,8 @@ echo REMOTE_PORT = $cloud_port
 echo LOCPORT=$local_port
 
 SSH_COMMAND="ssh -N -i ~/.ssh/$KEY -o ServerAliveCountMax=2 -o ServerAliveInterval=15 -R $cloud_port:localhost:$local_port $cloud_user@$cloud_ip"
-
+sleep 10
+echo SSH_COMMAND
 
 function ssh_remote_connect {
     while true; do
