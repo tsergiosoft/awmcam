@@ -50,7 +50,7 @@ os.system('screen -dmS mav bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+
 #os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webhello.py --port 8080"')
 os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 8080"')
 
-server = webcamserver('', 8080)
+server = webcamserver('', 8080, PICAM)
 server.start()
 server.start_stream()
 # try:

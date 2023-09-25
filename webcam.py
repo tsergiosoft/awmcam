@@ -30,6 +30,7 @@ class webcamserver(threading.Thread):
         self.host = host
         self.port = port
         self.pycam = pycam
+        print("PICAM=", self.pycam)
         self.output = self.StreamingOutput()
 
     class StreamingOutput(io.BufferedIOBase):
