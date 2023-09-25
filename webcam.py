@@ -32,6 +32,10 @@ class webcamserver(threading.Thread):
         self.pycam = pycam
         print("PICAM=", self.pycam)
         self.output = self.StreamingOutput()
+        if (self.pycam):
+            from picamera2 import Picamera2
+            from picamera2.encoders import JpegEncoder
+            from picamera2.outputs import FileOutput
 
     class StreamingOutput(io.BufferedIOBase):
         def __init__(self):

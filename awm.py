@@ -26,10 +26,10 @@ PICAM	    =config['DEFAULT']['PICAM']
 
 #PICAM=False;
 #pi=True;
-if (PICAM):
-    from picamera2 import Picamera2
-    from picamera2.encoders import JpegEncoder
-    from picamera2.outputs import FileOutput
+# if (PICAM):
+#     from picamera2 import Picamera2
+#     from picamera2.encoders import JpegEncoder
+#     from picamera2.outputs import FileOutput
 
 
 print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
