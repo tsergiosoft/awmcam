@@ -58,7 +58,7 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 
 parser = argparse.ArgumentParser(description="Custom HTTP Server")
-parser.add_argument("--host", default="", help="Host name to listen on (default: localhost)")
+parser.add_argument("--host", default="localhost", help="Host name to listen on (default: localhost)")
 parser.add_argument("--port", type=int, default=8080, help="Port number to listen on (default: 8080)")
 args = parser.parse_args()
 
@@ -70,6 +70,7 @@ output = StreamingOutput()
 
 try:
     address = (host, port)
+    print("WEB CAM http://"+host+":"+str(port))
     server = StreamingServer(address, StreamingHandler)
     server.serve_forever()
 finally:
