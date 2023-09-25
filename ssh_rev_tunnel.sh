@@ -1,5 +1,5 @@
 #!/bin/bash
-#./ssh22.sh -cloud_ip=11.22.33.44 -cloud_user=ubuntu -cloud_port=5022 -local_port=22
+#./ssh_rev_tunnel.sh -cloud_ip=11.22.33.44 -cloud_user=ubuntu -cloud_port=5022 -local_port=22
 
 #One instance only check
 me="$(basename "$0")";
@@ -20,8 +20,7 @@ echo REMOTE_PORT = $cloud_port
 echo LOCPORT=$local_port
 
 SSH_COMMAND="ssh -N -i ~/.ssh/$KEY -o ServerAliveCountMax=2 -o ServerAliveInterval=15 -R $cloud_port:localhost:$local_port $cloud_user@$cloud_ip"
-sleep 10
-echo SSH_COMMAND
+echo $SSH_COMMAND
 
 function ssh_remote_connect {
     while true; do
