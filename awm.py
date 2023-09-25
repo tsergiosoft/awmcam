@@ -52,7 +52,7 @@ os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 808
 
 server = webcamserver('', 8080)
 server.start()
-
+server.start_stream()
 # try:
 #     webcamserver.join()
 # except:

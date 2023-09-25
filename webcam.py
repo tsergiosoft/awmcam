@@ -95,12 +95,14 @@ class webcamserver(threading.Thread):
         server.serve_forever()
     def start_stream(self):
         if self.pycam:
+            print("Start stream")
             picam2 = Picamera2()
             picam2.configure(picam2.create_video_configuration(main={"size": (800, 600)}))
             picam2.start_recording(JpegEncoder(), FileOutput(output))
 
     def stop_stream(self):
         if self.pycam:
+            print("Stop stream")
             picam2.stop_recording()
 
 
