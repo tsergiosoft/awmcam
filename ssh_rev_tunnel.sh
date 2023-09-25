@@ -50,7 +50,6 @@ function handle_ssh_error {
 # Set up a trap to handle SSH errors
 trap handle_ssh_error ERR
 
-sleep 5
 ssh_remote_connect
 
 
