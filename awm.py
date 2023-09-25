@@ -32,16 +32,13 @@ os.system('screen -S sshweb -X kill')
 os.system('screen -S sshmav -X kill')
 os.system('screen -S mavproxy -X kill')
 os.system('screen -S web -X kill')
+time.sleep(2)
 os.system('screen -dmS ssh22 bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+' -local_port=22"')
-time.sleep(3)
 os.system('screen -dmS sshweb bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_CAM_PORT+' -local_port=8080"')
-time.sleep(3)
 os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port=8080"')
-
-
 os.system('sleep 2;screen -S mavproxy -d -m bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"')
-os.system('sleep 2;screen -dmS web bash -c "sleep 2;python3 /home/pi/awmcam/webhello.py --port 8080"')
-#os.system('screen -dmS web bash -c "sleep 2;python3 /home/pi/awmcam/webcam.py --port 8080"')
+#os.system('sleep 2;screen -dmS web bash -c "sleep 2;python3 /home/pi/awmcam/webhello.py --port 8080"')
+os.system('screen -dmS web bash -c "sleep 2;python3 /home/pi/awmcam/webcam.py --port 8080"')
 
 LinkOK=False
 vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_timeout=100,timeout=100)
