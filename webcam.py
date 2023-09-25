@@ -9,8 +9,12 @@ import logging
 import socketserver
 from http import server
 from threading import Condition
-
 import threading
+
+from picamera2 import Picamera2
+from picamera2.encoders import JpegEncoder
+from picamera2.outputs import FileOutput
+
 
 PAGE = """\
 <html>
@@ -32,10 +36,10 @@ class webcamserver(threading.Thread):
         self.pycam = pycam
         print("PICAM=", self.pycam)
         self.output = self.StreamingOutput()
-        if (self.pycam):
-            from picamera2 import Picamera2
-            from picamera2.encoders import JpegEncoder
-            from picamera2.outputs import FileOutput
+        # if (self.pycam):
+        #     from picamera2 import Picamera2
+        #     from picamera2.encoders import JpegEncoder
+        #     from picamera2.outputs import FileOutput
 
     class StreamingOutput(io.BufferedIOBase):
         def __init__(self):
