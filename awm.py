@@ -24,14 +24,6 @@ MAV_BAUD	=config['DEFAULT']['MAV_BAUD']
 MAV_DRONEKIT=config['DEFAULT']['MAV_DRONEKIT']
 PICAM	    =config['DEFAULT']['PICAM']
 
-#PICAM=False;
-#pi=True;
-# if (PICAM):
-#     from picamera2 import Picamera2
-#     from picamera2.encoders import JpegEncoder
-#     from picamera2.outputs import FileOutput
-
-
 print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
 
 #os.system('pkill screen')
@@ -42,7 +34,7 @@ os.system('screen -S sshweb -X kill')
 os.system('screen -S sshmav -X kill')
 os.system('screen -S mav -X kill')
 os.system('screen -S web -X kill')
-time.sleep(2)
+time.sleep(1)
 os.system('screen -dmS ssh22 bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+' -local_port=22"')
 os.system('screen -dmS sshweb bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_CAM_PORT+' -local_port=8080"')
 os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port=MAV_DRONEKIT"')
@@ -53,6 +45,13 @@ os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 808
 server = webcamserver('', 8080, PICAM)
 server.start()
 server.start_stream()
+time.sleep(10)
+server.stop_stream()
+time.sleep(10)
+server.start_stream()
+time.sleep(10)
+server.stop_stream()
+
 # try:
 #     webcamserver.join()
 # except:
