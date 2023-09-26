@@ -14,10 +14,10 @@ from http import server
 from threading import Condition
 import threading
 
-if (glob.PICAM == 1):
-    from picamera2 import Picamera2
-    from picamera2.encoders import JpegEncoder
-    from picamera2.outputs import FileOutput
+#if (glob.PICAM == 1):
+from picamera2 import Picamera2
+from picamera2.encoders import JpegEncoder
+from picamera2.outputs import FileOutput
 
 PAGE = """\
 <html>
@@ -49,8 +49,8 @@ class webcamserver(threading.Thread):
         # self.file_saving_thread.start()
 
         print("webcamserver: PICAM=", glob.PICAM)
-        if (glob.PICAM == 1):
-            self.picam2 = Picamera2()
+        # if (glob.PICAM == 1):
+        self.picam2 = Picamera2()
 
         """
         class filesaver(threading.Thread):
@@ -141,27 +141,27 @@ class webcamserver(threading.Thread):
 
     def start_stream(self):
         print("Start CAMERA")
-        if (glob.PICAM == 1):
-            self.picam2.create_video_configuration(main={"size": (800, 600)})
-            self.picam2.video_configuration.controls.FrameRate = 1.0
-            self.picam2.configure("video")
-            encoder = JpegEncoder(q=40)
+        # if (glob.PICAM == 1):
+        self.picam2.create_video_configuration(main={"size": (800, 600)})
+        self.picam2.video_configuration.controls.FrameRate = 1.0
+        self.picam2.configure("video")
+        encoder = JpegEncoder(q=40)
 
-            # output2 = FileOutput()
-            encoder.output = [self.output1, self.output2]
-            self.picam2.start_recording(encoder, FileOutput(self.output))
+        # output2 = FileOutput()
+        encoder.output = [self.output1, self.output2]
+        self.picam2.start_recording(encoder, FileOutput(self.output))
 
-            self.output2.fileoutput = "test.avi"
-            self.output2.start()
-            time.sleep(5)
-            self.output2.stop()
-            time.sleep(5)
+        self.output2.fileoutput = "test.avi"
+        self.output2.start()
+        time.sleep(5)
+        self.output2.stop()
+        time.sleep(5)
 
     def stop_stream(self):
-            if (glob.PICAM == 1):
-                print("Stop CAMERA")
-                self.output2.stop()
-                self.picam2.stop_recording()
+            # if (glob.PICAM == 1):
+            print("Stop CAMERA")
+            self.output2.stop()
+            self.picam2.stop_recording()
 
 
 
