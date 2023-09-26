@@ -138,7 +138,7 @@ class webcamserver(threading.Thread):
             # encoder = JpegEncoder(q=40)
             # self.picam2.start_recording(encoder, FileOutput(self.output))
 
-            for _ in range(10):
+            for _ in range(100):
                 frame_data = np.random.randint(0, 255, size=(800, 600, 3), dtype=np.uint8).tobytes()
                 self.output.write(frame_data)
 
