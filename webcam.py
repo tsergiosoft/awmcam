@@ -49,8 +49,7 @@ class webcamserver(threading.Thread):
         self.file_saving_thread.start()
 
         print("PICAM=", self.pycam)
-        if (self.pycam == 1):
-            self.picam2 = Picamera2()
+        self.picam2 = Picamera2()
 
     class filesaver(threading.Thread):
         def __init__(self, stream):
