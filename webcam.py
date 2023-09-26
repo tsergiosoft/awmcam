@@ -164,7 +164,7 @@ class webcamserver(threading.Thread):
 
         self.output2.fileoutput = "test.h264"
         self.output2.start()
-        time.sleep(5)
+        time.sleep(10)
         self.output2.stop()
         # time.sleep(5)
 
