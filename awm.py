@@ -52,12 +52,12 @@ frame_size = (800, 600)
 #          time.sleep(1.0 / 12)
 
 server.start_stream()
-time.sleep(10)
-server.stop_stream()
-time.sleep(5)
-server.start_stream()
-time.sleep(15)
-server.stop_stream()
+# time.sleep(10)
+# server.stop_stream()
+# time.sleep(5)
+# server.start_stream()
+# time.sleep(15)
+# server.stop_stream()
 
 # try:
 #     webcamserver.join()

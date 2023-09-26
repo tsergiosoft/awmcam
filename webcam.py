@@ -48,8 +48,9 @@ class webcamserver(threading.Thread):
         self.encoder = JpegEncoder(q=40)
         # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
         self.output1 = FileOutput(self.StreamingOutput())
-        self.output2 = FileOutput('test2.h264')
-        self.encoder.output = [self.output1, self.output2]
+        # self.output2 = FileOutput('test2.h264')
+        self.encoder.output = self.output1
+        # self.encoder.output = [self.output1, self.output2]
 
         # self.file_saving_thread = self.filesaver(self.output)
         # self.file_saving_thread.start()
@@ -151,13 +152,14 @@ class webcamserver(threading.Thread):
         self.picam2.create_video_configuration(main={"size": (800, 600)})
         self.picam2.video_configuration.controls.FrameRate = 1.0
         self.picam2.configure("video")
+        # self.picam2.start_recording(encoder, FileOutput(self.output1))
 
         # Start streaming to the network.
         self.picam2.start_encoder(self.encoder)
         self.picam2.start()
-        time.sleep(5)
+        # time.sleep(5)
 
-        # self.picam2.start_recording(encoder, FileOutput(self.output1))
+
 
         # self.output2.fileoutput = "test.h264"
         # self.output2.start()
