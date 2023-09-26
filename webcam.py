@@ -51,7 +51,7 @@ class webcamserver(threading.Thread):
         # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
         self.streamout = self.StreamingOutput()
         self.output1 = FileOutput(self.streamout)
-        self.output2 = FileOutput('test.avi')
+        self.output2 = FileOutput()
         # self.encoder.output = self.output1
         self.encoder.output = [self.output1, self.output2]
 
@@ -153,7 +153,7 @@ class webcamserver(threading.Thread):
         print("Start CAMERA")
         # if (glob.PICAM == 1):
         self.picam2.create_video_configuration(main={"size": (800, 600)})
-        self.picam2.video_configuration.controls.FrameRate = 1.0
+        self.picam2.video_configuration.controls.FrameRate = 16.0
         self.picam2.configure("video")
         # self.picam2.start_recording(encoder, FileOutput(self.output1))
 
