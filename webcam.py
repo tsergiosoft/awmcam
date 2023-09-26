@@ -33,6 +33,8 @@ PAGE = """\
 """
 
 class webcamserver(threading.Thread):
+    output2 = None
+
     def __init__(self, host="localhost", port=8081):
         super().__init__()
         self.host = host
@@ -48,10 +50,10 @@ class webcamserver(threading.Thread):
         self.encoder = JpegEncoder(q=40)
         # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
         self.streamout = self.StreamingOutput()
-        self.output1 = FileOutput(self.streamout )
-        # self.output2 = FileOutput('test2.h264')
+        self.output1 = FileOutput(self.streamout)
+        self.output2 = FileOutput()
         self.encoder.output = self.output1
-        # self.encoder.output = [self.output1, self.output2]
+        self.encoder.output = [self.output1, self.output2]
 
         # self.file_saving_thread = self.filesaver(self.output)
         # self.file_saving_thread.start()
@@ -159,8 +161,6 @@ class webcamserver(threading.Thread):
         self.picam2.start_encoder(self.encoder)
         self.picam2.start()
         # time.sleep(5)
-
-
 
         # self.output2.fileoutput = "test.h264"
         # self.output2.start()
