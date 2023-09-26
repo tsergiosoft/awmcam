@@ -109,6 +109,9 @@ class webcamserver(threading.Thread):
         server = self.StreamingServer(address, handler)
         server.serve_forever()
 
+        file_saving_thread = threading.Thread(target=self.file_saving_process)
+        file_saving_thread.start()
+
     def file_saving_process(self):
         fcnt = 0
         while True:
@@ -129,9 +132,6 @@ class webcamserver(threading.Thread):
 
             #self.output = self.StreamingOutput()
 
-            file_saving_thread = threading.Thread(target=self.file_saving_process)
-            file_saving_thread.start()
-
             # self.picam2.create_video_configuration(main={"size": (800, 600)})
             # self.picam2.video_configuration.controls.FrameRate = 1.0
             # self.picam2.configure("video")
@@ -146,5 +146,6 @@ class webcamserver(threading.Thread):
         if self.pycam:
             print("Stop stream")
             self.picam2.stop_recording()
+
 
 
