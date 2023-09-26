@@ -5,7 +5,6 @@ import numpy as np
 import time
 import configparser
 import os
-import cv2
 from webcam import webcamserver
 
 config = configparser.ConfigParser()
