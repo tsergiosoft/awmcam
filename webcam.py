@@ -17,7 +17,8 @@ import threading
 #if (glob.PICAM == 1):
 from picamera2 import Picamera2
 from picamera2.encoders import JpegEncoder
-from picamera2.outputs import FileOutput
+from picamera2.encoders import H264Encoder
+from picamera2.outputs import FileOutput, FfmpegOutput
 
 PAGE = """\
 <html>
@@ -37,13 +38,17 @@ class webcamserver(threading.Thread):
         self.host = host
         self.port = port
 
-        self.output1 = self.StreamingOutput()
-        self.output2 = FileOutput()
+        # self.output1 = self.StreamingOutput()
 
-        self.address = (self.host, self.port)
-        self.handler = self.StreamingHandler
-        self.handler.outerclass = self
-        self.server = self.StreamingServer(self.address, self.handler)
+        self.encoder = H264Encoder(repeat=True, iperiod=15)
+        self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
+        self.output2 = FileOutput()
+        self.encoder.output = [self.output1, self.output2]
+
+        # self.address = (self.host, self.port)
+        # self.handler = self.StreamingHandler
+        # self.handler.outerclass = self
+        # self.server = self.StreamingServer(self.address, self.handler)
 
         # self.file_saving_thread = self.filesaver(self.output)
         # self.file_saving_thread.start()
@@ -145,18 +150,17 @@ class webcamserver(threading.Thread):
         self.picam2.create_video_configuration(main={"size": (800, 600)})
         self.picam2.video_configuration.controls.FrameRate = 1.0
         self.picam2.configure("video")
-        encoder = JpegEncoder(q=40)
+        # encoder = JpegEncoder(q=40)
 
-        encoder.output = [self.output1, self.output2]
 
         # Start streaming to the network.
-        self.picam2.start_encoder(encoder)
+        self.picam2.start_encoder(self.encoder)
         self.picam2.start()
         time.sleep(5)
 
         # self.picam2.start_recording(encoder, FileOutput(self.output1))
 
-        self.output2.fileoutput = "test.avi"
+        self.output2.fileoutput = "test.h264"
         self.output2.start()
         time.sleep(5)
         self.output2.stop()
