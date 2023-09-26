@@ -16,6 +16,7 @@ from picamera2.encoders import JpegEncoder
 from picamera2.outputs import FileOutput
 
 
+
 PAGE = """\
 <html>
 <head>
@@ -112,8 +113,8 @@ class webcamserver(threading.Thread):
             self.picam2.create_video_configuration(main={"size": (2028, 1080)})
             self.picam2.video_configuration.controls.FrameRate = 12.0
             self.picam2.configure("video")
-            encoder = JpegEncoder()
-            self.picam2.start_recording(encoder, FileOutput(self.output), q=1)
+            encoder = JpegEncoder(q=2)
+            self.picam2.start_recording(encoder, FileOutput(self.output))
 
     def stop_stream(self):
         if self.pycam:
