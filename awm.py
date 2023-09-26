@@ -46,19 +46,19 @@ os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 808
 server = webcamserver('', 8080, PICAM)
 server.start()
 
-server.start_stream()
-while True:
-    frame_data = np.random.randint(0, 255, size=(800, 600, 3), dtype=np.uint8).tobytes()
-    server.output.write(frame_data)
-    time.sleep(0.1)
+# server.start_stream()
+# while True:
+#     frame_data = np.random.randint(0, 255, size=(800, 600, 3), dtype=np.uint8).tobytes()
+#     server.output.write(frame_data)
+#     time.sleep(0.1)
 
-# server.start_stream()
-# time.sleep(10)
-# server.stop_stream()
-# time.sleep(5)
-# server.start_stream()
-# time.sleep(15)
-# server.stop_stream()
+server.start_stream()
+time.sleep(10)
+server.stop_stream()
+time.sleep(5)
+server.start_stream()
+time.sleep(15)
+server.stop_stream()
 
 # try:
 #     webcamserver.join()
