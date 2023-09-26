@@ -37,20 +37,19 @@ class webcamserver(threading.Thread):
         super().__init__()
         self.host = host
         self.port = port
+        self.address = (self.host, self.port)
+        self.handler = self.StreamingHandler
+        self.handler.outerclass = self
+        self.server = self.StreamingServer(self.address, self.handler)
+
 
         # self.output = self.StreamingOutput()
-
         # self.encoder = H264Encoder(repeat=True, iperiod=15)
         self.encoder = JpegEncoder(q=40)
         # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
         self.output1 = FileOutput(self.StreamingOutput())
         self.output2 = FileOutput()
         self.encoder.output = [self.output1, self.output2]
-
-        # self.address = (self.host, self.port)
-        # self.handler = self.StreamingHandler
-        # self.handler.outerclass = self
-        # self.server = self.StreamingServer(self.address, self.handler)
 
         # self.file_saving_thread = self.filesaver(self.output)
         # self.file_saving_thread.start()
