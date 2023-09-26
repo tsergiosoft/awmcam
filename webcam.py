@@ -40,15 +40,16 @@ class webcamserver(threading.Thread):
         self.output = self.StreamingOutput()
 
         # self.file_saving_thread = threading.Thread(target=self.file_saving_process)
-        self.file_saving_thread = self.filesaver()
+        self.file_saving_thread = self.filesaver(self.output)
         self.file_saving_thread.start()
 
         if (self.pycam):
             self.picam2 = Picamera2()
 
     class filesaver(threading.Thread):
-        def __init__(self):
+        def __init__(self, stream):
             super().__init__()
+            self.stream = stream
             self.filename = 'xxxxxx'
 
         def run(self):
@@ -56,11 +57,11 @@ class webcamserver(threading.Thread):
             fcnt = 0
             while True:
                 # Check for new data in streaming_output.frame
-                with self.output.condition:
-                    self.output.condition.wait()
+                with self.stream.condition:
+                    self.stream.condition.wait()
                     fcnt = fcnt + 1
                     print(fcnt)
-                    data = self.output.frame
+                    data = self.stream.frame
                     # Save data to a local file (implementation not shown)
 
     class StreamingOutput(io.BufferedIOBase):
