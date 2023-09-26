@@ -47,7 +47,8 @@ class webcamserver(threading.Thread):
         # self.encoder = H264Encoder(repeat=True, iperiod=15)
         self.encoder = JpegEncoder(q=40)
         # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
-        self.output1 = FileOutput(self.StreamingOutput())
+        self.streamout = self.StreamingOutput()
+        self.output1 = FileOutput(self.streamout )
         # self.output2 = FileOutput('test2.h264')
         self.encoder.output = self.output1
         # self.encoder.output = [self.output1, self.output2]
@@ -121,9 +122,9 @@ class webcamserver(threading.Thread):
                 self.end_headers()
                 try:
                     while True:
-                        with self.outerclass.output1.condition:
-                            self.outerclass.output1.condition.wait()
-                            frame = self.outerclass.output1.frame
+                        with self.outerclass.streamout.condition:
+                            self.outerclass.streamout.condition.wait()
+                            frame = self.outerclass.streamout.frame
                         self.wfile.write(b'--FRAME\r\n')
                         self.send_header('Content-Type', 'image/jpeg')
                         self.send_header('Content-Length', len(frame))
