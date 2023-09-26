@@ -37,11 +37,9 @@ class webcamserver(threading.Thread):
         self.pycam = pycam
         print("PICAM=", self.pycam)
         self.output = self.StreamingOutput()
+        #self.output = None
         if (self.pycam):
             self.picam2 = Picamera2()
-        #     from picamera2 import Picamera2
-        #     from picamera2.encoders import JpegEncoder
-        #     from picamera2.outputs import FileOutput
 
     class StreamingOutput(io.BufferedIOBase):
         def __init__(self):
@@ -54,8 +52,8 @@ class webcamserver(threading.Thread):
                 self.condition.notify_all()
 
     class StreamingHandler(server.BaseHTTPRequestHandler):
-        def __init__(self, output, *args):
-            self.output = output
+        def __init__(self, myparent, *args):
+            self.myparent = myparent
             super().__init__(*args)
 
         def do_GET(self):
@@ -79,9 +77,9 @@ class webcamserver(threading.Thread):
                 self.end_headers()
                 try:
                     while True:
-                        with self.output.condition:
-                            self.output.condition.wait()
-                            frame = self.output.frame
+                        with self.myparent.output.condition:
+                            self.myparent.output.condition.wait()
+                            frame = self.myparent.output.frame
                         self.wfile.write(b'--FRAME\r\n')
                         self.send_header('Content-Type', 'image/jpeg')
                         self.send_header('Content-Length', len(frame))
@@ -100,17 +98,33 @@ class webcamserver(threading.Thread):
         allow_reuse_address = True
         daemon_threads = True
 
+################## own class definitions  #############################
     def run(self):
         address = (self.host, self.port)
         server = self.StreamingServer(address, lambda *args, **kwargs: self.StreamingHandler(self.output, *args))
         server.serve_forever()
+
+    def file_saving_process(self):
+        while True:
+            # Check for new data in streaming_output.frame
+            with self.output.condition:
+                self.output.condition.wait()
+                data = self.output.frame
+                # Save data to a local file (implementation not shown)
+
     def start_stream(self):
         if self.pycam:
             print("Start stream")
 
             #print(self.picam2.sensor_modes)
             #self.picam2.configure(self.picam2.create_video_configuration(main={"size": (800, 600)}))
-            self.picam2.create_video_configuration(main={"size": (1024, 768)})
+
+            #self.output = self.StreamingOutput()
+
+            # file_saving_thread = threading.Thread(target=self.file_saving_process)
+            # file_saving_thread.start()
+
+            self.picam2.create_video_configuration(main={"size": (800, 600)})
             self.picam2.video_configuration.controls.FrameRate = 12.0
             self.picam2.configure("video")
             encoder = JpegEncoder(q=40)
