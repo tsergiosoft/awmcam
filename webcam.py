@@ -134,7 +134,7 @@ class webcamserver(threading.Thread):
             print("CREATE FILE SAVING THREAD")
 
             file_saving_thread = threading.Thread(target=self.file_saving_process)
-            file_saving_thread.start()
+            # file_saving_thread.start()
 
     def stop_stream(self):
         if self.pycam:
