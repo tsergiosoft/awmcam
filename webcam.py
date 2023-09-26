@@ -127,21 +127,12 @@ class webcamserver(threading.Thread):
     def start_stream(self):
         if self.pycam:
             print("Start stream")
+            # self.picam2.create_video_configuration(main={"size": (800, 600)})
+            # self.picam2.video_configuration.controls.FrameRate = 10.0
+            # self.picam2.configure("video")
+            # encoder = JpegEncoder(q=40)
+            # self.picam2.start_recording(encoder, FileOutput(self.output))
 
-            #print(self.picam2.sensor_modes)
-            #self.picam2.configure(self.picam2.create_video_configuration(main={"size": (800, 600)}))
-
-            #self.output = self.StreamingOutput()
-
-            self.picam2.create_video_configuration(main={"size": (800, 600)})
-            self.picam2.video_configuration.controls.FrameRate = 10.0
-            self.picam2.configure("video")
-            encoder = JpegEncoder(q=40)
-            self.picam2.start_recording(encoder, FileOutput(self.output))
-
-            # for _ in range(100):
-            #     frame_data = np.random.randint(0, 255, size=(800, 600, 3), dtype=np.uint8).tobytes()
-            #     self.output.write(frame_data)
 
     def stop_stream(self):
         if self.pycam:
