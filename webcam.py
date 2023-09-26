@@ -5,6 +5,7 @@
 # Note: needs simplejpeg to be installed (pip3 install simplejpeg).
 
 import io
+import numpy as np
 import logging
 import socketserver
 from http import server
@@ -131,11 +132,15 @@ class webcamserver(threading.Thread):
             file_saving_thread = threading.Thread(target=self.file_saving_process)
             file_saving_thread.start()
 
-            self.picam2.create_video_configuration(main={"size": (800, 600)})
-            self.picam2.video_configuration.controls.FrameRate = 1.0
-            self.picam2.configure("video")
-            encoder = JpegEncoder(q=40)
-            self.picam2.start_recording(encoder, FileOutput(self.output))
+            # self.picam2.create_video_configuration(main={"size": (800, 600)})
+            # self.picam2.video_configuration.controls.FrameRate = 1.0
+            # self.picam2.configure("video")
+            # encoder = JpegEncoder(q=40)
+            # self.picam2.start_recording(encoder, FileOutput(self.output))
+
+            for _ in range(10):
+                frame_data = np.random.randint(0, 255, size=(800, 600, 3), dtype=np.uint8).tobytes()
+                self.output.write(frame_data)
 
     def stop_stream(self):
         if self.pycam:

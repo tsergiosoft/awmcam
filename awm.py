@@ -47,9 +47,9 @@ server.start()
 server.start_stream()
 time.sleep(10)
 server.stop_stream()
-time.sleep(10)
+time.sleep(5)
 server.start_stream()
-time.sleep(10)
+time.sleep(15)
 server.stop_stream()
 
 # try:
