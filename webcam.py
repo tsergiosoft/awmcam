@@ -153,8 +153,6 @@ class webcamserver(threading.Thread):
         self.picam2.video_configuration.controls.FrameRate = 1.0
         self.picam2.configure("video")
 
-
-
         # Start streaming to the network.
         self.picam2.start_encoder(self.encoder)
         self.picam2.start()
@@ -162,11 +160,11 @@ class webcamserver(threading.Thread):
 
         # self.picam2.start_recording(encoder, FileOutput(self.output1))
 
-        self.output2.fileoutput = "test.h264"
-        self.output2.start()
-        time.sleep(5)
-        self.output2.stop()
-        time.sleep(5)
+        # self.output2.fileoutput = "test.h264"
+        # self.output2.start()
+        # time.sleep(5)
+        # self.output2.stop()
+        # time.sleep(5)
 
     def stop_stream(self):
             # if (glob.PICAM == 1):
