@@ -133,7 +133,7 @@ class webcamserver(threading.Thread):
         # handler = self.StreamingHandler
         # handler.outerclass = self
         # server = self.StreamingServer(address, handler)
-        server.serve_forever()
+        self.server.serve_forever()
 
     def start_stream(self):
         if self.pycam:
