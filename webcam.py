@@ -67,7 +67,7 @@ class webcamserver(threading.Thread):
                     fcnt = fcnt + 1
                     print(fcnt)
                     data = self.stream.frame
-                    print (data.size, data.shape())
+                    print (data.shape())
                     # Save data to a local file (implementation not shown)
 
     class StreamingOutput(io.BufferedIOBase):
