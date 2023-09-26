@@ -47,7 +47,7 @@ class webcamserver(threading.Thread):
         # self.encoder = H264Encoder(repeat=True, iperiod=15)
         self.encoder = JpegEncoder(q=40)
         # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
-        self.output1 = FileOutput(self.StreamingOutput())
+        self.output1 = self.StreamingOutput()
         self.output2 = FileOutput()
         self.encoder.output = [self.output1, self.output2]
 
