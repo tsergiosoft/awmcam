@@ -112,8 +112,8 @@ class webcamserver(threading.Thread):
             self.picam2.create_video_configuration(main={"size": (2028, 1080)})
             self.picam2.video_configuration.controls.FrameRate = 12.0
             self.picam2.configure("video")
-
-            self.picam2.start_recording(JpegEncoder(), FileOutput(self.output), Quality.VERY_LOW)
+            encoder = JpegEncoder()
+            self.picam2.start_recording(encoder, FileOutput(self.output), q=1)
 
     def stop_stream(self):
         if self.pycam:
