@@ -106,7 +106,11 @@ class webcamserver(threading.Thread):
     def start_stream(self):
         if self.pycam:
             print("Start stream")
+<<<<<<< HEAD
             print(self.picam2.sensor_modes)
+=======
+            #picam2 = Picamera2()
+>>>>>>> cd7a2bdaef9adce77560cbd146bcbebf4325f984
             self.picam2.configure(self.picam2.create_video_configuration(main={"size": (800, 600)}))
             self.picam2.start_recording(JpegEncoder(), FileOutput(self.output))
 
