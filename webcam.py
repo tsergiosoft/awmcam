@@ -38,10 +38,12 @@ class webcamserver(threading.Thread):
         self.host = host
         self.port = port
 
-        # self.output1 = self.StreamingOutput()
+        # self.output = self.StreamingOutput()
 
-        self.encoder = H264Encoder(repeat=True, iperiod=15)
-        self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
+        # self.encoder = H264Encoder(repeat=True, iperiod=15)
+        self.encoder = JpegEncoder(q=40)
+        # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
+        self.output1 = FileOutput(self.StreamingOutput())
         self.output2 = FileOutput()
         self.encoder.output = [self.output1, self.output2]
 
@@ -150,7 +152,7 @@ class webcamserver(threading.Thread):
         self.picam2.create_video_configuration(main={"size": (800, 600)})
         self.picam2.video_configuration.controls.FrameRate = 1.0
         self.picam2.configure("video")
-        # encoder = JpegEncoder(q=40)
+
 
 
         # Start streaming to the network.
