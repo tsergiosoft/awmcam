@@ -1,16 +1,12 @@
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 from pymavlink import mavutil
+import glob
 import numpy as np
 import time
 import configparser
 import os
-#import cv2
+import cv2
 from webcam import webcamserver
-
-#import argparse  
-#parser = argparse.ArgumentParser()
-#parser.add_argument('--connect', default='127.0.0.1:5160')
-#args = parser.parse_args()
 
 config = configparser.ConfigParser()
 config.read('params.ini')
@@ -24,7 +20,7 @@ MAV_MASTER	=config['DEFAULT']['MAV_MASTER']
 MAV_BAUD	=config['DEFAULT']['MAV_BAUD']
 #MAVPROXY_IP_PORT=config['DEFAULT']['MAVPROXY_IP_PORT'] #may be delete and use 127.0.0.1:14550
 MAV_DRONEKIT=config['DEFAULT']['MAV_DRONEKIT']
-PICAM	    =config['DEFAULT']['PICAM']
+glob.PICAM	    =int(config['DEFAULT']['PICAM'])
 
 print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
 
@@ -44,18 +40,17 @@ os.system('screen -dmS mav bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+
 #os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webhello.py --port 8080"')
 os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 8080"')
 
-server = webcamserver('', 8080, PICAM)
+server = webcamserver('', 8080)
 server.start()
 frame_size = (800, 600)
-#video_writer = cv2.VideoWriter("file_name", cv2.VideoWriter_fourcc(*'MJPG'), 12, frame_size)
 
-# server.start_stream()
-# while True:
-#     buffer = np.random.randint(0, 255, size=(600, 800, 3), dtype=np.uint8).tobytes()
-#     #frame = np.frombuffer(buffer, dtype=np.uint8).reshape(frame_size)
-#     #video_writer.write(frame)
-#     server.output.write(buffer) #### OR FRAME????
-#     time.sleep(1.0 / 4)
+# if (glob.PICAM==0):
+#     server.start_stream()
+#     while True:
+#          buffer = np.random.randint(0, 255, size=(800, 600, 3), dtype=np.uint8)
+#          _,jpeg_data = cv2.imencode('.jpg', buffer, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+#          server.output.write(jpeg_data)
+#          time.sleep(1.0 / 12)
 
 server.start_stream()
 time.sleep(10)

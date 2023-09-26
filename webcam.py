@@ -3,21 +3,21 @@
 # Mostly copied from https://picamera.readthedocs.io/en/release-1.13/recipes2.html
 # Run this script, then point a web browser at http:<this-ip-address>:8000
 # Note: needs simplejpeg to be installed (pip3 install simplejpeg).
-
+import glob
 import io
+import time
 import numpy as np
-#import cv2
+
 import logging
 import socketserver
 from http import server
 from threading import Condition
 import threading
 
-from picamera2 import Picamera2
-from picamera2.encoders import JpegEncoder
-from picamera2.outputs import FileOutput
-
-
+if (glob.PICAM == 1):
+    from picamera2 import Picamera2
+    from picamera2.encoders import JpegEncoder
+    from picamera2.outputs import FileOutput
 
 PAGE = """\
 <html>
@@ -32,30 +32,33 @@ PAGE = """\
 """
 
 class webcamserver(threading.Thread):
-    def __init__(self, host="localhost", port=8081, pycam=False):
+    def __init__(self, host="localhost", port=8081):
         super().__init__()
         self.host = host
         self.port = port
-        self.pycam = pycam
 
-        self.output = self.StreamingOutput()
+        self.output1 = self.StreamingOutput()
+        self.output2 = FileOutput()
 
         self.address = (self.host, self.port)
         self.handler = self.StreamingHandler
         self.handler.outerclass = self
         self.server = self.StreamingServer(self.address, self.handler)
 
-        self.file_saving_thread = self.filesaver(self.output)
-        self.file_saving_thread.start()
+        # self.file_saving_thread = self.filesaver(self.output)
+        # self.file_saving_thread.start()
 
-        print("PICAM=", self.pycam)
-        self.picam2 = Picamera2()
+        print("webcamserver: PICAM=", glob.PICAM)
+        if (glob.PICAM == 1):
+            self.picam2 = Picamera2()
 
-    class filesaver(threading.Thread):
+        """
+        class filesaver(threading.Thread):
         def __init__(self, stream):
             super().__init__()
             self.stream = stream
-            self.filename = 'xxxxxx'
+            # self.video_writer = cv2.VideoWriter("/home/pi/awmcam/mjpeg.avi", cv2.VideoWriter_fourcc(*'MJPG'), 12, (800,600))
+            self.video_writer = cv2.VideoWriter('/home/pi/awmcam/mjpeg.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 12, (800,600))
 
         def run(self):
             print("file_saving_process in...")
@@ -67,8 +70,15 @@ class webcamserver(threading.Thread):
                     fcnt = fcnt + 1
                     print(fcnt)
                     data = self.stream.frame
+                    #img1 = np.array(data)
+                    self.video_writer.write(data)
                     print(len(data))
-                    # Save data to a local file (implementation not shown)
+                    #cv2.rectangle(data, (100, 100), (200, 200), (0, 255, 0), 3)
+
+                    if (fcnt>400):
+                        self.video_writer.release()
+                        break
+        """
 
     class StreamingOutput(io.BufferedIOBase):
         def __init__(self):
@@ -82,9 +92,6 @@ class webcamserver(threading.Thread):
 
     class StreamingHandler(server.BaseHTTPRequestHandler):
         outerclass = None
-        # def __init__(self, myparent, *args):
-        #     self.myparent = myparent
-        #     super().__init__(*args)
 
         def do_GET(self):
             if self.path == '/':
@@ -133,19 +140,28 @@ class webcamserver(threading.Thread):
         self.server.serve_forever()
 
     def start_stream(self):
-        if self.pycam:
-            print("Start stream")
+        print("Start CAMERA")
+        if (glob.PICAM == 1):
             self.picam2.create_video_configuration(main={"size": (800, 600)})
             self.picam2.video_configuration.controls.FrameRate = 1.0
             self.picam2.configure("video")
             encoder = JpegEncoder(q=40)
+
+            # output2 = FileOutput()
+            encoder.output = [self.output1, self.output2]
             self.picam2.start_recording(encoder, FileOutput(self.output))
 
+            self.output2.fileoutput = "test.avi"
+            self.output2.start()
+            time.sleep(5)
+            self.output2.stop()
+            time.sleep(5)
 
     def stop_stream(self):
-        if self.pycam:
-            print("Stop stream")
-            self.picam2.stop_recording()
+            if (glob.PICAM == 1):
+                print("Stop CAMERA")
+                self.output2.stop()
+                self.picam2.stop_recording()
 
 
 
