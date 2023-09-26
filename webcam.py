@@ -129,6 +129,7 @@ class webcamserver(threading.Thread):
             self.picam2.configure("video")
             encoder = JpegEncoder(q=40)
             self.picam2.start_recording(encoder, FileOutput(self.output))
+            print("CREATE FILE SAVING THREAD")
             file_saving_thread = threading.Thread(target=self.file_saving_process)
             file_saving_thread.start()
 
