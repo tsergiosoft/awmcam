@@ -4,6 +4,7 @@ import numpy as np
 import time
 import configparser
 import os
+#import cv2
 from webcam import webcamserver
 
 #import argparse  
@@ -45,12 +46,16 @@ os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 808
 
 server = webcamserver('', 8080, PICAM)
 server.start()
+frame_size = (800, 600)
+#video_writer = cv2.VideoWriter("file_name", cv2.VideoWriter_fourcc(*'MJPG'), 12, frame_size)
 
-server.start_stream()
-while True:
-    frame_data = np.random.randint(0, 255, size=(800, 600, 3), dtype=np.uint8).tobytes()
-    server.output.write(frame_data)
-    time.sleep(0.1)
+# server.start_stream()
+# while True:
+#     buffer = np.random.randint(0, 255, size=(600, 800, 3), dtype=np.uint8).tobytes()
+#     #frame = np.frombuffer(buffer, dtype=np.uint8).reshape(frame_size)
+#     #video_writer.write(frame)
+#     server.output.write(buffer) #### OR FRAME????
+#     time.sleep(1.0 / 4)
 
 server.start_stream()
 time.sleep(10)

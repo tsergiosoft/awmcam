@@ -6,6 +6,7 @@
 
 import io
 import numpy as np
+#import cv2
 import logging
 import socketserver
 from http import server
@@ -25,7 +26,7 @@ PAGE = """\
 </head>
 <body>
 <h1>Picamera2 MJPEG Streaming Demo</h1>
-<img src="stream.mjpg" width="1024" height="768" />
+<img src="stream.mjpg" width="800" height="600" />
 </body>
 </html>
 """
@@ -48,7 +49,7 @@ class webcamserver(threading.Thread):
         self.file_saving_thread.start()
 
         print("PICAM=", self.pycam)
-        if (self.pycam):
+        if (self.pycam == 1):
             self.picam2 = Picamera2()
 
     class filesaver(threading.Thread):
@@ -129,20 +130,17 @@ class webcamserver(threading.Thread):
 
 ################## own class definitions  #############################
     def run(self):
-        # address = (self.host, self.port)
-        # handler = self.StreamingHandler
-        # handler.outerclass = self
-        # server = self.StreamingServer(address, handler)
         self.server.serve_forever()
 
     def start_stream(self):
         if self.pycam:
             print("Start stream")
-            self.picam2.create_video_configuration(main={"size": (800, 600)})
-            self.picam2.video_configuration.controls.FrameRate = 14.0
-            self.picam2.configure("video")
-            encoder = JpegEncoder(q=40)
-            #self.picam2.start_recording(encoder, FileOutput(self.output))
+            if (self.pycam ==1):
+                self.picam2.create_video_configuration(main={"size": (800, 600)})
+                self.picam2.video_configuration.controls.FrameRate = 14.0
+                self.picam2.configure("video")
+                encoder = JpegEncoder(q=40)
+                self.picam2.start_recording(encoder, FileOutput(self.output))
 
 
     def stop_stream(self):

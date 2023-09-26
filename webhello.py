@@ -1,77 +1,43 @@
-#!/usr/bin/python3
+import cv2
+import numpy as np
+from io import BufferedIOBase
 
-# Mostly copied from https://picamera.readthedocs.io/en/release-1.13/recipes2.html
-# Run this script, then point a web browser at http:<this-ip-address>:8000
-# Note: needs simplejpeg to be installed (pip3 install simplejpeg).
+class VideoStreamWriter(BufferedIOBase):
+    def __init__(self, file_name, frame_rate, frame_size):
+        self.file_name = file_name
+        self.frame_rate = frame_rate
+        self.frame_size = frame_size
+        self.video_writer = cv2.VideoWriter(file_name, cv2.VideoWriter_fourcc(*'MJPG'), frame_rate, frame_size)
+        self.buffer = bytearray()
 
-import io
-import argparse
-import socketserver
-from http import server
-from threading import Condition
+    def write(self, data):
+        # Append video frame data to the internal buffer
+        self.buffer += data
 
+    def flush(self):
+        if self.buffer:
+            # Convert the buffer data into a video frame
+            frame = np.frombuffer(self.buffer, dtype=np.uint8).reshape(self.frame_size)
+            # Write the frame to the video file
+            self.video_writer.write(frame)
+            self.buffer = bytearray()  # Clear the buffer
 
-PAGE = """\
-<html>
-<head>
-<title>picamera2 MJPEG streaming demo</title>
-</head>
-<body>
-<h1>Picamera2 MJPEG Streaming Demo</h1>
-</body>
-</html>
-"""
+    def close(self):
+        # Make sure to flush any remaining data and close the video writer
+        self.flush()
+        self.video_writer.release()
 
+# Usage
+import time
 
-class StreamingOutput(io.BufferedIOBase):
-    def __init__(self):
-        self.frame = None
-        self.condition = Condition()
+# Create a VideoStreamWriter instance
+video_writer = VideoStreamWriter("output.avi", 30.0, (640, 480))
 
-    def write(self, buf):
-        with self.condition:
-            self.frame = buf
-            self.condition.notify_all()
+# Generate and send random noise frames to the video writer
+for _ in range(300):
+    frame_data = np.random.randint(0, 255, size=(480, 640, 3), dtype=np.uint8).tobytes()
+    video_writer.write(frame_data)
+    time.sleep(1.0 / 30)  # Simulate a frame rate of 30 frames per second
 
-class StreamingHandler(server.BaseHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == '/':
-            self.send_response(301)
-            self.send_header('Location', '/index.html')
-            self.end_headers()
-        elif self.path == '/index.html':
-            content = PAGE.encode('utf-8')
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/html')
-            self.send_header('Content-Length', len(content))
-            self.end_headers()
-            self.wfile.write(content)
-
-        else:
-            self.send_error(404)
-            self.end_headers()
-
-
-class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
-    allow_reuse_address = True
-    daemon_threads = True
-
-
-parser = argparse.ArgumentParser(description="Custom HTTP Server")
-parser.add_argument("--host", default="localhost", help="Host name to listen on (default: localhost)")
-parser.add_argument("--port", type=int, default=8080, help="Port number to listen on (default: 8080)")
-args = parser.parse_args()
-
-host = args.host
-port = args.port
-
-output = StreamingOutput()
-
-
-try:
-    address = (host, port)
-    print("WEB CAM http://"+host+":"+str(port))
-    server = StreamingServer(address, StreamingHandler)
-    server.serve_forever()
-finally:
-    print("Hello")
+# Close the video writer to finalize the output video
+video_writer.close()
