@@ -120,9 +120,9 @@ class webcamserver(threading.Thread):
                 self.end_headers()
                 try:
                     while True:
-                        with self.outerclass.output.condition:
-                            self.outerclass.output.condition.wait()
-                            frame = self.outerclass.output.frame
+                        with self.outerclass.output1.condition:
+                            self.outerclass.output1.condition.wait()
+                            frame = self.outerclass.output1.frame
                         self.wfile.write(b'--FRAME\r\n')
                         self.send_header('Content-Type', 'image/jpeg')
                         self.send_header('Content-Length', len(frame))
