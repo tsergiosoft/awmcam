@@ -109,6 +109,9 @@ class webcamserver(threading.Thread):
         server = self.StreamingServer(address, handler)
         server.serve_forever()
 
+        file_saving_thread = threading.Thread(target=self.file_saving_process)
+        file_saving_thread.start()
+
     def file_saving_process(self):
         print("file_saving_process in...")
         fcnt = 0
@@ -125,13 +128,11 @@ class webcamserver(threading.Thread):
         if self.pycam:
             print("Start stream")
             self.picam2.create_video_configuration(main={"size": (800, 600)})
-            self.picam2.video_configuration.controls.FrameRate = 12.0
+            self.picam2.video_configuration.controls.FrameRate = 2.0
             self.picam2.configure("video")
             encoder = JpegEncoder(q=40)
             self.picam2.start_recording(encoder, FileOutput(self.output))
             print("CREATE FILE SAVING THREAD")
-            file_saving_thread = threading.Thread(target=self.file_saving_process)
-            file_saving_thread.start()
 
     def stop_stream(self):
         if self.pycam:
