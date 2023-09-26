@@ -24,7 +24,7 @@ PAGE = """\
 </head>
 <body>
 <h1>Picamera2 MJPEG Streaming Demo</h1>
-<img src="stream.mjpg" width="2028" height="1080" />
+<img src="stream.mjpg" width="1024" height="768" />
 </body>
 </html>
 """
@@ -110,7 +110,7 @@ class webcamserver(threading.Thread):
 
             #print(self.picam2.sensor_modes)
             #self.picam2.configure(self.picam2.create_video_configuration(main={"size": (800, 600)}))
-            self.picam2.create_video_configuration(main={"size": (2028, 1080)})
+            self.picam2.create_video_configuration(main={"size": (1024, 768)})
             self.picam2.video_configuration.controls.FrameRate = 12.0
             self.picam2.configure("video")
             encoder = JpegEncoder(q=40)
