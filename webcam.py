@@ -109,7 +109,7 @@ class webcamserver(threading.Thread):
 
             #print(self.picam2.sensor_modes)
             #self.picam2.configure(self.picam2.create_video_configuration(main={"size": (800, 600)}))
-            self.picam2.create_video_configuration(main={"size": (800, 600)})
+            self.picam2.create_video_configuration(main={"size": (2028, 1080)})
             self.picam2.video_configuration.controls.FrameRate = 4.0
             self.picam2.configure("video")
 
