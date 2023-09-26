@@ -39,11 +39,29 @@ class webcamserver(threading.Thread):
         print("PICAM=", self.pycam)
         self.output = self.StreamingOutput()
 
-        self.file_saving_thread = threading.Thread(target=self.file_saving_process)
+        # self.file_saving_thread = threading.Thread(target=self.file_saving_process)
+        self.file_saving_thread = self.filesaver()
         self.file_saving_thread.start()
 
         if (self.pycam):
             self.picam2 = Picamera2()
+
+    class filesaver(threading.Thread):
+        def __init__(self):
+            super().__init__()
+            self.filename = 'xxxxxx'
+
+        def run(self):
+            print("file_saving_process in...")
+            fcnt = 0
+            while True:
+                # Check for new data in streaming_output.frame
+                with self.output.condition:
+                    self.output.condition.wait()
+                    fcnt = fcnt + 1
+                    print(fcnt)
+                    data = self.output.frame
+                    # Save data to a local file (implementation not shown)
 
     class StreamingOutput(io.BufferedIOBase):
         def __init__(self):
@@ -114,18 +132,6 @@ class webcamserver(threading.Thread):
 
 
 
-    def file_saving_process(self):
-        print("file_saving_process in...")
-        fcnt = 0
-        while True:
-            # Check for new data in streaming_output.frame
-            with self.output.condition:
-                self.output.condition.wait()
-                fcnt=fcnt+1
-                print(fcnt)
-                data = self.output.frame
-                # Save data to a local file (implementation not shown)
-
     def start_stream(self):
         if self.pycam:
             print("Start stream")
@@ -135,9 +141,6 @@ class webcamserver(threading.Thread):
             encoder = JpegEncoder(q=40)
             self.picam2.start_recording(encoder, FileOutput(self.output))
 
-            # print("CREATE FILE SAVING THREAD")
-            # file_saving_thread = threading.Thread(target=self.file_saving_process)
-            # file_saving_thread.start()
 
     def stop_stream(self):
         if self.pycam:
