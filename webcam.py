@@ -132,7 +132,7 @@ class webcamserver(threading.Thread):
             file_saving_thread.start()
 
             self.picam2.create_video_configuration(main={"size": (800, 600)})
-            self.picam2.video_configuration.controls.FrameRate = 12.0
+            self.picam2.video_configuration.controls.FrameRate = 1.0
             self.picam2.configure("video")
             encoder = JpegEncoder(q=40)
             self.picam2.start_recording(encoder, FileOutput(self.output))
