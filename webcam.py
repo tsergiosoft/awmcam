@@ -147,9 +147,14 @@ class webcamserver(threading.Thread):
         self.picam2.configure("video")
         encoder = JpegEncoder(q=40)
 
-        # output2 = FileOutput()
         encoder.output = [self.output1, self.output2]
-        self.picam2.start_recording(encoder, FileOutput(self.output))
+
+        # Start streaming to the network.
+        self.picam2.start_encoder(encoder)
+        self.picam2.start()
+        time.sleep(5)
+
+        # self.picam2.start_recording(encoder, FileOutput(self.output1))
 
         self.output2.fileoutput = "test.avi"
         self.output2.start()
