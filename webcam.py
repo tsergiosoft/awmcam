@@ -52,9 +52,10 @@ class webcamserver(threading.Thread):
                 self.condition.notify_all()
 
     class StreamingHandler(server.BaseHTTPRequestHandler):
-        def __init__(self, myparent, *args):
-            self.myparent = myparent
-            super().__init__(*args)
+        outerclass = None
+        # def __init__(self, myparent, *args):
+        #     self.myparent = myparent
+        #     super().__init__(*args)
 
         def do_GET(self):
             if self.path == '/':
@@ -77,9 +78,9 @@ class webcamserver(threading.Thread):
                 self.end_headers()
                 try:
                     while True:
-                        with self.myparent.output.condition:
-                            self.myparent.output.condition.wait()
-                            frame = self.myparent.output.frame
+                        with self.outerclass.output.condition:
+                            self.outerclass.output.condition.wait()
+                            frame = self.outerclass.output.frame
                         self.wfile.write(b'--FRAME\r\n')
                         self.send_header('Content-Type', 'image/jpeg')
                         self.send_header('Content-Length', len(frame))
@@ -101,7 +102,10 @@ class webcamserver(threading.Thread):
 ################## own class definitions  #############################
     def run(self):
         address = (self.host, self.port)
-        server = self.StreamingServer(address, lambda *args, **kwargs: self.StreamingHandler(self.output, *args))
+        # server = self.StreamingServer(address, lambda *args, **kwargs: self.StreamingHandler(self,self, *args))
+        handler = self.StreamingHandler
+        handler.outerclass = self
+        server = self.StreamingServer(address, handler)
         server.serve_forever()
 
     def file_saving_process(self):
