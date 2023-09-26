@@ -36,13 +36,18 @@ class webcamserver(threading.Thread):
         self.host = host
         self.port = port
         self.pycam = pycam
-        print("PICAM=", self.pycam)
+
         self.output = self.StreamingOutput()
 
-        # self.file_saving_thread = threading.Thread(target=self.file_saving_process)
+        self.address = (self.host, self.port)
+        self.handler = self.StreamingHandler
+        self.handler.outerclass = self
+        self.server = self.StreamingServer(self.address, self.handler)
+
         self.file_saving_thread = self.filesaver(self.output)
         self.file_saving_thread.start()
 
+        print("PICAM=", self.pycam)
         if (self.pycam):
             self.picam2 = Picamera2()
 
@@ -124,14 +129,11 @@ class webcamserver(threading.Thread):
 
 ################## own class definitions  #############################
     def run(self):
-        address = (self.host, self.port)
-        # server = self.StreamingServer(address, lambda *args, **kwargs: self.StreamingHandler(self,self, *args))
-        handler = self.StreamingHandler
-        handler.outerclass = self
-        server = self.StreamingServer(address, handler)
+        # address = (self.host, self.port)
+        # handler = self.StreamingHandler
+        # handler.outerclass = self
+        # server = self.StreamingServer(address, handler)
         server.serve_forever()
-
-
 
     def start_stream(self):
         if self.pycam:
