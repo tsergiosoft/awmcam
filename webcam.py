@@ -109,10 +109,13 @@ class webcamserver(threading.Thread):
         server.serve_forever()
 
     def file_saving_process(self):
+        fcnt = 0
         while True:
             # Check for new data in streaming_output.frame
             with self.output.condition:
                 self.output.condition.wait()
+                fcnt=fcnt+1
+                print(fcnt)
                 data = self.output.frame
                 # Save data to a local file (implementation not shown)
 
@@ -125,8 +128,8 @@ class webcamserver(threading.Thread):
 
             #self.output = self.StreamingOutput()
 
-            # file_saving_thread = threading.Thread(target=self.file_saving_process)
-            # file_saving_thread.start()
+            file_saving_thread = threading.Thread(target=self.file_saving_process)
+            file_saving_thread.start()
 
             self.picam2.create_video_configuration(main={"size": (800, 600)})
             self.picam2.video_configuration.controls.FrameRate = 12.0
