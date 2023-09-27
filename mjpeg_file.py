@@ -104,7 +104,7 @@ class webcamserver(threading.Thread):
             time.sleep(1 / 24)  # Adjust the sleep duration as needed
 
     def stop(self):
-        self.server.shutdown()
+        #self.server.shutdown()
         self.stop_event.set()
 
 
@@ -121,7 +121,7 @@ output2 = FileOutput('testm2.mjpeg')
 encoder.output = [output1, output2]
 picam2.start_encoder(encoder)
 picam2.start()
-time.sleep(10)
+time.sleep(5)
 print("stop picam")
 picam2.stop()
 picam2.stop_encoder(encoder)
