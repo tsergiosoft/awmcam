@@ -122,6 +122,7 @@ encoder.output = [output1, output2]
 picam2.start_encoder(encoder)
 picam2.start()
 time.sleep(10)
-picam2.stop_recording()
+picam2.stop_encoder(encoder)
+picam2.stop()
 wserver.stop()
 wserver.join()
