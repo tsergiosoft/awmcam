@@ -65,6 +65,7 @@ class cam():
     def start_file(self):
         pass
 
+os.system('mount -o uid=pi,gid=pi /dev/sda1 ~/usb/')
 # wserver = webcamserver(host="localhost", port=8080)
 # wserver.start() #Thread
 
@@ -80,3 +81,4 @@ pcam.stop_stream()
 # print("stop wserver")
 # wserver.stop() #Thread
 # wserver.join()
+os.system('umount -o ~/usb/')
