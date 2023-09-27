@@ -57,8 +57,10 @@ echo "----------Start service mav"
 sudo systemctl start awm.service
 echo "----------Install finish OK"
 echo -------------First ssh connect to cloud...
-echo DO COMMAND sudo ssh -v -i ~/.ssh/tunaws.pem ubuntu@13.50.210.14 -p 22
 echo "--------------------------------------------END----------------------------------------------"
+echo ................... execute test connect:
+echo ................... sudo ssh -v -i ~/.ssh/tunaws.pem ubuntu@13.50.210.14 -p 22
+
 
 #raspivid -t 0 -s -b 987654 -sg 5000 -o -|tee ~/video1.h264 | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8160}' :demux=h264
 #

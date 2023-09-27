@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-# from picamera2 import Picamera2
-# from picamera2.encoders import MJPEGEncoder
-# from picamera2.encoders import H264Encoder
-# from picamera2.outputs import FileOutput
-# from picamera2.outputs import FfmpegOutput
+from picamera2 import Picamera2
+from picamera2.encoders import MJPEGEncoder
+from picamera2.encoders import H264Encoder
+from picamera2.outputs import FileOutput
+from picamera2.outputs import FfmpegOutput
 
 from websrv import webcamserver
 import time, os
@@ -70,10 +70,10 @@ class cam():
 wserver = webcamserver(host="localhost", port=8080)
 wserver.start() #Thread
 
-# pcam = cam(wserver.streamout)
-# pcam.start_stream()
+pcam = cam(wserver.streamout)
+pcam.start_stream()
 time.sleep(20)
-# pcam.stop_stream()
+pcam.stop_stream()
 
 # os.system('raspivid -t 20000 -s -b 1987654 -sg 7000 -o  test%03d.h264')
 
