@@ -72,7 +72,7 @@ wserver.start() #Thread
 
 # pcam = cam(wserver.streamout)
 # pcam.start_stream()
-# time.sleep(10)
+time.sleep(20)
 # pcam.stop_stream()
 
 # os.system('raspivid -t 20000 -s -b 1987654 -sg 7000 -o  test%03d.h264')
