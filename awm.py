@@ -72,6 +72,7 @@ time.sleep(10)
 #     output = webcamserver.StreamingOutput()
 #     picam2.start_recording(JpegEncoder(), FileOutput(output))
 
+
 # try:
 #     address = ('', 8080)
 #     print("WEB PICAMERA HQ http://host:"+REMOTE_CAM_PORT)
