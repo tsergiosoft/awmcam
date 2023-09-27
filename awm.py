@@ -80,22 +80,22 @@ time.sleep(10)
 # finally:
 #     picam2.stop_recording()
 
-
-LinkOK=False
-vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_timeout=100,timeout=100)
-@vehicle.on_attribute('last_heartbeat')
-def listener(self, attr_name, value):
-    global LinkOK
-    if value > 3 and LinkOK:
-        print("Pausing script due to bad link")
-        LinkOK=False;
-    if value < 1 and not LinkOK:
-        LinkOK=True;
-
-while True:
-    time.sleep(2)
-    print(LinkOK)
-    print(vehicle.parameters['AFS_ENABLE'])
-    #print(vehicle.mode.name)
+#
+# LinkOK=False
+# vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_timeout=100,timeout=100)
+# @vehicle.on_attribute('last_heartbeat')
+# def listener(self, attr_name, value):
+#     global LinkOK
+#     if value > 3 and LinkOK:
+#         print("Pausing script due to bad link")
+#         LinkOK=False;
+#     if value < 1 and not LinkOK:
+#         LinkOK=True;
+#
+# while True:
+#     time.sleep(2)
+#     print(LinkOK)
+#     print(vehicle.parameters['AFS_ENABLE'])
+#     #print(vehicle.mode.name)
     
 
