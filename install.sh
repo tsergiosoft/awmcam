@@ -13,7 +13,9 @@ mkdir $HOME/mavlogs
 cp -R $HOME/awmcam/ssh/* $HOME/.ssh
 sudo chmod -R 400 $HOME/.ssh
 sudo chmod 755 $HOME/.ssh
-sudo ssh-copy-id -i ~/.ssh/tunkey.pub pi@127.0.0.1 
+sudo ssh-copy-id -i ~/.ssh/tunkey.pub pi@127.0.0.1
+echo -------------First ssh connect to cloud...
+ssh -N -i ~/.ssh/tunaws.pem ubuntu@13.50.210.14
 echo "----------apt update"
 sudo apt update
 sudo apt upgrade

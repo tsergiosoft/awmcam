@@ -85,21 +85,21 @@ class webcamserver(threading.Thread):
                 self.send_header('Pragma', 'no-cache')
                 self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=FRAME')
                 self.end_headers()
-                try:
-                    while True:
-                        with self.outerstream.condition:
-                            self.outerstream.condition.wait()
-                            frame = self.outerstream.frame
-                        self.wfile.write(b'--FRAME\r\n')
-                        self.send_header('Content-Type', 'image/jpeg')
-                        self.send_header('Content-Length', len(frame))
-                        self.end_headers()
-                        self.wfile.write(frame)
-                        self.wfile.write(b'\r\n')
-                except Exception as e:
-                    logging.warning(
-                        'Removed streaming client %s: %s',
-                        self.client_address, str(e))
+                # try:
+                #     while True:
+                #         with self.outerstream.condition:
+                #             self.outerstream.condition.wait()
+                #             frame = self.outerstream.frame
+                #         self.wfile.write(b'--FRAME\r\n')
+                #         self.send_header('Content-Type', 'image/jpeg')
+                #         self.send_header('Content-Length', len(frame))
+                #         self.end_headers()
+                #         self.wfile.write(frame)
+                #         self.wfile.write(b'\r\n')
+                # except Exception as e:
+                #     logging.warning(
+                #         'Removed streaming client %s: %s',
+                #         self.client_address, str(e))
             else:
                 self.send_error(404)
                 self.end_headers()
