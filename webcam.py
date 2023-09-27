@@ -56,6 +56,7 @@ class webcamserver(threading.Thread):
 
     def __init__(self, host="localhost", port=8081):
         super().__init__()
+        self.stop_event = threading.Event()
         print("webcamserver: PICAM=", glob.PICAM)
         # if (glob.PICAM == 1):
         self.picam2 = Picamera2()
@@ -170,7 +171,14 @@ class webcamserver(threading.Thread):
 
 ################## own class definitions  #############################
     def run(self):
-        self.server.serve_forever()
+        # self.server.serve_forever()
+        while not self.stop_event.is_set():
+            self.server.handle_request()  # Handle a single request
+            time.sleep(1/24)  # Adjust the sleep duration as needed
+
+    def stop(self):
+        self.server.shutdown()
+        self.stop_event.set()
 
     def start_stream(self):
         print("Start CAMERA")
