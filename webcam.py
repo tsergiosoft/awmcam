@@ -83,7 +83,7 @@ class webcamserver(threading.Thread):
 
         # self.encoder.output = [self.output1, self.output2]
 
-        self.encoder.output = [self.output1]
+        self.encoder.output = self.output1
 
         # self.file_saving_thread = self.filesaver(self.output)
         # self.file_saving_thread.start()
