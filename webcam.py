@@ -81,7 +81,9 @@ class webcamserver(threading.Thread):
         self.output1 = FileOutput(self.streamout)
         self.output2 = FileOutput()
 
-        self.encoder.output = [self.output1, self.output2]
+        # self.encoder.output = [self.output1, self.output2]
+
+        self.encoder.output = [self.output1]
 
         # self.file_saving_thread = self.filesaver(self.output)
         # self.file_saving_thread.start()
@@ -192,13 +194,13 @@ class webcamserver(threading.Thread):
         # Start streaming to the network.
         self.picam2.start_encoder(self.encoder)
         self.picam2.start()
-        time.sleep(2)
+        time.sleep(1)
 
-        self.output2.fileoutput = "test.avi"
-        self.output2.start()
-        time.sleep(10)
-        self.output2.stop()
-        # time.sleep(5)
+        # self.output2.fileoutput = "test.avi"
+        # self.output2.start()
+        # time.sleep(10)
+        # self.output2.stop()
+
 
     def stop_stream(self):
             # if (glob.PICAM == 1):
