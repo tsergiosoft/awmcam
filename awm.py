@@ -46,7 +46,7 @@ class cam():
         self.picam2.configure(self.video_config)
 
         # self.encoder = MJPEGEncoder(10000000)
-        self.encoder = H264Encoder()
+        self.encoder = H264Encoder(10000000)
         #self.output1 = FileOutput(wserver.streamout)
         self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
         self.output2 = FileOutput('test.mjpeg')
