@@ -1,4 +1,9 @@
 #!/bin/sh
+#[all]
+#camera_auto_detect=0
+#dtoverlay=imx477,media-controller=0
+#gpu_mem=256
+#dtoverlay=vc4-kms-v3d
 
 HOME=/home/pi
 echo "home folder is"=$HOME
