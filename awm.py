@@ -40,14 +40,15 @@ os.system('screen -dmS mav bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+
 os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 8080"')
 
 class cam():
-    def __init__(self):
+    def __init__(self,stream):
         self.picam2 = Picamera2()
         self.video_config = self.picam2.create_video_configuration(main={"size": (800, 600)})
         self.picam2.configure(self.video_config)
 
         self.encoder = MJPEGEncoder()
         # self.encoder = H264Encoder(10000000)
-        self.output1 = FileOutput(wserver.streamout)
+        self.webstream = stream
+        self.output1 = FileOutput(self.webstream )
         #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
         #self.output2 = FileOutput('test.mjpeg')
         #self.encoder.output = [self.output1, self.output2]
@@ -69,12 +70,12 @@ class cam():
 wserver = webcamserver(host="localhost", port=8080)
 wserver.start() #Thread
 
-pcam = cam()
+pcam = cam(wserver.streamout)
 pcam.start_stream()
 time.sleep(10)
 pcam.stop_stream()
 
-os.system('raspivid -t 20000 -s -b 1987654 -sg 7000 -o  test%03d.h264')
+# os.system('raspivid -t 20000 -s -b 1987654 -sg 7000 -o  test%03d.h264')
 
 print("stop wserver")
 wserver.stop() #Thread
