@@ -1,7 +1,113 @@
+#!/usr/bin/python3
+from picamera2 import Picamera2
+from picamera2.encoders import MJPEGEncoder
+from picamera2.outputs import FileOutput
+
+import io
 import time
 import configparser
-import os
-from webcam import webcamserver
+import logging
+import socketserver
+from http import server
+from threading import Condition
+import threading
+
+PAGE = """\
+<html>
+<head>
+<title>picamera2 MJPEG streaming demo</title>
+</head>
+<body>
+<h1>Picamera2 MJPEG Streaming Demo</h1>
+<img src="stream.mjpg" width="800" height="600" />
+</body>
+</html>
+"""
+
+
+
+
+
+class webcamserver(threading.Thread):
+    streamout = None
+
+    def __init__(self, host="localhost", port=8080):
+        super().__init__()
+        self.stop_event = threading.Event()
+
+        self.host = host
+        self.port = port
+        self.address = (self.host, self.port)
+
+        self.streamout = self.StreamingOutput()
+        self.handler = self.StreamingHandler
+        self.handler.outerclass = self
+        self.server = self.StreamingServer(self.address, self.handler)
+
+    class StreamingOutput(io.BufferedIOBase):
+        def __init__(self):
+            self.frame = None
+            self.condition = Condition()
+
+        def write(self, buf):
+            with self.condition:
+                self.frame = buf
+                self.condition.notify_all()
+
+    class StreamingHandler(server.BaseHTTPRequestHandler):
+        outerclass = None
+
+        def do_GET(self):
+            if self.path == '/':
+                self.send_response(301)
+                self.send_header('Location', '/index.html')
+                self.end_headers()
+            elif self.path == '/index.html':
+                content = PAGE.encode('utf-8')
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html')
+                self.send_header('Content-Length', len(content))
+                self.end_headers()
+                self.wfile.write(content)
+            elif self.path == '/stream.mjpg':
+                self.send_response(200)
+                self.send_header('Age', 0)
+                self.send_header('Cache-Control', 'no-cache, private')
+                self.send_header('Pragma', 'no-cache')
+                self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=FRAME')
+                self.end_headers()
+                try:
+                    while True:
+                        with self.outerclass.streamout.condition:
+                            self.outerclass.streamout.condition.wait()
+                            frame = self.outerclass.streamout.frame
+                        self.wfile.write(b'--FRAME\r\n')
+                        self.send_header('Content-Type', 'image/jpeg')
+                        self.send_header('Content-Length', len(frame))
+                        self.end_headers()
+                        self.wfile.write(frame)
+                        self.wfile.write(b'\r\n')
+                except Exception as e:
+                    logging.warning(
+                        'Removed streaming client %s: %s',
+                        self.client_address, str(e))
+            else:
+                self.send_error(404)
+                self.end_headers()
+
+    class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
+        allow_reuse_address = True
+        daemon_threads = True
+
+    ################## own class definitions  #############################
+    def run(self):
+        # self.server.serve_forever()
+        while not self.stop_event.is_set():
+            self.server.handle_request()  # Handle a single request
+            time.sleep(1 / 24)  # Adjust the sleep duration as needed
+
+    def stop(self):
+        self.stop_event.set()
 
 config = configparser.ConfigParser()
 config.read('params.ini')
@@ -18,86 +124,24 @@ MAV_DRONEKIT=config['DEFAULT']['MAV_DRONEKIT']
 
 print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
 
-#os.system('pkill screen')
-#os.system('screen -S awm -X kill') #SELF KILLER!!!!
+wserver = webcamserver(host="localhost", port=8080)
+wserver.start()
 
-os.system('screen -S ssh22 -X kill')
-os.system('screen -S sshweb -X kill')
-os.system('screen -S sshmav -X kill')
-os.system('screen -S mav -X kill')
-os.system('screen -S web -X kill')
-time.sleep(1)
-os.system('screen -dmS ssh22 bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+' -local_port=22"')
-os.system('screen -dmS sshweb bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_CAM_PORT+' -local_port=8080"')
-os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port=MAV_DRONEKIT"')
-os.system('screen -dmS mav bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"')
-#os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webhello.py --port 8080"')
-os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 8080"')
+picam2 = Picamera2()
+video_config = picam2.create_video_configuration(main={"size": (800, 600)})
+picam2.configure(video_config)
 
-server = webcamserver('', 8080)
-server.start()
-
-# if (glob.PICAM==0):
-#     server.start_stream()
-#     while True:
-#          buffer = np.random.randint(0, 255, size=(800, 600, 3), dtype=np.uint8)
-#          _,jpeg_data = cv2.imencode('.jpg', buffer, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
-#          server.output.write(jpeg_data)
-#          time.sleep(1.0 / 12)
-
-server.start_stream()
-time.sleep(10)
-print("Stop stream")
-server.stop_stream()
-
+encoder = MJPEGEncoder(10000000)
+output1 = FileOutput(wserver.streamout)
+output2 = FileOutput('testm2.mjpeg')
+encoder.output = [output1, output2]
+picam2.start_encoder(encoder)
+picam2.start()
+time.sleep(5)
+print("stop picam")
+picam2.stop()
+picam2.stop_encoder(encoder)
+print("stop wserver")
+wserver.stop()
 print("join")
-server.join()
-print("end")
-
-# webcamserver.output2.fileoutput = "test.h264"
-# webcamserver.output2.start()
-# time.sleep(5)
-# webcamserver.output2.stop()
-# time.sleep(5)
-# server.stop_stream()
-# time.sleep(5)
-
-# try:
-#     webcamserver.join()
-# except:
-#     pass
-
-# if (PICAM):
-#     picam2 = Picamera2()
-#     picam2.configure(picam2.create_video_configuration(main={"size": (800, 600)}))
-#     output = webcamserver.StreamingOutput()
-#     picam2.start_recording(JpegEncoder(), FileOutput(output))
-
-
-# try:
-#     address = ('', 8080)
-#     print("WEB PICAMERA HQ http://host:"+REMOTE_CAM_PORT)
-#     server = webcam.StreamingServer(address, webcam.StreamingHandler)
-#     server.serve_forever()
-# finally:
-#     picam2.stop_recording()
-
-#
-# LinkOK=False
-# vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_timeout=100,timeout=100)
-# @vehicle.on_attribute('last_heartbeat')
-# def listener(self, attr_name, value):
-#     global LinkOK
-#     if value > 3 and LinkOK:
-#         print("Pausing script due to bad link")
-#         LinkOK=False;
-#     if value < 1 and not LinkOK:
-#         LinkOK=True;
-#
-# while True:
-#     time.sleep(2)
-#     print(LinkOK)
-#     print(vehicle.parameters['AFS_ENABLE'])
-#     #print(vehicle.mode.name)
-    
-
+wserver.join()
