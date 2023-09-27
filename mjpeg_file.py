@@ -104,7 +104,6 @@ class webcamserver(threading.Thread):
             time.sleep(1 / 24)  # Adjust the sleep duration as needed
 
     def stop(self):
-        #self.server.shutdown()
         self.stop_event.set()
 
 

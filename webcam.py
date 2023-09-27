@@ -75,9 +75,9 @@ class webcamserver(threading.Thread):
 
         self.streamout = self.StreamingOutput()
 
-        self.encoder = JpegEncoder(q=40)
+        #self.encoder = JpegEncoder(q=40)
         #self.encoder = H264Encoder()
-        #self.encoder = MJPEGEncoder() #bitrate
+        self.encoder = MJPEGEncoder(10000000) #bitrate
         self.picam2.encoders = self.encoder
 
         # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
@@ -185,7 +185,7 @@ class webcamserver(threading.Thread):
             time.sleep(1/24)  # Adjust the sleep duration as needed
 
     def stop(self):
-        self.server.shutdown()
+        # self.server.shutdown()
         self.stop_event.set()
 
     def start_stream(self):

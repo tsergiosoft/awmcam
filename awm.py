@@ -1,7 +1,3 @@
-from dronekit import connect, VehicleMode, LocationGlobalRelative
-from pymavlink import mavutil
-import glob
-import numpy as np
 import time
 import configparser
 import os
@@ -19,7 +15,6 @@ MAV_MASTER	=config['DEFAULT']['MAV_MASTER']
 MAV_BAUD	=config['DEFAULT']['MAV_BAUD']
 #MAVPROXY_IP_PORT=config['DEFAULT']['MAVPROXY_IP_PORT'] #may be delete and use 127.0.0.1:14550
 MAV_DRONEKIT=config['DEFAULT']['MAV_DRONEKIT']
-glob.PICAM	    =int(config['DEFAULT']['PICAM'])
 
 print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
 
@@ -41,7 +36,6 @@ os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 808
 
 server = webcamserver('', 8080)
 server.start()
-frame_size = (800, 600)
 
 # if (glob.PICAM==0):
 #     server.start_stream()
@@ -56,7 +50,6 @@ time.sleep(10)
 print("Stop stream")
 server.stop_stream()
 
-server.start()
 print("join")
 server.join()
 print("end")
