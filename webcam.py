@@ -20,18 +20,6 @@ from picamera2.encoders import JpegEncoder
 from picamera2.encoders import H264Encoder
 from picamera2.outputs import FileOutput, FfmpegOutput
 
-PAGE = """\
-<html>
-<head>
-<title>picamera2 MJPEG streaming demo</title>
-</head>
-<body>
-<h1>Picamera2 MJPEG Streaming Demo</h1>
-<img src="stream.mjpg" width="800" height="600" />
-</body>
-</html>
-"""
-
 PAGE = """\<html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -48,6 +36,20 @@ PAGE = """\<html lang="en">
 </body>
 </html>
 """
+
+PAGE = """\
+<html>
+<head>
+<title>picamera2 MJPEG streaming demo</title>
+</head>
+<body>
+<h1>Picamera2 MJPEG Streaming Demo</h1>
+<img src="stream.mjpg" width="800" height="600" />
+</body>
+</html>
+"""
+
+
 
 class webcamserver(threading.Thread):
     output2 = None
