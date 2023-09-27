@@ -40,7 +40,7 @@ os.system('screen -dmS mav bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+
 os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 8080"')
 
 class cam():
-    def __init__(self,stream):
+    def __init__(self,stream=None):
         self.picam2 = Picamera2()
         self.video_config = self.picam2.create_video_configuration(main={"size": (800, 600)})
         self.picam2.configure(self.video_config)
@@ -69,10 +69,11 @@ class cam():
     def start_file(self):
         pass
 
-wserver = webcamserver(host="localhost", port=8080)
-wserver.start() #Thread
+# wserver = webcamserver(host="localhost", port=8080)
+# wserver.start() #Thread
 
-pcam = cam(wserver.streamout)
+# pcam = cam(wserver.streamout)
+pcam = cam()
 pcam.start_stream()
 time.sleep(20)
 pcam.stop_stream()
@@ -80,6 +81,6 @@ pcam.stop_stream()
 # os.system('raspivid -t 20000 -s -b 1987654 -sg 7000 -o  test%03d.h264')
 
 print("stop wserver")
-wserver.stop() #Thread
-wserver.join()
+# wserver.stop() #Thread
+# wserver.join()
 
