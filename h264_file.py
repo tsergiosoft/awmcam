@@ -5,7 +5,7 @@ from picamera2 import Picamera2
 from picamera2.encoders import JpegEncoder, H264Encoder
 
 picam2 = Picamera2()
-video_config = picam2.create_video_configuration(main={"size": (800, 600)})
+video_config = picam2.create_video_configuration(main={"size": (320, 240)})
 picam2.configure(video_config)
 
 picam2.start_preview()
