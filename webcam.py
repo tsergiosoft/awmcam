@@ -62,6 +62,10 @@ class webcamserver(threading.Thread):
         # if (glob.PICAM == 1):
         self.picam2 = Picamera2()
 
+        self.picam2.create_video_configuration(main={"size": (320, 240)})
+        self.picam2.video_configuration.controls.FrameRate = 12.0
+        self.picam2.configure("video")
+
         self.host = host
         self.port = port
         self.address = (self.host, self.port)
@@ -187,9 +191,9 @@ class webcamserver(threading.Thread):
     def start_stream(self):
         print("Start CAMERA")
         # if (glob.PICAM == 1):
-        self.picam2.create_video_configuration(main={"size": (800, 600)})
-        self.picam2.video_configuration.controls.FrameRate = 16.0
-        self.picam2.configure("video")
+        # self.picam2.create_video_configuration(main={"size": (800, 600)})
+        # self.picam2.video_configuration.controls.FrameRate = 16.0
+        # self.picam2.configure("video")
 
         # Start streaming to the network.
         self.picam2.start_encoder(self.encoder)
