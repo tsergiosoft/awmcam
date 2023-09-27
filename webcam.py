@@ -184,7 +184,7 @@ class webcamserver(threading.Thread):
         self.picam2.start()
         time.sleep(2)
 
-        self.output2.fileoutput = "~/usb/test.avi"
+        self.output2.fileoutput = "test.avi"
         self.output2.start()
         time.sleep(10)
         self.output2.stop()
