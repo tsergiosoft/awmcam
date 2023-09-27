@@ -16,24 +16,24 @@ sudo chmod 755 $HOME/.ssh
 sudo ssh-copy-id -i ~/.ssh/tunkey.pub pi@127.0.0.1
 echo -------------First ssh connect to cloud...
 ssh -N -i ~/.ssh/tunaws.pem ubuntu@13.50.210.14
-echo "----------apt update"
-sudo apt update
-sudo apt upgrade
-echo "----------Install netcat"
-sudo sudo apt-get install ncat -y
-echo "----------Install screen"
-sudo apt-get install screen -y
-echo "----------Remove modemmanager"
-sudo apt-get remove modemmanager -y
-echo "----------Install pip3"
-sudo apt-get install python3-pip -y
-echo "----------Install MAVProxy"
-sudo pip install MAVProxy
-echo "----------Install dronekit"
-sudo pip install dronekit
-echo "----------Install ZeroTier"
-curl -s https://install.zerotier.com | sudo bash
-sudo zerotier-cli join 1d71939404a9b1e4
+#echo "----------apt update"
+#sudo apt update
+#sudo apt upgrade
+#echo "----------Install netcat"
+#sudo sudo apt-get install ncat -y
+#echo "----------Install screen"
+#sudo apt-get install screen -y
+#echo "----------Remove modemmanager"
+#sudo apt-get remove modemmanager -y
+#echo "----------Install pip3"
+#sudo apt-get install python3-pip -y
+#echo "----------Install MAVProxy"
+#sudo pip install MAVProxy
+#echo "----------Install dronekit"
+#sudo pip install dronekit
+#echo "----------Install ZeroTier"
+#curl -s https://install.zerotier.com | sudo bash
+#sudo zerotier-cli join 1d71939404a9b1e4
 
 
 #echo "--------Install ffmpeg"
