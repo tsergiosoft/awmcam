@@ -8,18 +8,6 @@ from threading import Condition
 import threading
 
 
-PAGE = """\
-<html>
-<head>
-<title>picamera2 MJPEG streaming demo</title>
-</head>
-<body>
-<h1>Picamera2 MJPEG Streaming Demo</h1>
-<img src="stream.mjpg" width="800" height="600" />
-</body>
-</html>
-"""
-
 PAGE = """\<html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -33,6 +21,18 @@ PAGE = """\<html lang="en">
         <source src="YOUR_VIDEO_STREAM_URL_HERE" type="video/mp4">
         Your browser does not support the video tag.
     </video>
+</body>
+</html>
+"""
+
+PAGE = """\
+<html>
+<head>
+<title>picamera2 MJPEG streaming demo</title>
+</head>
+<body>
+<h1>Picamera2 MJPEG Streaming Demo</h1>
+<img src="stream.mjpg" width="800" height="600" />
 </body>
 </html>
 """
