@@ -54,7 +54,7 @@ frame_size = (800, 600)
 server.start_stream()
 time.sleep(10)
 server.stop_stream()
-webcamserver.join()
+server.join()
 
 # webcamserver.output2.fileoutput = "test.h264"
 # webcamserver.output2.start()
