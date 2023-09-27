@@ -26,8 +26,8 @@ PAGE = """\
 
 
 class webcamserver(threading.Thread):
-    output2 = None
     streamout = None
+
     def __init__(self, host="localhost", port=8080):
         super().__init__()
         self.stop_event = threading.Event()
@@ -35,11 +35,11 @@ class webcamserver(threading.Thread):
         self.host = host
         self.port = port
         self.address = (self.host, self.port)
+
+        self.streamout = self.StreamingOutput()
         self.handler = self.StreamingHandler
         self.handler.outerclass = self
         self.server = self.StreamingServer(self.address, self.handler)
-
-        self.streamout = self.StreamingOutput()
 
     class StreamingOutput(io.BufferedIOBase):
         def __init__(self):
@@ -96,29 +96,32 @@ class webcamserver(threading.Thread):
         allow_reuse_address = True
         daemon_threads = True
 
-################## own class definitions  #############################
+    ################## own class definitions  #############################
     def run(self):
-        self.server.serve_forever()
-        # while not self.stop_event.is_set():
-        #     self.server.handle_request()  # Handle a single request
-        #     time.sleep(1/24)  # Adjust the sleep duration as needed
+        # self.server.serve_forever()
+        while not self.stop_event.is_set():
+            self.server.handle_request()  # Handle a single request
+            time.sleep(1 / 24)  # Adjust the sleep duration as needed
 
     def stop(self):
         self.server.shutdown()
         self.stop_event.set()
 
-srv = webcamserver()
-srv.start()
+
+wserver = webcamserver(host="localhost", port=8080)
+wserver.start()
 
 picam2 = Picamera2()
 video_config = picam2.create_video_configuration(main={"size": (800, 600)})
 picam2.configure(video_config)
 
 encoder = MJPEGEncoder(10000000)
-output1 = FileOutput(srv.streamout)
+output1 = FileOutput(wserver.streamout)
 output2 = FileOutput('testm2.mjpeg')
 encoder.output = [output1, output2]
 picam2.start_encoder(encoder)
 picam2.start()
 time.sleep(10)
 picam2.stop_recording()
+wserver.stop()
+wserver.join()

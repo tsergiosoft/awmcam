@@ -55,6 +55,8 @@ server.start_stream()
 time.sleep(10)
 print("Stop stream")
 server.stop_stream()
+
+server.start()
 print("join")
 server.join()
 print("end")
