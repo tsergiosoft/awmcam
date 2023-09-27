@@ -49,7 +49,7 @@ class cam():
         self.encoder = H264Encoder()
         #self.output1 = FileOutput(wserver.streamout)
         self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
-        self.output2 = FileOutput('testm2.mjpeg')
+        self.output2 = FileOutput('~/usb/test.mjpeg')
         self.encoder.output = [self.output1, self.output2]
 
     def start_stream(self):
