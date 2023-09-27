@@ -28,7 +28,7 @@ PAGE = """\
 class webcamserver(threading.Thread):
     output2 = None
     streamout = None
-    def __init__(self, host="localhost", port=8081):
+    def __init__(self, host="localhost", port=8080):
         super().__init__()
         self.stop_event = threading.Event()
 
