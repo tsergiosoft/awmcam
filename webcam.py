@@ -32,6 +32,23 @@ PAGE = """\
 </html>
 """
 
+PAGE = """\<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Streaming</title>
+</head>
+<body>
+    <!-- Video Element -->
+    <video id="videoPlayer" controls autoplay>
+        <!-- Provide the video source URL here -->
+        <source src="YOUR_VIDEO_STREAM_URL_HERE" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</body>
+</html>
+"""
+
 class webcamserver(threading.Thread):
     output2 = None
 
@@ -43,14 +60,13 @@ class webcamserver(threading.Thread):
         self.handler = self.StreamingHandler
         self.handler.outerclass = self
         self.server = self.StreamingServer(self.address, self.handler)
-
-
-        # self.output = self.StreamingOutput()
-        # self.encoder = H264Encoder(repeat=True, iperiod=15)
-        self.encoder = JpegEncoder(q=40)
-        # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
         self.streamout = self.StreamingOutput()
-        self.output1 = FileOutput(self.streamout)
+
+        self.encoder = H264Encoder(repeat=True, iperiod=15)
+        #self.encoder = JpegEncoder(q=40)
+        self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
+
+        #self.output1 = FileOutput(self.streamout)
         self.output2 = FileOutput()
         # self.encoder.output = self.output1
         self.encoder.output = [self.output1, self.output2]
