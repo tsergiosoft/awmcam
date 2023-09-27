@@ -11,6 +11,7 @@ picam2.configure(video_config)
 picam2.start_preview()
 # encoder = JpegEncoder(q=70)
 encoder = H264Encoder()
+# self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
 
 picam2.start_recording(encoder, 'test264.mjpeg')
 time.sleep(10)
