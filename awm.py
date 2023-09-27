@@ -70,11 +70,7 @@ class cam():
 
 pcam = cam()
 pcam.start_stream()
-time.sleep(5)
-pcam.stop_stream()
-time.sleep(5)
-pcam.start_stream()
-time.sleep(5)
+time.sleep(10)
 pcam.stop_stream()
 
 # print("stop wserver")
