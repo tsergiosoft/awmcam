@@ -27,8 +27,8 @@ echo "----------Install dronekit"
 echo "----------Install ZeroTier"
 #curl -s https://install.zerotier.com | sudo bash
 #sudo zerotier-cli join 1d71939404a9b1e4
-##echo "--------Install CV2"
-##sudo apt-get install python3-opencv
+echo "--------Install ffmpeg"
+sudo apt-get install ffmpeg
 
 #cd $HOME
 #git clone https://github.com/jacksonliam/mjpg-streamer.git
