@@ -60,9 +60,6 @@ time.sleep(10)
 # time.sleep(5)
 # server.stop_stream()
 # time.sleep(5)
-# server.start_stream()
-# time.sleep(15)
-# server.stop_stream()
 
 # try:
 #     webcamserver.join()
