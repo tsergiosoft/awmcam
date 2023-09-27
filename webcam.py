@@ -66,30 +66,17 @@ class webcamserver(threading.Thread):
         self.server = self.StreamingServer(self.address, self.handler)
 
         self.streamout = self.StreamingOutput()
-        #self.encoder = JpegEncoder(q=40)
 
-        self.encoder = H264Encoder(repeat=True, iperiod=15)
-        # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
-
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            sock.bind(("0.0.0.0", 8082))
-            sock.listen()
-
-        sock.listen()
-
+        self.encoder = JpegEncoder(q=40)
+        #self.encoder = H264Encoder(repeat=True, iperiod=15)
         self.picam2.encoders = self.encoder
 
-        conn, addr = sock.accept()
-        stream = conn.makefile("wb")
-        self.encoder.output = FileOutput(stream)
-        self.picam2.start_encoder()
-        self.picam2.start()
+        # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
 
-        # self.output1 = FileOutput(self.streamout)
-        # self.output2 = FileOutput()
-        #
-        # self.encoder.output = [self.output1, self.output2]
+        self.output1 = FileOutput(self.streamout)
+        self.output2 = FileOutput()
+
+        self.encoder.output = [self.output1, self.output2]
 
         # self.file_saving_thread = self.filesaver(self.output)
         # self.file_saving_thread.start()
@@ -189,14 +176,13 @@ class webcamserver(threading.Thread):
         self.picam2.create_video_configuration(main={"size": (800, 600)})
         self.picam2.video_configuration.controls.FrameRate = 16.0
         self.picam2.configure("video")
-        # self.picam2.start_recording(encoder, FileOutput(self.output1))
 
         # Start streaming to the network.
         self.picam2.start_encoder(self.encoder)
         self.picam2.start()
         time.sleep(2)
 
-        self.output2.fileoutput = "test.h264"
+        self.output2.fileoutput = "test.avi"
         self.output2.start()
         time.sleep(10)
         self.output2.stop()
