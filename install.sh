@@ -16,7 +16,7 @@ sudo chmod 755 $HOME/.ssh
 chmod 600 $HOME/.ssh/known_hosts
 sudo ssh-copy-id -i ~/.ssh/tunkey.pub pi@127.0.0.1
 echo -------------First ssh connect to cloud...
-sudo ssh -N -i ~/.ssh/tunaws.pem ubuntu@13.50.210.14
+sudo ssh -v -i ~/.ssh/tunaws.pem ubuntu@13.50.210.14 -p 22
 #echo "----------apt update"
 #sudo apt update
 #sudo apt upgrade
