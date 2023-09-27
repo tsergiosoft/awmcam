@@ -110,11 +110,11 @@ class webcamserver(threading.Thread):
 
     ################## own class definitions  #############################
     def run(self):
-        print('Web server thread running..')
-        self.server.serve_forever()
-        # while not self.stop_event.is_set():
-        #     self.server.handle_request()  # Handle a single request
-        #     time.sleep(1 / 24)  # Adjust the sleep duration as needed
+        # print('Web server thread running..')
+        # self.server.serve_forever()
+        while not self.stop_event.is_set():
+            self.server.handle_request()  # Handle a single request
+            time.sleep(1 / 24)  # Adjust the sleep duration as needed
 
     def stop(self):
         self.stop_event.set()
