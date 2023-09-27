@@ -64,7 +64,7 @@ class webcamserver(threading.Thread):
         # Create an HTTP server with the custom handler
         self.server = socketserver.TCPServer(("", self.port), self.handler)
 
-     class StreamingHandler(server.BaseHTTPRequestHandler):
+    class StreamingHandler(server.BaseHTTPRequestHandler):
         print('Client calls...')
         def do_GET(self):
             if self.path == '/':
