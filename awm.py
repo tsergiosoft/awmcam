@@ -29,7 +29,7 @@ class cam():
         self.video_config = self.picam2.create_video_configuration(main={"size": (800, 600)})
         self.picam2.configure(self.video_config)
 
-        self.pencoder = MJPEGEncoder(10000000)
+        self.encoder = MJPEGEncoder(10000000)
         self.output1 = FileOutput(wserver.streamout)
         self.output2 = FileOutput('testm2.mjpeg')
         self.encoder.output = [self.output1, self.output2]
@@ -46,7 +46,7 @@ class cam():
 
     def start_file(self):
         pass
-    
+
 wserver = webcamserver(host="localhost", port=8080)
 wserver.start() #Thread
 
