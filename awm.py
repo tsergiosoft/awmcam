@@ -49,7 +49,7 @@ class cam():
         self.encoder = H264Encoder()
         #self.output1 = FileOutput(wserver.streamout)
         self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
-        self.output2 = FileOutput('~/usb/test.mjpeg')
+        self.output2 = FileOutput('test.mjpeg')
         self.encoder.output = [self.output1, self.output2]
 
     def start_stream(self):
@@ -66,8 +66,8 @@ class cam():
         pass
 
 # os.system('sudo mount -o uid=pi,gid=pi /dev/sda1 ~/usb/')
-os.system('sudo mount -o umask=0000 /dev/sda1 /usb')
-os.system('cp /home/awmcam/test*.* /usb')
+# os.system('sudo mount -o umask=0000 /dev/sda1 /usb')
+# os.system('cp /home/awmcam/test*.* /usb')
 # wserver = webcamserver(host="localhost", port=8080)
 # wserver.start() #Thread
 
@@ -83,4 +83,4 @@ os.system('cp /home/awmcam/test*.* /usb')
 # print("stop wserver")
 # wserver.stop() #Thread
 # wserver.join()
-os.system('sudo umount /usb')
+# os.system('sudo umount /usb')
