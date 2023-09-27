@@ -45,12 +45,13 @@ class cam():
         self.video_config = self.picam2.create_video_configuration(main={"size": (800, 600)})
         self.picam2.configure(self.video_config)
 
-        # self.encoder = MJPEGEncoder(10000000)
-        self.encoder = H264Encoder(10000000)
-        #self.output1 = FileOutput(wserver.streamout)
-        self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
-        self.output2 = FileOutput('test.mjpeg')
-        self.encoder.output = [self.output1, self.output2]
+        self.encoder = MJPEGEncoder()
+        # self.encoder = H264Encoder(10000000)
+        self.output1 = FileOutput(wserver.streamout)
+        #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
+        #self.output2 = FileOutput('test.mjpeg')
+        #self.encoder.output = [self.output1, self.output2]
+        self.encoder.output = self.output1
 
     def start_stream(self):
         print("start_stream")
@@ -59,21 +60,23 @@ class cam():
 
     def stop_stream(self):
         print("stop_stream")
-        self.picam2.stop()
         self.picam2.stop_encoder(self.encoder)
+        self.picam2.stop()
 
     def start_file(self):
         pass
 
-# wserver = webcamserver(host="localhost", port=8080)
-# wserver.start() #Thread
+wserver = webcamserver(host="localhost", port=8080)
+wserver.start() #Thread
 
 pcam = cam()
 pcam.start_stream()
 time.sleep(10)
 pcam.stop_stream()
 
-# print("stop wserver")
-# wserver.stop() #Thread
-# wserver.join()
+os.system('raspivid -t 20000 -s -b 1987654 -sg 7000 -o  test%03d.h264')
+
+print("stop wserver")
+wserver.stop() #Thread
+wserver.join()
 
