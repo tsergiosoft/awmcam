@@ -43,7 +43,7 @@ PAGE = """\
 </head>
 <body>
     <video width="640" height="480" controls>
-        <source src="/127.0.0.1:8081" type="video/mp2t">
+        <source src="http://localhost:8081/stream.mpegts" type="video/mp2t">
         Your browser does not support the video tag.
     </video>
 </body>

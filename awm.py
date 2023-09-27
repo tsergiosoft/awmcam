@@ -49,12 +49,12 @@ class cam():
         self.encoder = H264Encoder(10000000)
         self.webstream = stream
         #self.output1 = FileOutput(self.webstream)
-        #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8081")
-        self.output1 = FfmpegOutput("test.ts")
+        self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8081")
+        #self.output1 = FfmpegOutput("test.ts")
 
         # self.output1 = FfmpegOutput("-f hls -hls_time 4 -hls_list_size 5 -hls_flags delete_segments -hls_allow_cache 0 stream.m3u8")
 
-        self.output2 = FileOutput('test.mjpeg')
+        self.output2 = FileOutput('test.h264')
         self.encoder.output = [self.output1, self.output2]
         # self.encoder.output = self.output1
 
