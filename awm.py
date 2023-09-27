@@ -74,8 +74,8 @@ class cam():
 wserver = webcamserver(host="localhost", port=8080)
 wserver.start() #Thread
 
-pcam = cam(wserver.streamout)
-# pcam = cam()
+# pcam = cam(wserver.streamout)
+pcam = cam()
 pcam.start_stream()
 time.sleep(20)
 pcam.stop_stream()
