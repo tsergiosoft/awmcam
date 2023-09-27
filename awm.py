@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from picamera2 import Picamera2
 from picamera2.encoders import MJPEGEncoder
+from picamera2.encoders import H264Encoder
 from picamera2.outputs import FileOutput
 
 from websrv import webcamserver
@@ -29,7 +30,8 @@ class cam():
         self.video_config = self.picam2.create_video_configuration(main={"size": (800, 600)})
         self.picam2.configure(self.video_config)
 
-        self.encoder = MJPEGEncoder(10000000)
+        # self.encoder = MJPEGEncoder(10000000)
+        self.encoder = H264Encoder()
         self.output1 = FileOutput(wserver.streamout)
         self.output2 = FileOutput('testm2.mjpeg')
         self.encoder.output = [self.output1, self.output2]
