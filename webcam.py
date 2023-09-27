@@ -67,9 +67,10 @@ class webcamserver(threading.Thread):
         self.encoder = H264Encoder(repeat=True, iperiod=15)
         # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
 
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-            sock.connect(("REMOTEIP", 8080))
-            stream = sock.makefile("wb")
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            sock.bind(("0.0.0.0", 8080))
+            sock.listen()
 
         self.output1 = FileOutput(self.streamout)
         self.output2 = FileOutput()
