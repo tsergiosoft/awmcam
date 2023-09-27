@@ -48,8 +48,8 @@ class cam():
         # self.encoder = MJPEGEncoder()
         self.encoder = H264Encoder(10000000)
         self.webstream = stream
-        self.output1 = FileOutput(self.webstream)
-        #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
+        #self.output1 = FileOutput(self.webstream)
+        self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
         self.output2 = FileOutput('test.mjpeg')
         self.encoder.output = [self.output1, self.output2]
         # self.encoder.output = self.output1
