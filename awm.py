@@ -66,8 +66,8 @@ class cam():
         pass
 
 # os.system('sudo mount -o uid=pi,gid=pi /dev/sda1 ~/usb/')
-os.system('sudo mount -o umask=0000 /dev/sda1 ~/usb/')
-os.system('cp /home/awmcam/test*.* ~/usb/')
+os.system('sudo mount -o umask=0000 /dev/sda1 /usb')
+os.system('cp /home/awmcam/test*.* /usb')
 # wserver = webcamserver(host="localhost", port=8080)
 # wserver.start() #Thread
 
@@ -83,4 +83,4 @@ os.system('cp /home/awmcam/test*.* ~/usb/')
 # print("stop wserver")
 # wserver.stop() #Thread
 # wserver.join()
-os.system('sudo umount -o ~/usb/')
+os.system('sudo umount /usb')
