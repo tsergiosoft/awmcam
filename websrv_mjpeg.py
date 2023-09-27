@@ -37,7 +37,7 @@ PAGE = """\
 </html>
 """
 
-class webcamserver(threading.Thread):
+class webserverjpg(threading.Thread):
     streamout = None
 
     def __init__(self, host="localhost", port=8080):

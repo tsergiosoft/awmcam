@@ -7,17 +7,6 @@ from http import server
 from threading import Condition
 import threading
 
-PAGE = """\
-<html>
-<head>
-<title>picamera2 MJPEG streaming demo</title>
-</head>
-<body>
-<h1>Picamera2 MJPEG Streaming Demo</h1>
-<img src="stream.mjpg" width="800" height="600" />
-</body>
-</html>
-"""
 
 PAGE = """\<html lang="en">
 <head>
@@ -46,6 +35,18 @@ PAGE = """\
         <source src="http://localhost:8081/stream.mpegts" type="video/mp2t">
         Your browser does not support the video tag.
     </video>
+</body>
+</html>
+"""
+
+PAGE = """\
+<html>
+<head>
+<title>picamera2 MJPEG streaming demo</title>
+</head>
+<body>
+<h1>Picamera2 MJPEG Streaming Demo</h1>
+<img src="stream.mjpg" width="800" height="600" />
 </body>
 </html>
 """

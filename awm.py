@@ -6,6 +6,7 @@ from picamera2.outputs import FileOutput
 from picamera2.outputs import FfmpegOutput
 
 from websrv import webcamserver
+from websrv_mjpeg import webserverjpg
 import time, os
 import configparser
 
@@ -74,11 +75,12 @@ class cam():
     def start_file(self):
         pass
 
-wserver = webcamserver(host="localhost", port=8080)
+#wserver = webcamserver(host="localhost", port=8080)
+wserver = webserverjpg(host="localhost", port=8080)
 wserver.start() #Thread
 
-# pcam = cam(wserver.streamout)
-pcam = cam()
+pcam = cam(wserver.streamout)
+# pcam = cam()
 pcam.start_stream()
 time.sleep(15)
 pcam.stop_stream()
