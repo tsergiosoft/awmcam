@@ -79,7 +79,7 @@ class webcamserver(threading.Thread):
         # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
 
         self.output1 = FileOutput(self.streamout)
-        self.output2 = FileOutput()
+        # self.output2 = FileOutput()
 
         # self.encoder.output = [self.output1, self.output2]
 
