@@ -54,6 +54,10 @@ class webcamserver(threading.Thread):
 
     def __init__(self, host="localhost", port=8081):
         super().__init__()
+        print("webcamserver: PICAM=", glob.PICAM)
+        # if (glob.PICAM == 1):
+        self.picam2 = Picamera2()
+
         self.host = host
         self.port = port
         self.address = (self.host, self.port)
@@ -72,17 +76,25 @@ class webcamserver(threading.Thread):
             sock.bind(("0.0.0.0", 8082))
             sock.listen()
 
-        self.output1 = FileOutput(self.streamout)
-        self.output2 = FileOutput()
+        sock.listen()
 
-        self.encoder.output = [self.output1, self.output2]
+        self.picam2.encoders = self.encoder
+
+        conn, addr = sock.accept()
+        stream = conn.makefile("wb")
+        self.encoder.output = FileOutput(stream)
+        self.picam2.start_encoder()
+        self.picam2.start()
+
+        # self.output1 = FileOutput(self.streamout)
+        # self.output2 = FileOutput()
+        #
+        # self.encoder.output = [self.output1, self.output2]
 
         # self.file_saving_thread = self.filesaver(self.output)
         # self.file_saving_thread.start()
 
-        print("webcamserver: PICAM=", glob.PICAM)
-        # if (glob.PICAM == 1):
-        self.picam2 = Picamera2()
+
 
         """
         class filesaver(threading.Thread):
