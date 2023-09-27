@@ -7,17 +7,6 @@ from http import server
 from threading import Condition
 import threading
 
-PAGE = """\
-<html>
-<head>
-<title>picamera2 MJPEG streaming demo</title>
-</head>
-<body>
-<h1>Picamera2 MJPEG Streaming Demo</h1>
-<img src="stream.mjpg" width="800" height="600" />
-</body>
-</html>
-"""
 
 PAGE = """\<html lang="en">
 <head>
@@ -36,7 +25,17 @@ PAGE = """\<html lang="en">
 </html>
 """
 
-
+PAGE = """\
+<html>
+<head>
+<title>picamera2 MJPEG streaming demo</title>
+</head>
+<body>
+<h1>Picamera2 MJPEG Streaming Demo</h1>
+<img src="stream.mjpg" width="800" height="600" />
+</body>
+</html>
+"""
 
 class webcamserver(threading.Thread):
     streamout = None
