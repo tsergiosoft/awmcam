@@ -66,17 +66,18 @@ class cam():
         pass
 
 os.system('sudo mount -o umask=0000 uid=pi,gid=pi /dev/sda1 ~/usb/')
+os.system('cp /home/awmcam/test*.* ~/usb/')
 # wserver = webcamserver(host="localhost", port=8080)
 # wserver.start() #Thread
 
-pcam = cam()
-pcam.start_stream()
-time.sleep(5)
-pcam.stop_stream()
-time.sleep(5)
-pcam.start_stream()
-time.sleep(5)
-pcam.stop_stream()
+# pcam = cam()
+# pcam.start_stream()
+# time.sleep(5)
+# pcam.stop_stream()
+# time.sleep(5)
+# pcam.start_stream()
+# time.sleep(5)
+# pcam.stop_stream()
 
 # print("stop wserver")
 # wserver.stop() #Thread
