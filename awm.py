@@ -50,9 +50,9 @@ class cam():
         self.webstream = stream
         self.output1 = FileOutput(self.webstream)
         #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
-        #self.output2 = FileOutput('test.mjpeg')
-        #self.encoder.output = [self.output1, self.output2]
-        self.encoder.output = self.output1
+        self.output2 = FileOutput('test.mjpeg')
+        self.encoder.output = [self.output1, self.output2]
+        # self.encoder.output = self.output1
 
     def start_stream(self):
         print("start_stream")
