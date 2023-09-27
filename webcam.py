@@ -18,6 +18,7 @@ import threading
 from picamera2 import Picamera2
 from picamera2.encoders import JpegEncoder
 from picamera2.encoders import H264Encoder
+from picamera2.encoders import MJPEGEncoder
 from picamera2.outputs import FileOutput, FfmpegOutput
 
 PAGE = """\<html lang="en">
@@ -71,7 +72,8 @@ class webcamserver(threading.Thread):
         self.streamout = self.StreamingOutput()
 
         #self.encoder = JpegEncoder(q=40)
-        self.encoder = H264Encoder()
+        #self.encoder = H264Encoder()
+        self.encoder = MJPEGEncoder() #bitrate
         self.picam2.encoders = self.encoder
 
         # self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
