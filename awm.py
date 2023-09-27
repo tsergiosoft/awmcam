@@ -3,9 +3,10 @@ from picamera2 import Picamera2
 from picamera2.encoders import MJPEGEncoder
 from picamera2.encoders import H264Encoder
 from picamera2.outputs import FileOutput
+from picamera2.outputs import FfmpegOutput
 
 from websrv import webcamserver
-import time
+import time, os
 import configparser
 
 config = configparser.ConfigParser()
@@ -22,7 +23,21 @@ MAV_BAUD	=config['DEFAULT']['MAV_BAUD']
 MAV_DRONEKIT=config['DEFAULT']['MAV_DRONEKIT']
 
 print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
+#os.system('pkill screen')
+#os.system('screen -S awm -X kill') #SELF KILLER!!!!
 
+os.system('screen -S ssh22 -X kill')
+os.system('screen -S sshweb -X kill')
+os.system('screen -S sshmav -X kill')
+os.system('screen -S mav -X kill')
+os.system('screen -S web -X kill')
+time.sleep(1)
+os.system('screen -dmS ssh22 bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+' -local_port=22"')
+os.system('screen -dmS sshweb bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_CAM_PORT+' -local_port=8080"')
+os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port=MAV_DRONEKIT"')
+os.system('screen -dmS mav bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"')
+#os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webhello.py --port 8080"')
+os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 8080"')
 
 class cam():
     def __init__(self):
@@ -32,7 +47,8 @@ class cam():
 
         # self.encoder = MJPEGEncoder(10000000)
         self.encoder = H264Encoder()
-        self.output1 = FileOutput(wserver.streamout)
+        #self.output1 = FileOutput(wserver.streamout)
+        self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
         self.output2 = FileOutput('testm2.mjpeg')
         self.encoder.output = [self.output1, self.output2]
 
