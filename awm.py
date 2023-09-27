@@ -22,24 +22,43 @@ MAV_DRONEKIT=config['DEFAULT']['MAV_DRONEKIT']
 
 print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
 
+
+class cam():
+    def __init__(self):
+        self.picam2 = Picamera2()
+        self.video_config = self.picam2.create_video_configuration(main={"size": (800, 600)})
+        self.picam2.configure(self.video_config)
+
+        self.pencoder = MJPEGEncoder(10000000)
+        self.output1 = FileOutput(wserver.streamout)
+        self.output2 = FileOutput('testm2.mjpeg')
+        self.encoder.output = [self.output1, self.output2]
+
+    def start_stream(self):
+        print("start_stream")
+        self.picam2.start_encoder(self.encoder)
+        self.picam2.start()
+
+    def stop_stream(self):
+        print("stop_stream")
+        self.picam2.stop()
+        self.picam2.stop_encoder(self.encoder)
+
+    def start_file(self):
+        pass
+    
 wserver = webcamserver(host="localhost", port=8080)
-wserver.start()
+wserver.start() #Thread
 
-picam2 = Picamera2()
-video_config = picam2.create_video_configuration(main={"size": (800, 600)})
-picam2.configure(video_config)
-
-encoder = MJPEGEncoder(10000000)
-output1 = FileOutput(wserver.streamout)
-output2 = FileOutput('testm2.mjpeg')
-encoder.output = [output1, output2]
-picam2.start_encoder(encoder)
-picam2.start()
+pcam = cam()
+pcam.start_stream()
 time.sleep(5)
-print("stop picam")
-picam2.stop()
-picam2.stop_encoder(encoder)
+pcam.stop_stream()
+time.sleep(5)
+pcam.start_stream()
+time.sleep(5)
+pcam.stop_stream()
+
 print("stop wserver")
-wserver.stop()
-print("join")
+wserver.stop() #Thread
 wserver.join()
