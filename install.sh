@@ -15,8 +15,6 @@ sudo chmod -R 400 $HOME/.ssh
 sudo chmod 755 $HOME/.ssh
 chmod 600 $HOME/.ssh/known_hosts
 sudo ssh-copy-id -i ~/.ssh/tunkey.pub pi@127.0.0.1
-echo -------------First ssh connect to cloud...
-sudo ssh -v -i ~/.ssh/tunaws.pem ubuntu@13.50.210.14 -p 22
 #echo "----------apt update"
 #sudo apt update
 #sudo apt upgrade
@@ -58,6 +56,8 @@ sudo systemctl enable awm.service
 echo "----------Start service mav"
 sudo systemctl start awm.service
 echo "----------Install finish OK"
+echo -------------First ssh connect to cloud...
+echo DO COMMAND sudo ssh -v -i ~/.ssh/tunaws.pem ubuntu@13.50.210.14 -p 22
 echo "--------------------------------------------END----------------------------------------------"
 
 #raspivid -t 0 -s -b 987654 -sg 5000 -o -|tee ~/video1.h264 | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8160}' :demux=h264
