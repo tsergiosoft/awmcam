@@ -65,7 +65,7 @@ class cam():
     def start_file(self):
         pass
 
-os.system('sudo mount -o uid=pi,gid=pi /dev/sda1 ~/usb/')
+os.system('sudo mount -o umask=0000 uid=pi,gid=pi /dev/sda1 ~/usb/')
 # wserver = webcamserver(host="localhost", port=8080)
 # wserver.start() #Thread
 
