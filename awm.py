@@ -48,7 +48,7 @@ class cam():
         # self.encoder = MJPEGEncoder(10000000)
         self.encoder = H264Encoder()
         #self.output1 = FileOutput(wserver.streamout)
-        self.output1 = FfmpegOutput("-f mpegts udp://<ip-address>:8080")
+        self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
         self.output2 = FileOutput('testm2.mjpeg')
         self.encoder.output = [self.output1, self.output2]
 
@@ -65,8 +65,8 @@ class cam():
     def start_file(self):
         pass
 
-wserver = webcamserver(host="localhost", port=8080)
-wserver.start() #Thread
+# wserver = webcamserver(host="localhost", port=8080)
+# wserver.start() #Thread
 
 pcam = cam()
 pcam.start_stream()
@@ -77,6 +77,6 @@ pcam.start_stream()
 time.sleep(5)
 pcam.stop_stream()
 
-print("stop wserver")
-wserver.stop() #Thread
-wserver.join()
+# print("stop wserver")
+# wserver.stop() #Thread
+# wserver.join()
