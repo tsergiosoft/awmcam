@@ -3,6 +3,7 @@ import time
 
 from picamera2 import Picamera2
 from picamera2.encoders import MJPEGEncoder
+from picamera2.outputs import FileOutput
 
 picam2 = Picamera2()
 video_config = picam2.create_video_configuration(main={"size": (800, 600)})
