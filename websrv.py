@@ -36,7 +36,19 @@ PAGE = """\<html lang="en">
 </html>
 """
 
-
+PAGE = """\
+<html>
+<head>
+    <title>MPEG-2 Transport Stream Viewer</title>
+</head>
+<body>
+    <video width="640" height="480" controls>
+        <source src="/127.0.0.1:8080" type="video/mp2t">
+        Your browser does not support the video tag.
+    </video>
+</body>
+</html>
+"""
 
 class webcamserver(threading.Thread):
     streamout = None
@@ -86,21 +98,21 @@ class webcamserver(threading.Thread):
                 self.send_header('Pragma', 'no-cache')
                 self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=FRAME')
                 self.end_headers()
-                try:
-                    while True:
-                        with self.outerstream.condition:
-                            self.outerstream.condition.wait()
-                            frame = self.outerstream.frame
-                        self.wfile.write(b'--FRAME\r\n')
-                        self.send_header('Content-Type', 'image/jpeg')
-                        self.send_header('Content-Length', len(frame))
-                        self.end_headers()
-                        self.wfile.write(frame)
-                        self.wfile.write(b'\r\n')
-                except Exception as e:
-                    logging.warning(
-                        'Removed streaming client %s: %s',
-                        self.client_address, str(e))
+                # try:
+                #     while True:
+                #         with self.outerstream.condition:
+                #             self.outerstream.condition.wait()
+                #             frame = self.outerstream.frame
+                #         self.wfile.write(b'--FRAME\r\n')
+                #         self.send_header('Content-Type', 'image/jpeg')
+                #         self.send_header('Content-Length', len(frame))
+                #         self.end_headers()
+                #         self.wfile.write(frame)
+                #         self.wfile.write(b'\r\n')
+                # except Exception as e:
+                #     logging.warning(
+                #         'Removed streaming client %s: %s',
+                #         self.client_address, str(e))
             else:
                 self.send_error(404)
                 self.end_headers()

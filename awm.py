@@ -49,8 +49,8 @@ class cam():
         self.encoder = H264Encoder(10000000)
         self.webstream = stream
         #self.output1 = FileOutput(self.webstream)
-        # self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
-        self.output1 = FfmpegOutput("-f hls -hls_time 4 -hls_list_size 5 -hls_flags delete_segments -hls_allow_cache 0 stream.m3u8")
+        self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8080")
+        # self.output1 = FfmpegOutput("-f hls -hls_time 4 -hls_list_size 5 -hls_flags delete_segments -hls_allow_cache 0 stream.m3u8")
 
         self.output2 = FileOutput('test.mjpeg')
         self.encoder.output = [self.output1, self.output2]
@@ -69,18 +69,16 @@ class cam():
     def start_file(self):
         pass
 
-# wserver = webcamserver(host="localhost", port=8080)
-# wserver.start() #Thread
+wserver = webcamserver(host="localhost", port=8080)
+wserver.start() #Thread
 
-# pcam = cam(wserver.streamout)
-pcam = cam()
+pcam = cam(wserver.streamout)
+# pcam = cam()
 pcam.start_stream()
 time.sleep(20)
 pcam.stop_stream()
 
-# os.system('raspivid -t 20000 -s -b 1987654 -sg 7000 -o  test%03d.h264')
-
 print("stop wserver")
-# wserver.stop() #Thread
-# wserver.join()
+wserver.stop() #Thread
+wserver.join()
 
