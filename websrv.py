@@ -50,7 +50,7 @@ class webcamserver(threading.Thread):
 
         self.streamout = self.StreamingOutput()
         self.handler = self.StreamingHandler
-        self.handler.outerclass = self
+        self.handler.outerstream = self.streamout
         self.server = self.StreamingServer(self.address, self.handler)
 
     class StreamingOutput(io.BufferedIOBase):
@@ -64,8 +64,8 @@ class webcamserver(threading.Thread):
                 self.condition.notify_all()
 
     class StreamingHandler(server.BaseHTTPRequestHandler):
-        outerclass = None
-
+        outerstream = None
+        print('Client calls...')
         def do_GET(self):
             if self.path == '/':
                 self.send_response(301)
@@ -87,9 +87,9 @@ class webcamserver(threading.Thread):
                 self.end_headers()
                 try:
                     while True:
-                        with self.outerclass.streamout.condition:
-                            self.outerclass.streamout.condition.wait()
-                            frame = self.outerclass.streamout.frame
+                        with self.outerstream.condition:
+                            self.outerstream.condition.wait()
+                            frame = self.outerstream.frame
                         self.wfile.write(b'--FRAME\r\n')
                         self.send_header('Content-Type', 'image/jpeg')
                         self.send_header('Content-Length', len(frame))
