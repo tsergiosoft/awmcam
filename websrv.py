@@ -20,6 +20,23 @@ PAGE = """\
 </html>
 """
 
+PAGE = """\<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Streaming</title>
+</head>
+<body>
+    <!-- Video Element -->
+    <video id="videoPlayer" controls autoplay>
+        <!-- Provide the video source URL here -->
+        <source src="YOUR_VIDEO_STREAM_URL_HERE" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</body>
+</html>
+"""
+
 class webcamserver(threading.Thread):
     streamout = None
 
