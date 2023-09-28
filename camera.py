@@ -9,11 +9,13 @@ except:
 class cam():
     def __init__(self,stream=None):
         self.picam2 = Picamera2()
-        self.video_config = self.picam2.create_video_configuration(main={"size": (320, 200)})
+        # self.video_config = self.picam2.create_video_configuration(main={"size": (320, 200)})
+        self.video_config = self.picam2.create_video_configuration(main={"size": (1280, 720)},
+                                                         lores={"size": (320, 200)})
         self.picam2.configure(self.video_config)
 
-        self.encoder1 = MJPEGEncoder()
-        self.encoder2 = H264Encoder(10000000)
+        self.encoder1 = MJPEGEncoder(bitrate    =100000)
+        self.encoder2 = H264Encoder(bitrate     =3000000)
         self.webstream = stream
         self.output1 = FileOutput(self.webstream)
         #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8081")
