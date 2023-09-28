@@ -31,8 +31,8 @@ class cam():
 
     def start_stream(self):
         print("start_stream")
-        self.picam2.start_encoder(self.encoder1, width=640, height=480)
-        self.picam2.start_encoder(self.encoder2, width=1024, height=768)
+        self.picam2.start_encoder(self.encoder1, width=800, height=600)
+        self.picam2.start_encoder(self.encoder2, width=2028, height=1520)
         self.picam2.start()
 
     def stop_stream(self):
