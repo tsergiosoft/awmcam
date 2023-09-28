@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "rebuild camera..."
 cd ~/picamera2
 git pull
