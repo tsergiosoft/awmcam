@@ -49,14 +49,14 @@ class cam():
         print("start_stream")
         #self.picam2.start_encoder(self.encoder1, width=800, height=600)
         #self.picam2.start_encoder(self.encoder2, width=2028, height=1520)
-        self.picam2.start_encoder(self.encoder1, name='lores')
-        self.picam2.start_encoder(self.encoder2, name='main')
+        self.picam2.start_encoder(self.encoderweb, name='lores')
+        self.picam2.start_encoder(self.encoderfile, name='main')
         self.picam2.start()
 
     def stop_stream(self):
         print("stop_stream")
-        self.picam2.stop_encoder(self.encoder1)
-        self.picam2.stop_encoder(self.encoder2)
+        self.picam2.stop_encoder(self.encoderweb)
+        self.picam2.stop_encoder(self.encoderfile)
         self.picam2.stop()
 
     def start_file(self):
