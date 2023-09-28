@@ -28,7 +28,10 @@ class cam():
         # self.video_config = self.picam2.create_video_configuration(main={"size": (320, 200)})
         #2028x1520-pBCC
         self.video_config = self.picam2.create_video_configuration(main={"size": (1600, 1200)},
-                                                          lores={"size": (800, 600)})
+                                                          lores={"size": (800, 600)},controls={"Framerate":12})
+        # self.video_config.controls.FrameRate = 25.0
+        # picam2.set_controls({"ExposureTime": 10000, "AnalogueGain": 1.0})
+
         self.picam2.configure(self.video_config)
         self.picam2.pre_callback = self.apply_timestamp
 
