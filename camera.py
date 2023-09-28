@@ -18,8 +18,9 @@ class cam():
         scale = 1
         thickness = 2
         timestamp = time.strftime("%Y-%m-%d %X")
-        # with MappedArray(request, "main") as m:
-        with MappedArray(request) as m:
+        with MappedArray(request, "main") as m:
+            cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
+        with MappedArray(request, "lores") as m:
             cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
 
     def __init__(self,stream=None):
