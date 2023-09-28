@@ -14,7 +14,7 @@ PAGE = """\
 <title>MJPEG streaming</title>
 </head>
 <body>
-<h1>MJPEG streaming/h1>
+<h1>MJPEG streaming</h1>
 <img src="stream.mjpg" width="1024" height="768" />
 </body>
 </html>
