@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/awmcam.iml" filepath="$PROJECT_DIR$/.idea/awmcam.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../fmp4streamer/.idea/fmp4streamer.iml" filepath="$PROJECT_DIR$/../fmp4streamer/.idea/fmp4streamer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../picamera2/.idea/picamera2.iml" filepath="$PROJECT_DIR$/../picamera2/.idea/picamera2.iml" />
     </modules>
   </component>
 </project>
