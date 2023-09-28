@@ -7,6 +7,8 @@
 
 HOME=/home/pi
 echo "home folder is"=$HOME
+sudo mkdir /mnt/usb
+sudo cp /home/pi/awmcam/99-usb-mount.rules /etc/udev/rules.d/
 echo "----------SSH copy"
 mkdir $HOME/.ssh
 mkdir $HOME/mavlogs
