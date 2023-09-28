@@ -31,7 +31,7 @@ class cam():
 
     def start_stream(self):
         print("start_stream")
-        self.picam2.start_encoder(self.encoder1,quality=Quality.HIGH)
+        self.picam2.start_encoder(self.encoder1,quality=Quality.VERY_LOW)
         self.picam2.start_encoder(self.encoder2)
         self.picam2.start()
 
