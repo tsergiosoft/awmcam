@@ -10,12 +10,13 @@ class cam():
     def __init__(self,stream=None):
         self.picam2 = Picamera2()
         # self.video_config = self.picam2.create_video_configuration(main={"size": (320, 200)})
-        self.video_config = self.picam2.create_video_configuration(main={"size": (1280, 720)},
-                                                         lores={"size": (320, 200)})
+        #2028x1520-pBCC
+        self.video_config = self.picam2.create_video_configuration(main={"size": (320, 240)},
+                                                          lores={"size": (800, 600)})
         self.picam2.configure(self.video_config)
 
-        self.encoder1 = MJPEGEncoder(bitrate    =10000)
-        self.encoder2 = H264Encoder(bitrate     =30000)
+        self.encoder1 = MJPEGEncoder(bitrate    =1000000)
+        self.encoder2 = H264Encoder(bitrate     =300000)
         self.webstream = stream
         self.output1 = FileOutput(self.webstream)
         #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8081")
