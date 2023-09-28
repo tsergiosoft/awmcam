@@ -7,10 +7,11 @@ from http import server
 from threading import Condition
 import threading
 
+# <meta http-equiv="refresh" content="15">
 
 PAGE = """\
 <html>
-<head><meta http-equiv="refresh" content="5">
+<head>
 <title>MJPEG streaming</title>
 </head>
 <body>
