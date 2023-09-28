@@ -15,7 +15,7 @@ class cam():
         self.picam2.configure(self.video_config)
 
         self.encoder1 = MJPEGEncoder(bitrate    =10000)
-        self.encoder2 = H264Encoder(bitrate     =3000000)
+        self.encoder2 = H264Encoder(bitrate     =30000)
         self.webstream = stream
         self.output1 = FileOutput(self.webstream)
         #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8081")
