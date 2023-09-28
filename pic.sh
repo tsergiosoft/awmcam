@@ -1,4 +1,5 @@
 #!/bin/bash
+
 cd ~/picamera2
 git pull
 sudo python3 setup.py install
