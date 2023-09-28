@@ -5,7 +5,7 @@ DEVICE="/dev/${DEVBASE}"
 MOUNT_POINT=$(/bin/mount | /bin/grep ${DEVICE} | /usr/bin/awk '{ print $3 }')  # See if this drive is already mounted
 case "${ACTION}" in
     add)
-        echo "ACTION ADD "DEVICE
+        echo "ACTION ADD " $DEVICE " to " $MOUNT_POINT
         if [[ -n ${MOUNT_POINT} ]]; then exit 1; fi          # Already mounted, exit
         eval $(/sbin/blkid -o udev ${DEVICE})                # Get info for this drive: $ID_FS_LABEL, $ID_FS_UUID, and $ID_FS_TYPE
         OPTS="rw,relatime"                                   # Global mount options
