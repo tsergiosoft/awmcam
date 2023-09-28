@@ -10,13 +10,13 @@ echo "home folder is"=$HOME
 sudo mkdir /mnt/usb
 
 #https://unix.stackexchange.com/questions/681379/usb-flash-drives-automatically-mounted-headless-computer
-sudo cp /root/usb-mount.sh /root/
+sudo cp usb-mount.sh /root/
 sudo cp usb-mount@.service /etc/systemd/system/
 sudo cp 99-local.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules
 sudo systemctl daemon-reload
 
-sudo rm /etc/udev/rules.d/99-usb-mount.rules
+#sudo rm /etc/udev/rules.d/99-usb-mount.rules
 #journalctl -xe
 
 #sudo cp /home/pi/awmcam/99-usb-mount.rules /etc/udev/rules.d/
