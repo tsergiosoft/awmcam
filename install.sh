@@ -8,8 +8,17 @@
 HOME=/home/pi
 echo "home folder is"=$HOME
 sudo mkdir /mnt/usb
-sudo cp /home/pi/awmcam/99-usb-mount.rules /etc/udev/rules.d/
-sudo udevadm control --reload-rules
+
+#https://unix.stackexchange.com/questions/681379/usb-flash-drives-automatically-mounted-headless-computer
+sudo cp /root/usb-mount.sh /root/
+sudo cp usb-mount@.service /etc/systemd/system/
+sudo cp 99-local.rules /etc/udev/rules.d/
+
+sudo rm /etc/udev/rules.d/99-usb-mount.rules
+
+#sudo cp /home/pi/awmcam/99-usb-mount.rules /etc/udev/rules.d/
+#sudo chmod 644 /etc/udev/rules.d/99-usb-mount.rules
+#sudo udevadm control --reload-rules
 
 echo "----------SSH copy"
 mkdir $HOME/.ssh
