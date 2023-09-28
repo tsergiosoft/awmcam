@@ -8,27 +8,10 @@ from threading import Condition
 import threading
 
 
-PAGE = """\<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Streaming</title>
-</head>
-<body>
-    <!-- Video Element -->
-    <video id="videoPlayer" controls autoplay>
-        <!-- Provide the video source URL here -->
-        <source src="YOUR_VIDEO_STREAM_URL_HERE" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-</body>
-</html>
-"""
-
 PAGE = """\
 <html>
-<head>
-<title>picamera2 MJPEG streaming demo</title>
+<head><meta http-equiv="refresh" content="5">
+<title>MJPEG streaming</title>
 </head>
 <body>
 <h1>Picamera2 MJPEG Streaming Demo</h1>
