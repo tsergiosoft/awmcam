@@ -17,7 +17,6 @@ sudo udevadm control --reload-rules
 sudo systemctl daemon-reload
 
 sudo rm /etc/udev/rules.d/99-usb-mount.rules
-
 #journalctl -xe
 
 #sudo cp /home/pi/awmcam/99-usb-mount.rules /etc/udev/rules.d/
