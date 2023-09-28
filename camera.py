@@ -15,8 +15,8 @@ class cam():
                                                           lores={"size": (320, 240)})
         self.picam2.configure(self.video_config)
 
-        self.encoder1 = MJPEGEncoder(bitrate    =1000000)
-        self.encoder2 = H264Encoder(bitrate     =300000)
+        self.encoder1 = MJPEGEncoder(bitrate    =10000000)
+        self.encoder2 = H264Encoder(bitrate     =10000000)
         self.webstream = stream
         self.output1 = FileOutput(self.webstream)
         #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8081")
@@ -31,7 +31,7 @@ class cam():
 
     def start_stream(self):
         print("start_stream")
-        self.picam2.start_encoder(self.encoder1)
+        self.picam2.start_encoder(self.encoder1,Quality.High)
         self.picam2.start_encoder(self.encoder2)
         self.picam2.start()
 
