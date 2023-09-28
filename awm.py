@@ -2,6 +2,8 @@
 
 import time, os
 import configparser
+from websrv_mjpeg import webserverjpg
+from camera import cam
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 from pymavlink import mavutil
 
