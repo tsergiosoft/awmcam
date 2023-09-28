@@ -9,7 +9,7 @@ except:
 class cam():
     def __init__(self,stream=None):
         self.picam2 = Picamera2()
-        self.video_config = self.picam2.create_video_configuration(main={"size": (800, 600)})
+        self.video_config = self.picam2.create_video_configuration(main={"size": (320, 200)})
         self.picam2.configure(self.video_config)
 
         self.encoder1 = MJPEGEncoder()
