@@ -3,7 +3,7 @@
 USB_DIR="/mnt/usb"
 #USB_DEV="/dev/sda1"  # Replace with the actual device path
 USB_DEV=$1
-
+echo "execute script for: $1"
 if [ -e "$USB_DEV" ]; then
     echo "USB drive detected. Mounting..."
     sudo mount "$USB_DEV" "$USB_DIR"
