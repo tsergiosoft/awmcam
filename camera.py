@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 try:
     from picamera2 import Picamera2
-    from picamera2.encoders import MJPEGEncoder
+    from picamera2.encoders import MJPEGEncoder, Quality
     from picamera2.encoders import H264Encoder
     from picamera2.outputs import FileOutput
 except:
