@@ -11,7 +11,7 @@ class cam():
         self.picam2 = Picamera2()
         # self.video_config = self.picam2.create_video_configuration(main={"size": (320, 200)})
         #2028x1520-pBCC
-        self.video_config = self.picam2.create_video_configuration(main={"size": (1280, 720)},
+        self.video_config = self.picam2.create_video_configuration(main={"size": (1024, 768)},
                                                           lores={"size": (320, 240)})
         self.picam2.configure(self.video_config)
 
