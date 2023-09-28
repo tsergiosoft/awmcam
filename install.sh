@@ -7,7 +7,6 @@
 
 HOME=/home/pi
 echo "home folder is"=$HOME
-sudo mkdir /mnt/usb
 
 #https://unix.stackexchange.com/questions/681379/usb-flash-drives-automatically-mounted-headless-computer
 sudo cp $HOME/awmcam/service/usb-mount@.service /etc/systemd/system/

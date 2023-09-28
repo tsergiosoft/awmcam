@@ -41,7 +41,7 @@ class cam():
 
         # self.output1 = FfmpegOutput("-f hls -hls_time 4 -hls_list_size 5 -hls_flags delete_segments -hls_allow_cache 0 stream.m3u8")
 
-        self.outputfile = FileOutput('test.h264')
+        self.outputfile = FileOutput('/media/video.h264')
         #self.encoder.output = [self.output1, self.output2]
         self.encoderweb.output = self.outputweb
         self.encoderfile.output = self.outputfile
