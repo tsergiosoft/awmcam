@@ -32,7 +32,7 @@ class cam():
         self.picam2.configure(self.video_config)
         self.picam2.pre_callback = self.apply_timestamp
 
-        self.encoderweb = MJPEGEncoder(quality=Quality.MEDIUM)
+        self.encoderweb = MJPEGEncoder(bitrate    =5000000)
         self.encoderfile = H264Encoder(bitrate    =4000000)
         self.webstream = stream
         self.outputweb = FileOutput(self.webstream)
