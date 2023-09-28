@@ -15,21 +15,16 @@ sudo cp $HOME/awmcam/service/99-local.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules
 sudo systemctl daemon-reload
 
-#sudo rm /etc/udev/rules.d/99-usb-mount.rules
-#journalctl -xe
+####journalctl -xe
 
-#sudo cp /home/pi/awmcam/99-usb-mount.rules /etc/udev/rules.d/
-#sudo chmod 644 /etc/udev/rules.d/99-usb-mount.rules
-#sudo udevadm control --reload-rules
-
-echo "----------SSH copy"
-mkdir $HOME/.ssh
-mkdir $HOME/mavlogs
-cp -R $HOME/awmcam/ssh/* $HOME/.ssh
-sudo chmod -R 400 $HOME/.ssh
-sudo chmod 755 $HOME/.ssh
-chmod 600 $HOME/.ssh/known_hosts
-sudo ssh-copy-id -i ~/.ssh/tunkey.pub pi@127.0.0.1
+#echo "----------SSH copy"
+#mkdir $HOME/.ssh
+#mkdir $HOME/mavlogs
+#cp -R $HOME/awmcam/ssh/* $HOME/.ssh
+#sudo chmod -R 400 $HOME/.ssh
+#sudo chmod 755 $HOME/.ssh
+#chmod 600 $HOME/.ssh/known_hosts
+#sudo ssh-copy-id -i ~/.ssh/tunkey.pub pi@127.0.0.1
 #echo "----------apt update"
 #sudo apt update
 #sudo apt upgrade
