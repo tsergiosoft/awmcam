@@ -1,7 +1,8 @@
 #!/bin/bash
 
 USB_DIR="/mnt/usb"
-USB_DEV="/dev/sda1"  # Replace with the actual device path
+#USB_DEV="/dev/sda1"  # Replace with the actual device path
+USB_DEV=$1
 
 if [ -e "$USB_DEV" ]; then
     echo "USB drive detected. Mounting..."

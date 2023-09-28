@@ -1,2 +1,0 @@
-ACTION=="add", KERNEL=="sd*", SUBSYSTEMS=="usb", RUN+="/home/pi/awmcam/usb_auto.sh"
-ACTION=="remove", KERNEL=="sd*", SUBSYSTEMS=="usb", RUN+="/home/pi/awmcam/usb_auto.sh"

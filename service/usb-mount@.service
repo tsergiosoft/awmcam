@@ -1,0 +1,8 @@
+[Unit]
+Description=Mount USB Drive on %i
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/home/pi/awmcam/service/usb-mount.sh add %i
+ExecStop=/home/pi/awmcam/service/usb-mount.sh remove %i
