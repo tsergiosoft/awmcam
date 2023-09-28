@@ -20,6 +20,7 @@ class cam():
         timestamp = time.strftime("%Y-%m-%d %X")
         with MappedArray(request, "main") as m:
             cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
+        print(timestamp)
 
     def __init__(self,stream=None):
         self.picam2 = Picamera2()
