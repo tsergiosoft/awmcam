@@ -18,9 +18,9 @@ class cam():
         scale = 1
         thickness = 2
         timestamp = time.strftime("%Y-%m-%d %X")
-        with MappedArray(request, "main") as m:
+        # with MappedArray(request, "main") as m:
+        with MappedArray(request) as m:
             cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
-        print(timestamp)
 
     def __init__(self,stream=None):
         self.picam2 = Picamera2()
@@ -31,19 +31,19 @@ class cam():
         self.picam2.configure(self.video_config)
         self.picam2.pre_callback = self.apply_timestamp
 
-        self.encoder1 = MJPEGEncoder(bitrate    =5000000)
-        self.encoder2 = H264Encoder(bitrate     =3000000)
+        self.encoderweb = MJPEGEncoder(bitrate    =3000000)
+        self.encoderfile = H264Encoder(bitrate    =4000000)
         self.webstream = stream
-        self.output1 = FileOutput(self.webstream)
+        self.outputweb = FileOutput(self.webstream)
         #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8081")
         #self.output1 = FfmpegOutput("test.ts")
 
         # self.output1 = FfmpegOutput("-f hls -hls_time 4 -hls_list_size 5 -hls_flags delete_segments -hls_allow_cache 0 stream.m3u8")
 
-        self.output2 = FileOutput('test.h264')
+        self.outputfile = FileOutput('test.h264')
         #self.encoder.output = [self.output1, self.output2]
-        self.encoder1.output = self.output1
-        self.encoder2.output = self.output2
+        self.encoderweb.output = self.outputweb
+        self.encoderfile.output = self.outputfile
 
     def start_stream(self):
         print("start_stream")
