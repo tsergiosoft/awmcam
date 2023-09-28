@@ -12,7 +12,7 @@ class cam():
         # self.video_config = self.picam2.create_video_configuration(main={"size": (320, 200)})
         #2028x1520-pBCC
         self.video_config = self.picam2.create_video_configuration(main={"size": (2028, 1520)},
-                                                          lores={"size": (320, 240)})
+                                                          lores={"size": (800, 600)})
         self.picam2.configure(self.video_config)
 
         self.encoder1 = MJPEGEncoder(bitrate    =4000000)
