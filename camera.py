@@ -12,7 +12,7 @@ import cv2
 
 class cam():
     def apply_timestamp(self,request):
-        colour = (0, 255, 0)
+        colour = (255, 255, 255)
         origin = (0, 30)
         font = cv2.FONT_HERSHEY_SIMPLEX
         scale = 1
