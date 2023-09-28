@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-from websrv_mjpeg import webserverjpg
-from camera import cam
 import time, os
 import configparser
+from dronekit import connect, VehicleMode, LocationGlobalRelative
+from pymavlink import mavutil
 
 config = configparser.ConfigParser()
 config.read('params.ini')
@@ -18,6 +18,8 @@ MAV_BAUD	=config['DEFAULT']['MAV_BAUD']
 #MAVPROXY_IP_PORT=config['DEFAULT']['MAVPROXY_IP_PORT'] #may be delete and use 127.0.0.1:14550
 MAV_DRONEKIT=config['DEFAULT']['MAV_DRONEKIT']
 NO_CAM =int(config['DEFAULT']['NO_CAM'])
+REMOTE_SIM_PORT = config['DEFAULT']['REMOTE_SIM_PORT']
+SIM_PORT = config['DEFAULT']['SIM_PORT']
 
 print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
 #os.system('pkill screen')
@@ -28,11 +30,14 @@ os.system('screen -S sshweb -X kill')
 os.system('screen -S sshmav -X kill')
 os.system('screen -S mav -X kill')
 os.system('screen -S web -X kill')
+#os.system('screen -S sshsim -X kill')
 time.sleep(1)
 os.system('screen -dmS ssh22 bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+' -local_port=22"')
 os.system('screen -dmS sshweb bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_CAM_PORT+' -local_port=8080"')
-os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port=MAV_DRONEKIT"')
+os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port=14550"')
 os.system('screen -dmS mav bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"')
+
+#os.system('screen -dmS sshsim bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SIM_PORT+' -local_port='+SIM_PORT+'"')
 
 wserver = webserverjpg(host="localhost", port=8080)
 wserver.start() #Thread
@@ -42,7 +47,7 @@ if (not NO_CAM):
 
 if (not NO_CAM):
     pcam.start_stream()
-    time.sleep(15)
+    time.sleep(300)
     pcam.stop_stream()
 
 print("stop wserver")
