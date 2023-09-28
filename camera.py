@@ -1,12 +1,26 @@
 #!/usr/bin/python3
 try:
     from picamera2 import Picamera2
-    from picamera2.encoders import MJPEGEncoder, Quality
-    from picamera2.encoders import H264Encoder
+    from picamera2.encoders import MJPEGEncoder, H264Encoder, Quality
     from picamera2.outputs import FileOutput
+    from picamera2 import MappedArray, Picamera2
 except:
     pass
+
+import time
+import cv2
+
 class cam():
+    def apply_timestamp(request):
+        colour = (0, 255, 0)
+        origin = (0, 30)
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        scale = 1
+        thickness = 2
+        timestamp = time.strftime("%Y-%m-%d %X")
+        with MappedArray(request, "main") as m:
+            cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
+
     def __init__(self,stream=None):
         self.picam2 = Picamera2()
         # self.video_config = self.picam2.create_video_configuration(main={"size": (320, 200)})
@@ -14,6 +28,7 @@ class cam():
         self.video_config = self.picam2.create_video_configuration(main={"size": (1600, 1200)},
                                                           lores={"size": (800, 600)})
         self.picam2.configure(self.video_config)
+        self.picam2.pre_callback = self.apply_timestamp
 
         self.encoder1 = MJPEGEncoder(bitrate    =5000000)
         self.encoder2 = H264Encoder(bitrate     =3000000)
@@ -45,3 +60,5 @@ class cam():
 
     def start_file(self):
         pass
+
+
