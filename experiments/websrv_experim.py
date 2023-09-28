@@ -51,7 +51,7 @@ PAGE = """\
 </html>
 """
 
-class webcamserver(threading.Thread):
+class webserver_experim(threading.Thread):
     def __init__(self, host="localhost", port=8080):
         super().__init__()
         self.stop_event = threading.Event()
@@ -96,15 +96,14 @@ class webcamserver(threading.Thread):
     ################## own class definitions  #############################
     def run(self):
         print('Web server thread running..')
-        try:
-            self.server.serve_forever()
-        except KeyboardInterrupt:
-            pass
-
+        # try:
+        #     self.server.serve_forever()
+        # except KeyboardInterrupt:
+        #     pass
         # self.server.serve_forever()
-        # while not self.stop_event.is_set():
-        #     self.server.handle_request()  # Handle a single request
-        #     time.sleep(1 / 24)  # Adjust the sleep duration as needed
+        while not self.stop_event.is_set():
+            self.server.handle_request()  # Handle a single request
+            time.sleep(1 / 24)  # Adjust the sleep duration as needed
 
     def stop(self):
         self.stop_event.set()

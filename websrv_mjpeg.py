@@ -65,7 +65,7 @@ class webserverjpg(threading.Thread):
 
     class StreamingHandler(server.BaseHTTPRequestHandler):
         outerstream = None
-        print('Client calls...')
+
         def do_GET(self):
             if self.path == '/':
                 self.send_response(301)
@@ -108,13 +108,12 @@ class webserverjpg(threading.Thread):
         allow_reuse_address = True
         daemon_threads = True
 
-    ################## own class definitions  #############################
     def run(self):
-        # print('Web server thread running..')
+        print('Web server thread running..')
         # self.server.serve_forever()
         while not self.stop_event.is_set():
             self.server.handle_request()  # Handle a single request
-            time.sleep(1 / 24)  # Adjust the sleep duration as needed
+            time.sleep(1/5)  # Adjust the sleep duration as needed
 
     def stop(self):
         self.stop_event.set()

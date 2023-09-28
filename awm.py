@@ -1,12 +1,7 @@
 #!/usr/bin/python3
-from picamera2 import Picamera2
-from picamera2.encoders import MJPEGEncoder
-from picamera2.encoders import H264Encoder
-from picamera2.outputs import FileOutput
-from picamera2.outputs import FfmpegOutput
 
-from websrv import webcamserver
 from websrv_mjpeg import webserverjpg
+from camera import cam
 import time, os
 import configparser
 
@@ -22,6 +17,7 @@ MAV_MASTER	=config['DEFAULT']['MAV_MASTER']
 MAV_BAUD	=config['DEFAULT']['MAV_BAUD']
 #MAVPROXY_IP_PORT=config['DEFAULT']['MAVPROXY_IP_PORT'] #may be delete and use 127.0.0.1:14550
 MAV_DRONEKIT=config['DEFAULT']['MAV_DRONEKIT']
+NO_CAM =int(config['DEFAULT']['NO_CAM'])
 
 print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
 #os.system('pkill screen')
@@ -37,55 +33,37 @@ os.system('screen -dmS ssh22 bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_i
 os.system('screen -dmS sshweb bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_CAM_PORT+' -local_port=8080"')
 os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port=MAV_DRONEKIT"')
 os.system('screen -dmS mav bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"')
-#os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webhello.py --port 8080"')
-os.system('screen -dmS web bash -c "python3 /home/pi/awmcam/webcam.py --port 8080"')
 
-class cam():
-    def __init__(self,stream=None):
-        self.picam2 = Picamera2()
-        self.video_config = self.picam2.create_video_configuration(main={"size": (800, 600)})
-        self.picam2.configure(self.video_config)
-
-        self.encoder1 = MJPEGEncoder()
-        self.encoder2 = H264Encoder(10000000)
-        self.webstream = stream
-        self.output1 = FileOutput(self.webstream)
-        #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8081")
-        #self.output1 = FfmpegOutput("test.ts")
-
-        # self.output1 = FfmpegOutput("-f hls -hls_time 4 -hls_list_size 5 -hls_flags delete_segments -hls_allow_cache 0 stream.m3u8")
-
-        self.output2 = FileOutput('test.h264')
-        #self.encoder.output = [self.output1, self.output2]
-        self.encoder1.output = self.output1
-        self.encoder2.output = self.output2
-
-    def start_stream(self):
-        print("start_stream")
-        self.picam2.start_encoder(self.encoder1)
-        self.picam2.start_encoder(self.encoder2)
-        self.picam2.start()
-
-    def stop_stream(self):
-        print("stop_stream")
-        self.picam2.stop_encoder(self.encoder1)
-        self.picam2.stop_encoder(self.encoder2)
-        self.picam2.stop()
-
-    def start_file(self):
-        pass
-
-#wserver = webcamserver(host="localhost", port=8080)
 wserver = webserverjpg(host="localhost", port=8080)
 wserver.start() #Thread
 
-pcam = cam(wserver.streamout)
-# pcam = cam()
-pcam.start_stream()
-time.sleep(15)
-pcam.stop_stream()
+if (not NO_CAM):
+    pcam = cam(wserver.streamout)
+
+if (not NO_CAM):
+    pcam.start_stream()
+    time.sleep(15)
+    pcam.stop_stream()
 
 print("stop wserver")
 wserver.stop() #Thread
 wserver.join()
+
+
+# LinkOK=False
+# vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_timeout=100,timeout=100)
+# @vehicle.on_attribute('last_heartbeat')
+# def listener(self, attr_name, value):
+#     global LinkOK
+#     if value > 3 and LinkOK:
+#         print("Pausing script due to bad link")
+#         LinkOK=False;
+#     if value < 1 and not LinkOK:
+#         LinkOK=True;
+#
+# while True:
+#     time.sleep(2)
+#     print(LinkOK)
+#     print(vehicle.parameters['AFS_ENABLE'])
+#     #print(vehicle.mode.name)
 
