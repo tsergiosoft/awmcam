@@ -14,7 +14,7 @@ class cam():
                                                          lores={"size": (320, 200)})
         self.picam2.configure(self.video_config)
 
-        self.encoder1 = MJPEGEncoder(bitrate    =100000)
+        self.encoder1 = MJPEGEncoder(bitrate    =10000)
         self.encoder2 = H264Encoder(bitrate     =3000000)
         self.webstream = stream
         self.output1 = FileOutput(self.webstream)
