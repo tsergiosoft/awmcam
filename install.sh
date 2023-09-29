@@ -75,20 +75,11 @@ echo "--------------------------------------------END---------------------------
 echo ................... execute test connect:
 echo ................... sudo ssh -v -i ~/.ssh/tunaws.pem ubuntu@13.50.210.14 -p 22
 
-
-#raspivid -t 0 -s -b 987654 -sg 5000 -o -|tee ~/video1.h264 | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8160}' :demux=h264
-#
-#raspivid -o - -t 0 -hf -w 800 -h 600 -fps 12 |cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8160}' :demux=h264
-#raspivid -t 0 -w 640 -h 480  -b 987654 -sg 5000 -o ~/video%03d.h264 | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8160}' :demux=h264
-#raspivid -t 0 -w 640 -h 480  -b 200000 -sg 5000 -wr 20 -o ~/test%03d.h264 | gst-launch-1.0 -v fdsrc !  h264parse ! gdppay ! udpsink host=127.0.0.1 port=8160
-#raspivid -t 0 -w 640 -h 480  -b 200000 -sg 5000 -wr 20 -o ~/test%03d.h264 | gst-launch-1.0 -v fdsrc !  decodebin ! x264enc ! rtph264pay config-interval=1 pt=96 ! udpsink host=127.0.0.1 port=8160
-#gst-launch-1.0 filesrc location=C:/Users/me/Desktop/big_buck_bunny.mp4 ! decodebin ! x264enc ! rtph264pay config-interval=1 pt=96 ! udpsink port=1234
-#raspivid -t 0 | gst-launch-1.0 -v fdsrc ! video/x-raw,width=640,height=480,framerate=24/1 ! x264enc key-int-max=30 insert-vui=1 tune=zerolatency ! h264parse config-interval=1 ! mpegtsmux ! rtpmp2tpay ! udpsink host=127.0.0.1 port=8160
-#raspivid -n -w 1280 -h 720 -fps 24 -b 4500000 -a 12 -t 0 -o - | gst-launch-1.0 -v fdsrc ! video/x-h264, width=1280, height=720, framerate=24/1 ! h264parse config-interval=1 ! mpegtsmux ! rtpmp2tpay ! udpsink host=127.0.0.1 port=8160
-#raspivid -n -w 640 -h 480 -fps 24 -b 4500000 -a 12 -t 0 -o - | gst-launch-1.0 -v fdsrc ! video/x-h264, width=640, height=480, framerate=24/1 ! h264parse config-interval=-1 ! mpegtsmux ! udpsink host=127.0.0.1 port=8160
-
-
-#on AWS\Google -> sudo nano /etc/ssh/sshd_config -> GatewayEnable yes ClientAliveInterval 15 ClientAliveCountMax 2
+#on AWS\Google ->
+# sudo nano /etc/ssh/sshd_config
+#GatewayEnable yes ClientAliveInterval 15 ClientAliveCountMax 2
+#AllowTcpForwarding yes
+#GatewayPorts yes
 
 # Mission Planner -> Video->SetMJPEG source -> http://13.50.210.14:5000/?action=stream
 #
@@ -132,4 +123,6 @@ echo ................... sudo ssh -v -i ~/.ssh/tunaws.pem ubuntu@13.50.210.14 -p
 #sudo chmod +x /etc/rc.local
 #sudo systemctl enable rc-local.service
 #sudo nano /etc/rc.local
+
+#netstat -tuln
 

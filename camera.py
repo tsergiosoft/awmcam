@@ -9,6 +9,15 @@ except:
 
 import time
 import cv2
+class virtcam():
+    def start(self):
+        pass
+    def stop(self):
+        pass
+    def start_encoder(self, file='', name='main'):
+        pass
+    def stop_encoder(self, file='', name='main'):
+        pass
 
 class cam():
     def apply_timestamp(self,request):
@@ -20,50 +29,86 @@ class cam():
         timestamp = time.strftime("%Y-%m-%d %X")
         with MappedArray(request, "main") as m:
             cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
+            cv2.putText(m.array, self.info1, (0, 80), font, 0.5, colour, 1)
+            cv2.putText(m.array, self.info1, (0, 100), font, 0.5, colour, 1)
+
         with MappedArray(request, "lores") as m:
             cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
+            cv2.putText(m.array, self.info1, (0, 80), font, 0.5, colour, 1)
+            cv2.putText(m.array, self.info1, (0, 100), font, 0.5, colour, 1)
 
-    def __init__(self,stream=None):
-        self.picam2 = Picamera2()
-        # self.video_config = self.picam2.create_video_configuration(main={"size": (320, 200)})
-        #2028x1520-pBCC
-        self.video_config = self.picam2.create_video_configuration(main={"size": (1600, 1200)},lores={"size": (800, 600)},
-                                                                   controls={"FrameDurationLimits": (80000, 80000)})
-        # self.video_config.controls.FrameRate = 25.0
-        # picam2.set_controls({"ExposureTime": 10000, "AnalogueGain": 1.0})
+    def __init__(self,stream=None, cam_exist=False):
+        self.camera_on = False
+        self.fileout_on = False
+        self.webout_on = False
+        self.info1 = ''
+        self.info2 = ''
+        if not cam_exist: #Create fake objects
+            self.picam2 = virtcam()
+            self.encoderfile='encoderfile'
+            self.encoderweb='encoderweb'
 
-        self.picam2.configure(self.video_config)
-        self.picam2.pre_callback = self.apply_timestamp
+        if cam_exist:
+            self.picam2 = Picamera2() #2028x1520-pBCC
+            self.video_config = self.picam2.create_video_configuration(main={"size": (1600, 1200)},lores={"size": (800, 600)},
+                                                                       controls={"FrameDurationLimits": (80000, 80000)})
+            # self.video_config.controls.FrameRate = 25.0
+            # picam2.set_controls({"ExposureTime": 10000, "AnalogueGain": 1.0})
 
-        self.encoderweb = MJPEGEncoder(bitrate    =5000000)
-        self.encoderfile = H264Encoder(bitrate    =4000000)
-        self.webstream = stream
-        self.outputweb = FileOutput(self.webstream)
-        #self.output1 = FfmpegOutput("-f mpegts udp://127.0.0.1:8081")
-        #self.output1 = FfmpegOutput("test.ts")
+            self.picam2.configure(self.video_config)
+            self.picam2.pre_callback = self.apply_timestamp
 
-        # self.output1 = FfmpegOutput("-f hls -hls_time 4 -hls_list_size 5 -hls_flags delete_segments -hls_allow_cache 0 stream.m3u8")
-
-        self.outputfile = FileOutput('/media/video.h264')
-        #self.encoder.output = [self.output1, self.output2]
-        self.encoderweb.output = self.outputweb
-        self.encoderfile.output = self.outputfile
-
-    def start_stream(self):
-        print("start_stream")
-        #self.picam2.start_encoder(self.encoder1, width=800, height=600)
-        #self.picam2.start_encoder(self.encoder2, width=2028, height=1520)
-        self.picam2.start_encoder(self.encoderweb, name='lores')
-        self.picam2.start_encoder(self.encoderfile, name='main')
-        self.picam2.start()
-
-    def stop_stream(self):
-        print("stop_stream")
-        self.picam2.stop_encoder(self.encoderweb)
-        self.picam2.stop_encoder(self.encoderfile)
-        self.picam2.stop()
+            self.encoderweb = MJPEGEncoder(bitrate    =5000000)
+            self.encoderfile = H264Encoder(bitrate    =4000000)
+            self.webstream = stream
+            self.outputweb = FileOutput(self.webstream)
+            self.outputfile = FileOutput('/media/video.h264')
+            self.encoderweb.output = self.outputweb
+            self.encoderfile.output = self.outputfile
 
     def start_file(self):
-        pass
+        if not self.fileout_on:
+            self.fileout_on = True
+            if (not self.camera_on):
+                self.picam2.start()
+                print("CAM_ON_HEAT")
+                self.camera_on = True
+                time.sleep(2) #Heat camera
+            print("start_file")
+            self.picam2.start_encoder(self.encoderfile, name='main')
 
+    def start_stream(self):
+        if not self.webout_on:
+            self.webout_on = True
+            if (not self.camera_on):
+                self.picam2.start()
+                print("CAM_ON_HEAT")
+                self.camera_on = True
+            print("start_stream")
+            self.picam2.start_encoder(self.encoderweb, name='lores')
 
+    def stop_file(self):
+        if self.fileout_on:
+            self.fileout_on = False
+            print("stop_file")
+            self.picam2.stop_encoder(self.encoderfile)
+        if not self.webout_on:
+            self.picam2.stop()
+
+    def stop_stream(self):
+        if self.webout_on:
+            self.webout_on = False
+            print("stop_stream")
+            self.picam2.stop_encoder(self.encoderweb)
+        if not self.fileout_on:
+            self.stop_cam()
+
+    def stop_cam(self):
+        if self.camera_on:
+            self.fileout_on = False
+            self.webout_on = False
+            print("CAM_OFF")
+            self.picam2.stop_encoder(self.encoderweb)
+            self.picam2.stop_encoder(self.encoderfile)
+            self.camera_on = False
+            self.picam2.stop()
