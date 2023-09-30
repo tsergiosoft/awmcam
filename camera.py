@@ -43,12 +43,13 @@ class cam():
         self.webout_on = False
         self.info1 = ''
         self.info2 = ''
-        if not cam_exist: #Create fake objects
+        self.cam_exist = cam_exist
+        if not self.cam_exist: #Create fake objects
             self.picam2 = virtcam()
             self.encoderfile='encoderfile'
             self.encoderweb='encoderweb'
 
-        if cam_exist:
+        if self.cam_exist:
             self.picam2 = Picamera2() #2028x1520-pBCC
             self.video_config = self.picam2.create_video_configuration(main={"size": (1600, 1200)},lores={"size": (800, 600)},
                                                                        controls={"FrameDurationLimits": (80000, 80000)})
@@ -62,19 +63,23 @@ class cam():
             self.encoderfile = H264Encoder(bitrate    =4000000)
             self.webstream = stream
             self.outputweb = FileOutput(self.webstream)
-            self.outputfile = FileOutput('/media/video.h264')
             self.encoderweb.output = self.outputweb
-            self.encoderfile.output = self.outputfile
+            # self.outputfile = FileOutput('/media/video.h264')
+            # self.encoderfile.output = self.outputfile
 
     def start_file(self):
         if not self.fileout_on:
             self.fileout_on = True
+            sname= '/media/'+time.strftime("%Y_%m_%d_%X")
+            if self.cam_exist:
+                self.outputfile = FileOutput(sname)
+                self.encoderfile.output = self.outputfile
             if (not self.camera_on):
                 self.picam2.start()
                 print("CAM_ON_HEAT")
                 self.camera_on = True
                 time.sleep(2) #Heat camera
-            print("start_file")
+            print("start_file:",sname)
             self.picam2.start_encoder(self.encoderfile, name='main')
 
     def start_stream(self):
