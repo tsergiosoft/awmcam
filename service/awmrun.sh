@@ -1,5 +1,5 @@
 #!/bin/bash
-#screen -dmS awm bash -c "sleep 1;cd /home/pi/awmcam;python3 /home/pi/awmcam/awm.py"
+screen -dmS awm bash -c "sleep 1;cd /home/pi/awmcam;python3 /home/pi/awmcam/awm.py"
 
 #screen -dmS cam bash -c "sleep 2;python3 /home/pi/awmcam/pyhello.py"
 ##### temp - call from dk!!!
