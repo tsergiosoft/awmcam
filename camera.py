@@ -52,14 +52,14 @@ class cam():
         if self.cam_exist:
             self.picam2 = Picamera2() #2028x1520-pBCC
             self.video_config = self.picam2.create_video_configuration(main={"size": (1600, 1200)},lores={"size": (800, 600)},
-                                                                       controls={"FrameDurationLimits": (80000, 80000)})
+                                                                       controls={"FrameDurationLimits": (40000, 40000)})
             # self.video_config.controls.FrameRate = 25.0
             # picam2.set_controls({"ExposureTime": 10000, "AnalogueGain": 1.0})
 
             self.picam2.configure(self.video_config)
             self.picam2.pre_callback = self.apply_timestamp
 
-            self.encoderweb = MJPEGEncoder(bitrate    =5000000)
+            self.encoderweb = MJPEGEncoder(bitrate    =10000000)
             self.encoderfile = H264Encoder(bitrate    =4000000)
             self.webstream = stream
             self.outputweb = FileOutput(self.webstream)
