@@ -6,6 +6,7 @@
 #dtoverlay=vc4-kms-v3d
 
 HOME=/home/pi
+set -x
 echo "home folder is"=$HOME
 
 #https://unix.stackexchange.com/questions/681379/usb-flash-drives-automatically-mounted-headless-computer
