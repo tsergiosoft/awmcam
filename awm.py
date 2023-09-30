@@ -41,6 +41,10 @@ wserver.start() #Thread
 
 pcam = cam(stream=wserver.streamout,cam_exist=bool(CAM_EXISTS))
 
+pcam.start_stream()
+while True:
+    time.sleep(10)
+    print('Streaming...')
 # if (not NO_CAM):
 #     pcam.start_stream()
 #     time.sleep(300)
