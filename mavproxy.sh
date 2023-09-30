@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #mavproxy.py --master=192.168.14.225:14550 --baudrate 921600 --state-basedir=/home/pi/mavlogs --out=tcpin:127.0.0.1:14550 --out=udp:127.0.0.1:5760 --out=udp:127.0.0.1:5678
+#mavproxy.py --master=/dev/ttyAMA0 --baudrate 115200 --state-basedir=/home/pi/mavlogs --out=tcpin:127.0.0.1:14550 --out=udp:127.0.0.1:5760 --out=udp:127.0.0.1:5560
 
 export LOCALAPPDATA="LOCALAPPDATA"
 

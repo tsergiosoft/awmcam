@@ -33,7 +33,7 @@ os.system('screen -S web -X kill')
 time.sleep(1)
 os.system('screen -dmS ssh22 bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+' -local_port=22"')
 os.system('screen -dmS sshweb bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_CAM_PORT+' -local_port=8080"')
-os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port=14550"')
+os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port='+REMOTE_MAV_PORT+'"')
 os.system('screen -dmS mav bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"')
 # os.system('screen -dmS sshsim bash -c "/home/pi/awmcam/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port=14549 -local_port=5555"')
 
