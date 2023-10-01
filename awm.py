@@ -53,8 +53,7 @@ pcam.start_stream(webbitrate=3000000)
 
 
 LinkOK=False
-vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_
-timeout=100,timeout=100)
+vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_timeout=100,timeout=100)
 @vehicle.on_attribute('last_heartbeat')
 def listener(self, attr_name, value):
     global LinkOK
