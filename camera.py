@@ -72,6 +72,7 @@ class cam():
             self.fileout_on = True
             sname= '/media/'+time.strftime("%Y_%m_%d_%X")
             sname = sname.replace(":","_")
+            print("FILE NAME: " + sname)
             if self.cam_exist:
                 self.outputfile = FileOutput(sname)
                 self.encoderfile.output = self.outputfile
@@ -91,10 +92,11 @@ class cam():
                 print("CAM_ON_HEAT")
                 self.camera_on = True
             print("start_stream")
-            self.encoderweb = MJPEGEncoder(bitrate=webbitrate)
-            self.outputweb = FileOutput(self.webstream)
-            self.encoderweb.output = self.outputweb
-            self.picam2.start_encoder(self.encoderweb, name='lores')
+            if self.cam_exist:
+                self.encoderweb = MJPEGEncoder(bitrate=webbitrate)
+                self.outputweb = FileOutput(self.webstream)
+                self.encoderweb.output = self.outputweb
+                self.picam2.start_encoder(self.encoderweb, name='lores')
 
     def stop_file(self):
         if self.fileout_on:
