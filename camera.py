@@ -71,6 +71,7 @@ class cam():
         if not self.fileout_on:
             self.fileout_on = True
             sname= '/media/'+time.strftime("%Y_%m_%d_%X")
+            sname.replace(":","_")
             if self.cam_exist:
                 self.outputfile = FileOutput(sname)
                 self.encoderfile.output = self.outputfile
