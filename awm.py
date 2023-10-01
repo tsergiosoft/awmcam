@@ -41,11 +41,11 @@ wserver.start() #Thread
 
 pcam = cam(stream=wserver.streamout, cam_exist=bool(CAM_EXISTS))
 
-pcam.start_stream(webbitrate=4000000)
+pcam.start_stream(webbitrate=3000000)
 
-while True:
-    time.sleep(10)
-    print('Streaming...')
+# while True:
+#     time.sleep(10)
+#     print('Streaming...')
 
 # print("stop wserver")
 # wserver.stop() #Thread
@@ -53,7 +53,8 @@ while True:
 
 
 LinkOK=False
-vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_timeout=100,timeout=100)
+vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_
+timeout=100,timeout=100)
 @vehicle.on_attribute('last_heartbeat')
 def listener(self, attr_name, value):
     global LinkOK
