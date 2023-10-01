@@ -62,8 +62,8 @@ class cam():
             # self.encoderweb = MJPEGEncoder(bitrate    =10000000)
             self.encoderfile = H264Encoder(bitrate    =4000000)
             self.webstream = stream
-            self.outputweb = FileOutput(self.webstream)
-            self.encoderweb.output = self.outputweb
+            # self.outputweb = FileOutput(self.webstream)
+            # self.encoderweb.output = self.outputweb
             # self.outputfile = FileOutput('/media/video.h264')
             # self.encoderfile.output = self.outputfile
 
@@ -91,6 +91,8 @@ class cam():
                 self.camera_on = True
             print("start_stream")
             self.encoderweb = MJPEGEncoder(bitrate=webbitrate)
+            self.outputweb = FileOutput(self.webstream)
+            self.encoderweb.output = self.outputweb
             self.picam2.start_encoder(self.encoderweb, name='lores')
 
     def stop_file(self):
