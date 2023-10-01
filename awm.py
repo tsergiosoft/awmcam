@@ -39,16 +39,14 @@ os.system('screen -dmS mav bash -c "/home/pi/awmcam/mavproxy.sh -m '+MAV_MASTER+
 wserver = webserverjpg(host="localhost", port=8080)
 wserver.start() #Thread
 
-pcam = cam(stream=wserver.streamout,cam_exist=bool(CAM_EXISTS))
+pcam = cam(stream=wserver.streamout, cam_exist=bool(CAM_EXISTS))
 
-pcam.start_stream()
-while True:
-    time.sleep(10)
-    print('Streaming...')
-# if (not NO_CAM):
-#     pcam.start_stream()
-#     time.sleep(300)
-#     pcam.stop_stream()
+pcam.start_stream(webbitrate=40000000)
+
+# while True:
+#     time.sleep(10)
+#     print('Streaming...')
+
 # print("stop wserver")
 # wserver.stop() #Thread
 # wserver.join()
@@ -84,7 +82,7 @@ while True:
         pcam.stop_file()
 
     if (VID_WEB_MODE==1):
-        pcam.start_stream()
+        pcam.start_stream(webbitrate=VID_WEB_MODE*1000000)
     else:
         pcam.stop_stream()
     # print(LinkOK)

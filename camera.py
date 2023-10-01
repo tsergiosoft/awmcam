@@ -59,7 +59,7 @@ class cam():
             self.picam2.configure(self.video_config)
             self.picam2.pre_callback = self.apply_timestamp
 
-            self.encoderweb = MJPEGEncoder(bitrate    =10000000)
+            # self.encoderweb = MJPEGEncoder(bitrate    =10000000)
             self.encoderfile = H264Encoder(bitrate    =4000000)
             self.webstream = stream
             self.outputweb = FileOutput(self.webstream)
@@ -82,7 +82,7 @@ class cam():
             print("start_file:",sname)
             self.picam2.start_encoder(self.encoderfile, name='main')
 
-    def start_stream(self):
+    def start_stream(self, webbitrate = 10000000):
         if not self.webout_on:
             self.webout_on = True
             if (not self.camera_on):
@@ -90,6 +90,7 @@ class cam():
                 print("CAM_ON_HEAT")
                 self.camera_on = True
             print("start_stream")
+            self.encoderweb = MJPEGEncoder(bitrate=webbitrate)
             self.picam2.start_encoder(self.encoderweb, name='lores')
 
     def stop_file(self):
