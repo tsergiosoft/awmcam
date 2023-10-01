@@ -41,7 +41,7 @@ wserver.start() #Thread
 
 pcam = cam(stream=wserver.streamout, cam_exist=bool(CAM_EXISTS))
 
-pcam.start_stream(webbitrate=40000000)
+pcam.start_stream(webbitrate=4000000)
 
 # while True:
 #     time.sleep(10)
