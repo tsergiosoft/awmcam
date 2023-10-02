@@ -1,5 +1,5 @@
 [Unit]
-Description=Mav
+Description=Awm service
 After=multi-user.target
 
 [Service]
