@@ -53,7 +53,7 @@ class cam():
         if self.cam_exist:
             self.picam2 = Picamera2() #2028x1520-pBCC
             self.video_config = self.picam2.create_video_configuration(main={"size": (1600, 1200)},lores={"size": (800, 600)},
-                                                                       controls={"FrameDurationLimits": (80000, 80000)})
+                                                                       controls={"FrameDurationLimits": (40000, 40000)})
             # self.video_config.controls.FrameRate = 25.0
             # picam2.set_controls({"ExposureTime": 10000, "AnalogueGain": 1.0})
 
@@ -95,8 +95,8 @@ class cam():
             if self.bitrate!=webbitrate:
                 self.picam2.stop_encoder(self.encoderweb)
             if self.cam_exist:
-                print("start WEB stream with "+str(self.bitrate)+" Mbit/s")
                 self.bitrate = webbitrate
+                print("start WEB stream with "+str(self.bitrate)+" Mbit/s")
                 self.encoderweb = MJPEGEncoder(bitrate=self.bitrate)
                 self.encoderweb.output = self.outputweb
                 self.picam2.start_encoder(self.encoderweb, name='lores')
