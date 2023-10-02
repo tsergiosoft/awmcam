@@ -30,12 +30,12 @@ class cam():
         with MappedArray(request, "main") as m:
             cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
             cv2.putText(m.array, self.info1, (0, 80), font, 0.5, colour, 1)
-            cv2.putText(m.array, self.info1, (0, 100), font, 0.5, colour, 1)
+            cv2.putText(m.array, self.info2, (0, 100), font, 0.5, colour, 1)
 
         with MappedArray(request, "lores") as m:
             cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
             cv2.putText(m.array, self.info1, (0, 80), font, 0.5, colour, 1)
-            cv2.putText(m.array, self.info1, (0, 100), font, 0.5, colour, 1)
+            cv2.putText(m.array, self.info2, (0, 100), font, 0.5, colour, 1)
 
     def __init__(self,stream=None, cam_exist=False):
         self.camera_on = False

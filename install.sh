@@ -11,6 +11,7 @@ sudo udevadm control --reload-rules
 sudo systemctl daemon-reload
 ####journalctl -xe
 
+#echo "----------Remove Bluetooth service"
 sudo systemctl disable hciuart.service
 sudo systemctl disable bluealsa.service
 sudo systemctl disable bluetooth.service
