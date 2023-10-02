@@ -52,7 +52,7 @@ class cam():
 
         if self.cam_exist:
             self.picam2 = Picamera2() #2028x1520-pBCC
-            self.video_config = self.picam2.create_video_configuration(main={"size": (1600, 1200)},lores={"size": (800, 600)},
+            self.video_config = self.picam2.create_video_configuration(main={"size": (1024, 768)},lores={"size": (800, 600)},
                                                                        controls={"FrameDurationLimits": (80000, 80000)})
             # self.video_config.controls.FrameRate = 25.0
             # picam2.set_controls({"ExposureTime": 10000, "AnalogueGain": 1.0})
