@@ -41,14 +41,14 @@ wserver.start() #Thread
 
 pcam = cam(stream=wserver.streamout, cam_exist=bool(CAM_EXISTS))
 
-pcam.start_stream(webbitrate=3000000)
+pcam.start_stream(webbitrate=4000000)
 
 # sname= '/media/'+time.strftime("%Y_%m_%d_%X")
 # sname = sname.replace(":","_")
 
-# while True:
-#     time.sleep(10)
-#     print('Streaming...')
+while True:
+    time.sleep(10)
+    print('Streaming...')
 
 # print("stop wserver")
 # wserver.stop() #Thread
