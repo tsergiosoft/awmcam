@@ -41,7 +41,7 @@ class webserverjpg(threading.Thread):
         def __init__(self):
             self.frame = None
             self.condition = Condition()
-            self.clear_interval = 5  # Set the clear interval to 60 seconds
+            self.clear_interval = 10  # Set the clear interval to 60 seconds
             self.last_clear_time = time.time()
 
 
@@ -50,10 +50,10 @@ class webserverjpg(threading.Thread):
                 self.frame = buf
                 self.condition.notify_all()
                 # Check if it's time to clear the buffer
-                current_time = time.time()
-                if current_time - self.last_clear_time >= self.clear_interval:
-                    self.clear_buffer()
-                    self.last_clear_time = current_time
+                # current_time = time.time()
+                # if current_time - self.last_clear_time >= self.clear_interval:
+                #     self.clear_buffer()
+                #     self.last_clear_time = current_time
 
         def clear_buffer(self):
             with self.condition:
