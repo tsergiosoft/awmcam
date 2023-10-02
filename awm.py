@@ -79,17 +79,22 @@ while True:
     # print(info2)
     pcam.info1 = info1
     pcam.info2 = info2
-    if (VID_ON):
-        pcam.start_file()
-    else:
-        pcam.stop_file()
+    try:
+        if (VID_ON):
+            pcam.start_file()
+        else:
+            pcam.stop_file()
+    except:
+        print("Exception if file output")
 
     print(VID_WEB_MODE)
-
-    if (VID_WEB_MODE>0):
-        pcam.start_stream(webbitrate=VID_WEB_MODE*1000000)
-    else:
-        pcam.stop_stream()
+    try:
+        if (VID_WEB_MODE>0):
+            pcam.start_stream(webbitrate=VID_WEB_MODE*1000000)
+        else:
+            pcam.stop_stream()
+    except:
+        print("Exception if WEB output")
 
 
     # print(LinkOK)
