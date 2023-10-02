@@ -1,5 +1,6 @@
 [Unit]
 Description=Mount USB Drive on %i
+After=multi-user.target
 
 [Service]
 Type=oneshot
