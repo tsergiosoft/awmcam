@@ -68,7 +68,7 @@ def listener(self, attr_name, value):
         LinkOK=True;
 
 while True:
-    time.sleep(2)
+    time.sleep(1)
     info1 = "Loc:[%s, %s] alt %s" % (vehicle.location.global_frame.lat,vehicle.location.global_frame.lon,vehicle.location.global_frame.alt)
     info1 = info1 +" GPS: fix=%s, vis=%s" % (vehicle.gps_0.fix_type, vehicle.gps_0.satellites_visible)
     # print(info)
@@ -76,7 +76,7 @@ while True:
     VID_TIME = int(vehicle.parameters['VID_TIME'])
     VID_WEB_MODE = int(vehicle.parameters['VID_WEB_MODE'])
     info2 = "VID_ON=%s VID_TIME=%s VID_WEB_MODE=%s" % (VID_ON,VID_TIME,VID_WEB_MODE)
-    # print(info2)
+    print(info2)
     pcam.info1 = info1
     pcam.info2 = info2
     try:
