@@ -44,6 +44,7 @@ class cam():
         self.info1 = ''
         self.info2 = ''
         self.cam_exist = cam_exist
+        self.bitrate = 4000000
         if not self.cam_exist: #Create fake objects
             self.picam2 = virtcam()
             self.encoderfile='encoderfile'
@@ -84,16 +85,18 @@ class cam():
             print("start_file:",sname)
             self.picam2.start_encoder(self.encoderfile, name='main')
 
-    def start_stream(self, webbitrate = 10000000):
-        if not self.webout_on:
+    def start_stream(self, webbitrate = self.bitrate):
+        if not self.webout_on or self.bitrate!=webbitrate:
             self.webout_on = True
             if (not self.camera_on):
                 self.picam2.start()
                 print("CAM_ON_HEAT")
                 self.camera_on = True
-            print("start_stream")
+            if self.bitrate!=webbitrate:
+                self.picam2.stop_encoder(self.encoderweb, name='lores')
             if self.cam_exist:
-                self.encoderweb = MJPEGEncoder(bitrate=webbitrate)
+                print("start_stream with "+str(self.bitrate)+" Mbit/s")
+                self.encoderweb = MJPEGEncoder(bitrate=self.bitrate)
                 self.outputweb = FileOutput(self.webstream)
                 self.encoderweb.output = self.outputweb
                 self.picam2.start_encoder(self.encoderweb, name='lores')
