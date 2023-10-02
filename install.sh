@@ -30,8 +30,8 @@ sudo chmod 755 $HOME/.ssh
 chmod 600 $HOME/.ssh/known_hosts
 sudo ssh-copy-id -i ~/.ssh/tunkey.pub pi@127.0.0.1
 echo "----------apt update"
-sudo apt update
-sudo apt upgrade
+#sudo apt update
+#sudo apt upgrade
 echo "----------Install netcat"
 sudo sudo apt-get install ncat -y
 echo "----------Install screen"
