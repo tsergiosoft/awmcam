@@ -87,7 +87,6 @@ while True:
     except:
         print("Exception if file output")
 
-    print(VID_WEB_MODE)
     try:
         if (VID_WEB_MODE>0):
             pcam.start_stream(webbitrate=VID_WEB_MODE*1000000)
