@@ -86,7 +86,6 @@ class cam():
             self.picam2.start_encoder(self.encoderfile, name='main')
 
     def start_stream(self, webbitrate):
-        print(f"self.bitrate={self.bitrate} webbitrate{webbitrate}")
         if not self.webout_on or self.bitrate!=webbitrate:
             self.webout_on = True
             if (not self.camera_on):
@@ -96,7 +95,8 @@ class cam():
             if self.bitrate!=webbitrate:
                 self.picam2.stop_encoder(self.encoderweb)
             if self.cam_exist:
-                print("start_stream with "+str(self.bitrate)+" Mbit/s")
+                print("start WEB stream with "+str(self.bitrate)+" Mbit/s")
+                self.bitrate = webbitrate
                 self.encoderweb = MJPEGEncoder(bitrate=self.bitrate)
                 self.encoderweb.output = self.outputweb
                 self.picam2.start_encoder(self.encoderweb, name='lores')
