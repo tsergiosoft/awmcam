@@ -64,7 +64,7 @@ class cam():
             self.encoderfile = H264Encoder(bitrate    =4000000)
             self.webstream = stream
             # self.outputweb = FileOutput(self.webstream)
-            self.outputweb = CircularOutput(self.webstream)
+            self.outputweb = CircularOutput(self.webstream, buffersize=48)
             # self.encoderweb.output = self.outputweb
             # self.outputfile = FileOutput('/media/video.h264')
             # self.encoderfile.output = self.outputfile
