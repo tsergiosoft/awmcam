@@ -41,11 +41,23 @@ class webserverjpg(threading.Thread):
         def __init__(self):
             self.frame = None
             self.condition = Condition()
+            self.clear_interval = 5  # Set the clear interval to 60 seconds
+            self.last_clear_time = time.time()
+
 
         def write(self, buf):
             with self.condition:
                 self.frame = buf
                 self.condition.notify_all()
+                # Check if it's time to clear the buffer
+                current_time = time.time()
+                if current_time - self.last_clear_time >= self.clear_interval:
+                    self.clear_buffer()
+                    self.last_clear_time = current_time
+
+        def clear_buffer(self):
+            with self.condition:
+                self.frame = None
 
     class StreamingHandler(server.BaseHTTPRequestHandler):
         outerstream = None
@@ -94,10 +106,10 @@ class webserverjpg(threading.Thread):
 
     def run(self):
         print('Web server thread running..')
-        # self.server.serve_forever()
-        while not self.stop_event.is_set():
-            self.server.handle_request()  # Handle a single request
-            time.sleep(1/5)  # Adjust the sleep duration as needed
+        self.server.serve_forever()
+        # while not self.stop_event.is_set():
+        #     self.server.handle_request()  # Handle a single request
+        #     time.sleep(1/5)  # Adjust the sleep duration as needed
 
     def stop(self):
         self.stop_event.set()
