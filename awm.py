@@ -46,9 +46,9 @@ pcam.start_stream(webbitrate=4000000)
 # sname= '/media/'+time.strftime("%Y_%m_%d_%X")
 # sname = sname.replace(":","_")
 
-while True:
-    time.sleep(10)
-    print('Streaming...')
+# while True:
+#     time.sleep(10)
+#     print('Streaming...')
 
 # print("stop wserver")
 # wserver.stop() #Thread
@@ -88,6 +88,8 @@ while True:
         pcam.start_stream(webbitrate=VID_WEB_MODE*1000000)
     else:
         pcam.stop_stream()
+
+
     # print(LinkOK)
     # print("Alt="+str(vehicle.location.global_relative_frame.alt))
     # print(vehicle.parameters['VID_WEB_MODE'])
