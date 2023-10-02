@@ -84,6 +84,8 @@ while True:
     else:
         pcam.stop_file()
 
+    print(VID_WEB_MODE)
+
     if (VID_WEB_MODE>0):
         pcam.start_stream(webbitrate=VID_WEB_MODE*1000000)
     else:
