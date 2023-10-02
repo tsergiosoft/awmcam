@@ -5,11 +5,12 @@ HOME=/home/pi
 echo "home folder is"=$HOME
 
 #https://unix.stackexchange.com/questions/681379/usb-flash-drives-automatically-mounted-headless-computer
-sudo cp $HOME/awmcam/service/usb-mount@.service /etc/systemd/system/
-sudo cp $HOME/awmcam/service/99-local.rules /etc/udev/rules.d/
-sudo udevadm control --reload-rules
-sudo systemctl daemon-reload
+#sudo cp $HOME/awmcam/service/usb-mount@.service /etc/systemd/system/
+#sudo cp $HOME/awmcam/service/99-local.rules /etc/udev/rules.d/
+#sudo udevadm control --reload-rules
+#sudo systemctl daemon-reload
 ####journalctl -xe
+
 
 #echo "----------Remove Bluetooth service"
 sudo systemctl disable hciuart.service
