@@ -86,6 +86,7 @@ class cam():
             self.picam2.start_encoder(self.encoderfile, name='main')
 
     def start_stream(self, webbitrate):
+        print(f"self.bitrate={self.bitrate} webbitrate{webbitrate}")
         if not self.webout_on or self.bitrate!=webbitrate:
             self.webout_on = True
             if (not self.camera_on):
