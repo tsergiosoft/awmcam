@@ -11,6 +11,12 @@ sudo udevadm control --reload-rules
 sudo systemctl daemon-reload
 ####journalctl -xe
 
+sudo systemctl disable hciuart.service
+sudo systemctl disable bluealsa.service
+sudo systemctl disable bluetooth.service
+sudo apt-get purge bluez -y
+sudo apt-get autoremove -y
+
 sudo cp $HOME/awmcam/service/config.txt /boot/
 
 #echo "----------SSH copy"

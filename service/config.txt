@@ -80,3 +80,4 @@ arm_boost=1
 [all]
 enable_uart=1
 dtoverlay=disable-bt
+dtoverlay=pi3-disable-bt
