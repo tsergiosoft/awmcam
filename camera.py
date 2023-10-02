@@ -2,7 +2,7 @@
 try:
     from picamera2 import Picamera2
     from picamera2.encoders import MJPEGEncoder, H264Encoder, Quality
-    from picamera2.outputs import FileOutput
+    from picamera2.outputs import FileOutput,CircularOutput
     from picamera2 import MappedArray, Picamera2
 except:
     pass
@@ -63,7 +63,8 @@ class cam():
             # self.encoderweb = MJPEGEncoder(bitrate    =10000000)
             self.encoderfile = H264Encoder(bitrate    =4000000)
             self.webstream = stream
-            self.outputweb = FileOutput(self.webstream)
+            # self.outputweb = FileOutput(self.webstream)
+            self.outputweb = CircularOutput(self.webstream)
             # self.encoderweb.output = self.outputweb
             # self.outputfile = FileOutput('/media/video.h264')
             # self.encoderfile.output = self.outputfile
