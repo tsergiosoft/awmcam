@@ -70,7 +70,7 @@ class cam():
     def start_file(self):
         if not self.fileout_on:
             self.fileout_on = True
-            sname= '/media/'+time.strftime("%Y_%m_%d_%X")
+            sname= '/media/'+time.strftime("%Y_%m_%d_%X")+'.h264'
             sname = sname.replace(":","_")
             print("FILE NAME: " + sname)
             if self.cam_exist:
