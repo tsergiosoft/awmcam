@@ -76,7 +76,7 @@ while True:
     VID_TIME = int(vehicle.parameters['VID_TIME'])
     VID_WEB_MODE = int(vehicle.parameters['VID_WEB_MODE'])
     info2 = "VID_ON=%s VID_TIME=%s VID_WEB_MODE=%s" % (VID_ON,VID_TIME,VID_WEB_MODE)
-    print(info2)
+    # print(info2)
     pcam.info1 = info1
     pcam.info2 = info2
     try:
