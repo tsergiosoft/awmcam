@@ -20,6 +20,7 @@ MAV_BAUD	=config['DEFAULT']['MAV_BAUD']
 #MAVPROXY_IP_PORT=config['DEFAULT']['MAVPROXY_IP_PORT'] #may be delete and use 127.0.0.1:14550
 MAV_DRONEKIT=config['DEFAULT']['MAV_DRONEKIT']
 CAM_EXISTS =int(config['DEFAULT']['CAM_EXISTS'])
+HQ_CAM =int(config['DEFAULT']['HQ_CAM'])
 
 print("TALON_SN="+TALON_SN+" CLOUD_IP="+CLOUD_IP)
 #os.system('pkill screen')
@@ -37,66 +38,66 @@ os.system('sudo ~/awmcam/service/usb_add.sh')
 os.system('screen -dmS ssh22 bash -c "/home/pi/awmcam/service/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+' -local_port=22"')
 os.system('screen -dmS sshweb bash -c "/home/pi/awmcam/service/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_CAM_PORT+' -local_port=8080"')
 os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/service/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port=14550"')
-os.system('screen -dmS mav bash -c "/home/pi/awmcam/service/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"')
+if HQ_CAM == 1:
+    os.system('screen -dmS mav bash -c "/home/pi/awmcam/service/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"')
+if HQ_CAM == 0:
+    os.system('screen -dmS usbcam bash -c "/home/pi/awmcam/service/cam_run.sh"')
 
-wserver = webserverjpg(host="localhost", port=8080)
-wserver.start() #Thread
-
-pcam = cam(stream=wserver.streamout, cam_exist=bool(CAM_EXISTS))
-
-pcam.start_stream(webbitrate=4000000)
-
-# sname= '/media/'+time.strftime("%Y_%m_%d_%X")
-# sname = sname.replace(":","_")
-
-# while True:
-#     time.sleep(10)
-#     print('Streaming...')
-
-# print("stop wserver")
-# wserver.stop() #Thread
-# wserver.join()
+if HQ_CAM == 1:
+    wserver = webserverjpg(host="localhost", port=8080)
+    wserver.start() #Thread
+    pcam = cam(stream=wserver.streamout, cam_exist=bool(CAM_EXISTS))
+    pcam.start_stream(webbitrate=4000000)
 
 
-LinkOK=False
-vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_timeout=100,timeout=100)
-@vehicle.on_attribute('last_heartbeat')
-def listener(self, attr_name, value):
-    global LinkOK
-    if value > 3 and LinkOK:
-        print("Pausing script due to bad link")
-        LinkOK=False;
-    if value < 1 and not LinkOK:
-        print("LinkOK")
-        LinkOK=True;
+    # while True:
+    #     time.sleep(10)
+    #     print('Streaming...')
 
-while True:
-    time.sleep(1)
-    info1 = "Loc:[%s, %s] alt %s" % (vehicle.location.global_frame.lat,vehicle.location.global_frame.lon,vehicle.location.global_frame.alt)
-    info1 =  info1 +" GPS: fix=%s, vis=%s" % (vehicle.gps_0.fix_type, vehicle.gps_0.satellites_visible)
-    # print(info)
-    VID_ON = int(vehicle.parameters['VID_ON'])
-    VID_TIME = int(vehicle.parameters['VID_TIME'])
-    VID_WEB_MODE = int(vehicle.parameters['VID_WEB_MODE'])
-    info2 = "file:"+str(pcam.fileout_on)+" "+"VID_ON=%s VID_TIME=%s VID_WEB_MODE=%s" % (VID_ON,VID_TIME,VID_WEB_MODE)
-    # print(info2)
-    pcam.info1 = info1
-    pcam.info2 = info2
-    try:
-        if (VID_ON):
-            pcam.start_file()
-        else:
-            pcam.stop_file()
-    except:
-        print("Exception if file output")
+    # print("stop wserver")
+    # wserver.stop() #Thread
+    # wserver.join()
 
-    try:
-        if (VID_WEB_MODE>0):
-            pcam.start_stream(webbitrate=VID_WEB_MODE*1000000)
-        else:
-            pcam.stop_stream()
-    except:
-        print("Exception if WEB output")
+
+    LinkOK=False
+    vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_timeout=100,timeout=100)
+    @vehicle.on_attribute('last_heartbeat')
+    def listener(self, attr_name, value):
+        global LinkOK
+        if value > 3 and LinkOK:
+            print("Pausing script due to bad link")
+            LinkOK=False;
+        if value < 1 and not LinkOK:
+            print("LinkOK")
+            LinkOK=True;
+
+    while True:
+        time.sleep(1)
+        info1 = "Loc:[%s, %s] alt %s" % (vehicle.location.global_frame.lat,vehicle.location.global_frame.lon,vehicle.location.global_frame.alt)
+        info1 =  info1 +" GPS: fix=%s, vis=%s" % (vehicle.gps_0.fix_type, vehicle.gps_0.satellites_visible)
+        # print(info)
+        VID_ON = int(vehicle.parameters['VID_ON'])
+        VID_TIME = int(vehicle.parameters['VID_TIME'])
+        VID_WEB_MODE = int(vehicle.parameters['VID_WEB_MODE'])
+        info2 = "file:"+str(pcam.fileout_on)+" "+"VID_ON=%s VID_TIME=%s VID_WEB_MODE=%s" % (VID_ON,VID_TIME,VID_WEB_MODE)
+        # print(info2)
+        pcam.info1 = info1
+        pcam.info2 = info2
+        try:
+            if (VID_ON):
+                pcam.start_file()
+            else:
+                pcam.stop_file()
+        except:
+            print("Exception if file output")
+
+        try:
+            if (VID_WEB_MODE>0):
+                pcam.start_stream(webbitrate=VID_WEB_MODE*1000000)
+            else:
+                pcam.stop_stream()
+        except:
+            print("Exception if WEB output")
 
 
     # print(LinkOK)
