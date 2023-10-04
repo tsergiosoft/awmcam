@@ -50,7 +50,7 @@ if HQ_CAM == 1:
 
     pcam.start_file()
     while True:
-        time.sleep(5)
+        time.sleep(30)
         pcam.stop_file()
         pcam.start_file()
 
