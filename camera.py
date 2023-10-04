@@ -118,9 +118,9 @@ class cam():
             cmd = 'MP4Box -add '+self.fname+' -new '+mp4name
             print(cmd)
             os.system(cmd) #+' |& tee /media/cmd.txt'
-            # cmd = 'rm ' + self.fname
+            cmd = 'rm ' + self.fname
             # print(cmd)
-            # os.system(cmd)
+            os.system(cmd)
 
         if not self.webout_on:
             self.picam2.stop()
