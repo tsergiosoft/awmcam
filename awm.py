@@ -48,16 +48,13 @@ if HQ_CAM == 1:
     pcam = cam(stream=wserver.streamout, cam_exist=bool(CAM_EXISTS))
     pcam.start_stream(webbitrate=4000000)
 
-    pcam.start_file()
-    while True:
-        time.sleep(30)
-        pcam.stop_file()
-        pcam.start_file()
-
+    # pcam.start_file()
 
     # while True:
-    #     time.sleep(10)
-    #     print('Streaming...')
+    #     time.sleep(30)
+    #     pcam.stop_file()
+    #     pcam.start_file()
+
 
     # print("stop wserver")
     # wserver.stop() #Thread
