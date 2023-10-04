@@ -115,10 +115,10 @@ class cam():
 
             # convCommand = [‘MP4Box’, ‘-add’, FILEIN + ‘.h264’, ‘-o’, FILEOUT + ‘.mp4’]
             mp4name = self.fname.replace(".h264", ".mp4")
-            cmd = 'MP4Box - add /media/'+self.fname+' - new /media/'+mp4name
+            cmd = 'MP4Box - add '+self.fname+' - new '+mp4name
             print(cmd)
             os.system(cmd)
-            cmd = 'rm /media/' + mp4name
+            cmd = 'rm ' + mp4name
             print(cmd)
             os.system(cmd)
 
