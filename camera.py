@@ -42,7 +42,7 @@ class cam():
         self.fileout_on = False
         self.webout_on = False
         self.info1 = ''
-        self.info2 = ''
+        self.info2 = 'no MAVLINK connect'
         self.cam_exist = cam_exist
         self.bitrate = 4000000
         if not self.cam_exist: #Create fake objects
