@@ -75,6 +75,9 @@ class cam():
             sname= '/media/'+time.strftime("%Y_%m_%d_%X")+'.h264'
             sname = sname.replace(":","_")
             print("FILE NAME: " + sname)
+
+            self.info2 = sname;
+
             if self.cam_exist:
                 self.outputfile = FileOutput(sname)
                 self.encoderfile.output = self.outputfile
