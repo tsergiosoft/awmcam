@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import os
 try:
     from picamera2 import Picamera2
     from picamera2.encoders import MJPEGEncoder, H264Encoder, Quality
@@ -43,6 +44,7 @@ class cam():
         self.webout_on = False
         self.info1 = ''
         self.info2 = 'no MAVLINK connect'
+        self.fname = '/media/vid.h264'
         self.cam_exist = cam_exist
         self.bitrate = 4000000
         if not self.cam_exist: #Create fake objects
@@ -72,21 +74,21 @@ class cam():
     def start_file(self):
         if not self.fileout_on:
             self.fileout_on = True
-            sname= '/media/'+time.strftime("%Y_%m_%d_%X")+'.h264'
-            sname = sname.replace(":","_")
-            print("FILE NAME: " + sname)
+            self.fname= '/media/'+time.strftime("%Y_%m_%d_%X")+'.h264'
+            self.fname = self.fname.replace(":","_")
+            print("FILE NAME: " + self.fname)
 
-            self.info2 = sname;
+            self.info2 = self.fname;
 
             if self.cam_exist:
-                self.outputfile = FileOutput(sname)
+                self.outputfile = FileOutput(self.fname)
                 self.encoderfile.output = self.outputfile
             if (not self.camera_on):
                 self.picam2.start()
                 print("CAM_ON_HEAT")
                 self.camera_on = True
                 time.sleep(2) #Heat camera
-            print("start_file:",sname)
+            print("start_file:",self.fname)
             self.picam2.start_encoder(self.encoderfile, name='main')
 
     def start_stream(self, webbitrate):
@@ -110,6 +112,16 @@ class cam():
             self.fileout_on = False
             print("stop_file")
             self.picam2.stop_encoder(self.encoderfile)
+
+            # convCommand = [‘MP4Box’, ‘-add’, FILEIN + ‘.h264’, ‘-o’, FILEOUT + ‘.mp4’]
+            mp4name = self.fname.replace(".h264", ".mp4")
+            cmd = 'MP4Box - add /media/'+self.fname+' - new /media/'+mp4name
+            print(cmd)
+            os.system(cmd)
+            cmd = 'rm /media/' + mp4name
+            print(cmd)
+            os.system(cmd)
+
         if not self.webout_on:
             self.picam2.stop()
 
