@@ -49,16 +49,10 @@ if HQ_CAM == 1:
     pcam.start_stream(webbitrate=4000000)
 
     pcam.start_file()
-    time.sleep(30)
-    pcam.stop_file()
-    pcam.start_file()
-    time.sleep(30)
-    pcam.stop_file()
-    pcam.start_file()
-    time.sleep(30)
-    pcam.stop_file()
-    pcam.start_file()
-    time.sleep(30)
+    while True:
+        time.sleep(5)
+        pcam.stop_file()
+        pcam.start_file()
 
 
     # while True:

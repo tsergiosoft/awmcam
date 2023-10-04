@@ -118,7 +118,7 @@ class cam():
             cmd = 'MP4Box - add '+self.fname+' - new '+mp4name
             print(cmd)
             os.system(cmd)
-            cmd = 'rm ' + mp4name
+            cmd = 'rm ' + self.fname
             print(cmd)
             os.system(cmd)
 
