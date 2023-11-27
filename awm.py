@@ -60,7 +60,7 @@ if HQ_CAM == 1:
     # wserver.stop() #Thread
     # wserver.join()
 
-# if True:
+if True:
     LinkOK=False
     vehicle = connect(MAV_DRONEKIT,baud=MAV_BAUD, wait_ready=True, heartbeat_timeout=100,timeout=100)
     @vehicle.on_attribute('last_heartbeat')
@@ -77,7 +77,7 @@ if HQ_CAM == 1:
         time.sleep(1)
         info1 = "Loc:[%s, %s] alt %s" % (vehicle.location.global_frame.lat,vehicle.location.global_frame.lon,vehicle.location.global_frame.alt)
         info1 =  info1 +" GPS: fix=%s, vis=%s" % (vehicle.gps_0.fix_type, vehicle.gps_0.satellites_visible)
-        # print(info)
+        print(info1)
         VID_ON = int(vehicle.parameters['VID_ON'])
         VID_TIME = int(vehicle.parameters['VID_TIME'])
         VID_WEB_MODE = int(vehicle.parameters['VID_WEB_MODE'])
