@@ -34,9 +34,9 @@ os.system('screen -S usbcam -X kill')
 os.system('sudo ~/awmcam/service/usb_remove.sh')
 time.sleep(1)
 os.system('sudo ~/awmcam/service/usb_add.sh')
-#os.system('screen -dmS ssh22 bash -c "/home/pi/awmcam/service/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+' -local_port=22"')
-#os.system('screen -dmS sshweb bash -c "/home/pi/awmcam/service/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_CAM_PORT+' -local_port=8080"')
-#os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/service/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port=14550"')
+os.system('screen -dmS ssh22 bash -c "/home/pi/awmcam/service/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_SSH_PORT+' -local_port=22"')
+os.system('screen -dmS sshweb bash -c "/home/pi/awmcam/service/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_CAM_PORT+' -local_port=8080"')
+os.system('screen -dmS sshmav bash -c "/home/pi/awmcam/service/ssh_rev_tunnel.sh -cloud_ip='+CLOUD_IP+' -cloud_user='+CLOUD_USER+' -cloud_port='+REMOTE_MAV_PORT+' -local_port=14550"')
 os.system('screen -dmS mav bash -c "/home/pi/awmcam/service/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"')
 
 if HQ_CAM == 0:
@@ -74,30 +74,29 @@ if HQ_CAM == 1:
         time.sleep(1)
         info1 = "Loc:[%s, %s] alt %s" % (vehicle.location.global_frame.lat,vehicle.location.global_frame.lon,vehicle.location.global_frame.alt)
         info1 =  info1 +" GPS: fix=%s, vis=%s" % (vehicle.gps_0.fix_type, vehicle.gps_0.satellites_visible)
-        print(info1)
-        
-        #VID_ON = int(vehicle.parameters['VID_ON'])
-        #VID_TIME = int(vehicle.parameters['VID_TIME'])
-        #VID_WEB_MODE = int(vehicle.parameters['VID_WEB_MODE'])
-        #info2 = "file:"+str(pcam.fileout_on)+" "+"VID_ON=%s VID_TIME=%s VID_WEB_MODE=%s" % (VID_ON,VID_TIME,VID_WEB_MODE)
+        # print(info)
+        VID_ON = int(vehicle.parameters['VID_ON'])
+        VID_TIME = int(vehicle.parameters['VID_TIME'])
+        VID_WEB_MODE = int(vehicle.parameters['VID_WEB_MODE'])
+        info2 = "file:"+str(pcam.fileout_on)+" "+"VID_ON=%s VID_TIME=%s VID_WEB_MODE=%s" % (VID_ON,VID_TIME,VID_WEB_MODE)
         # print(info2)
         pcam.info1 = info1
-        #pcam.info2 = info2
-        #try:
-        #    if (VID_ON):
-        #        pcam.start_file()
-        #    else:
-        #        pcam.stop_file()
-        #except:
-        #    print("Exception if file output")
+        pcam.info2 = info2
+        try:
+            if (VID_ON):
+                pcam.start_file()
+            else:
+                pcam.stop_file()
+        except:
+            print("Exception if file output")
 
-        #try:
-        #    if (VID_WEB_MODE>0):
-        #        pcam.start_stream(webbitrate=VID_WEB_MODE*1000000)
-        #    else:
-        #        pcam.stop_stream()
-        #except:
-        #    print("Exception if WEB output")
+        try:
+            if (VID_WEB_MODE>0):
+                pcam.start_stream(webbitrate=VID_WEB_MODE*1000000)
+            else:
+                pcam.stop_stream()
+        except:
+            print("Exception if WEB output")
 
 
     # print(LinkOK)
