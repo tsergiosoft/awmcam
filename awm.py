@@ -40,7 +40,7 @@ os.system('sudo ~/awmcam/service/usb_add.sh')
 os.system('screen -dmS mav bash -c "/home/pi/awmcam/service/mavproxy.sh -m '+MAV_MASTER+' -p '+MAV_DRONEKIT+' -b '+MAV_BAUD+'"')
 
 if HQ_CAM == 0:
-    os.system('screen -dmS usbcam bash -c "/home/pi/awmcam/service/cam_run.sh"')
+    os.system('screen -dmS usbcam bash -c "/home/j/awmcam/service/cam_run.sh"')
 
 if HQ_CAM == 1:
     wserver = webserverjpg(host="localhost", port=8080)

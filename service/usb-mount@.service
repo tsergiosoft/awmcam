@@ -5,5 +5,5 @@ After=multi-user.target
 [Service]
 Type=oneshot
 RemainAfterExit=true
-ExecStart=/home/pi/awmcam/service/usb-mount.sh add %i
-ExecStop=/home/pi/awmcam/service/usb-mount.sh remove %i
+ExecStart=/home/j/awmcam/service/usb-mount.sh add %i
+ExecStop=/home/j/awmcam/service/usb-mount.sh remove %i

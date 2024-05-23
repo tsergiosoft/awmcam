@@ -1,12 +1,14 @@
 [Unit]
-Description=Awm service
+Description=jwm service
 After=multi-user.target
 
 [Service]
 Type=idle
-User=pi
-WorkingDirectory=/home/pi/awmcam
-ExecStart=/home/pi/awmcam/service/awmrun.sh
+User=j
+WorkingDirectory=/home/j/awmcam
+ExecStart=/home/j/awmcam/service/awmrun.sh
+Environment=XAUTHORITY=/home/j/.Xauthority
+Environment=DISPLAY=:0.0
 
 [Install]
 WantedBy=multi-user.target

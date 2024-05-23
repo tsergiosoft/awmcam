@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#mavproxy.py --master=192.168.14.225:14550 --baudrate 921600 --state-basedir=/home/pi/mavlogs --out=tcpin:127.0.0.1:14550 --out=udp:127.0.0.1:5760 --out=udp:127.0.0.1:5678
-#mavproxy.py --master=/dev/ttyAMA0 --baudrate 115200 --state-basedir=/home/pi/mavlogs --out=tcpin:127.0.0.1:14550 --out=udp:127.0.0.1:5760 --out=udp:127.0.0.1:5560
+#mavproxy.py --master=192.168.14.225:14550 --baudrate 921600 --state-basedir=/home/j/mavlogs --out=tcpin:127.0.0.1:14550 --out=udp:127.0.0.1:5760 --out=udp:127.0.0.1:5678
+#mavproxy.py --master=/dev/ttyAMA0 --baudrate 115200 --state-basedir=/home/j/mavlogs --out=tcpin:127.0.0.1:14550 --out=udp:127.0.0.1:5760 --out=udp:127.0.0.1:5560
 
 export LOCALAPPDATA="LOCALAPPDATA"
 
@@ -41,6 +41,6 @@ while true; do
 	#--state-basedir="~/mavlogs"
 	#--force-connected
 	#--out=udp:127.0.0.1:5777
-	mavproxy.py --master=$master --baudrate $baud --state-basedir="/home/pi/mavlogs" --out=tcpin:127.0.0.1:14550 --out=udp:127.0.0.1:5760 --out=$dronekit --out=udp:10.243.0.1:14551
+	mavproxy.py --master=$master --baudrate $baud --state-basedir="/home/j/mavlogs" --out=tcpin:127.0.0.1:14550 --out=udp:127.0.0.1:5760 --out=$dronekit --out=udp:10.243.0.1:14551
  	sleep 5
  	done
