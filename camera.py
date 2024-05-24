@@ -21,33 +21,39 @@ class virtcam():
         pass
 
 class cam():
-    def apply_timestamp(self,request):
-        colour = (255, 255, 255)
+    def apply_timestamp(self, request):
+        colour = (255, 200, 200)
         origin = (0, 30)
         font = cv2.FONT_HERSHEY_SIMPLEX
         scale = 1
         thickness = 2
         timestamp = time.strftime("%Y-%m-%d %X")
-        with MappedArray(request, "main") as m:
-            cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
-            cv2.putText(m.array, self.info1, (0, 80), font, 0.5, colour, 1)
-            cv2.putText(m.array, self.info2, (0, 100), font, 0.5, colour, 1)
+        if self.usb_cam or (not self.cam_exist):
+            cv2.putText(request, timestamp, origin, font, scale, colour, thickness)
+            cv2.putText(request, self.info1, (0, 80), font, 0.5, colour, 1)
+            cv2.putText(request, self.info2, (0, 100), font, 0.5, colour, 1)
+        else:
+            with MappedArray(request, "main") as m:
+                cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
+                cv2.putText(m.array, self.info1, (0, 80), font, 0.5, colour, 1)
+                cv2.putText(m.array, self.info2, (0, 100), font, 0.5, colour, 1)
 
-        with MappedArray(request, "lores") as m:
-            cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
-            cv2.putText(m.array, self.info1, (0, 80), font, 0.5, colour, 1)
-            cv2.putText(m.array, self.info2, (0, 100), font, 0.5, colour, 1)
+            with MappedArray(request, "lores") as m:
+                cv2.putText(m.array, timestamp, origin, font, scale, colour, thickness)
+                cv2.putText(m.array, self.info1, (0, 80), font, 0.5, colour, 1)
+                cv2.putText(m.array, self.info2, (0, 100), font, 0.5, colour, 1)
 
-    def __init__(self,stream=None, cam_exist=False):
+    def __init__(self,stream=None, cam_exist=False, usb_cam=False):
+        self.usb_cam = usb_cam
         self.camera_on = False
         self.fileout_on = False
         self.webout_on = False
-        self.info1 = ''
-        self.info2 = 'no MAVLINK connect'
+        self.info1 = 'no MAVlink'
+        self.info2 = ''
         self.fname = '/media/vid.h264'
         self.cam_exist = cam_exist
         self.bitrate = 4000000
-        if not self.cam_exist: #Create fake objects
+        if not self.cam_exist: #Create fake objects if No camera or USB camera
             self.picam2 = virtcam()
             self.encoderfile='encoderfile'
             self.encoderweb='encoderweb'

@@ -26,7 +26,7 @@ PAGE = """\
 class webserverjpg(threading.Thread):
     streamout = None
 
-    def __init__(self, host="", port=8080):
+    def __init__(self, host="localhost", port=8080):
         super().__init__()
         self.stop_event = threading.Event()
 
@@ -72,7 +72,6 @@ class webserverjpg(threading.Thread):
                     while True:
                         with self.outerstream.condition:
                             self.outerstream.condition.wait()
-                            print("got outerstream.condition!")
                             frame = self.outerstream.frame
                         self.wfile.write(b'--FRAME\r\n')
                         self.send_header('Content-Type', 'image/jpeg')
@@ -100,7 +99,6 @@ class webserverjpg(threading.Thread):
             with self.condition:
                 ret, buffer = cv2.imencode('.jpg', buf)
                 self.frame = buffer.tobytes()
-                print("new frame")
                 #self.frame = buf
 
                 # Check if it's time to clear the buffer
@@ -139,7 +137,7 @@ class webserverjpg(threading.Thread):
 
 if __name__ == '__main__':
     print("websrv if __name__ == '__main__'")
-    wserver = webserverjpg(host="", port=8080)
+    wserver = webserverjpg(host="127.0.0.1", port=8080)
     wserver.start()
     current_path = os.path.dirname(os.path.abspath(__file__))
     ROOT = os.path.dirname(current_path)
@@ -162,7 +160,7 @@ if __name__ == '__main__':
     #         frame = frame_home
         frame = frame_home
         wserver.streamout.write(buf=frame)
-        time.sleep(1.01)
+        time.sleep(0.01)
         i+=1
 
     wserver.stop()
