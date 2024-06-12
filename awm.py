@@ -147,8 +147,6 @@ class Awm():
                 print("\033[91m" + "Exception in run" + "\033[0m")
                 time.sleep(2)
 
-
-
 if __name__ == "__main__":
     try:
         my_app = Awm()
