@@ -56,7 +56,7 @@ class cam():
         self.fname = '/media/vid.h264'
         self.cam_exist = (csi_cam or usb_cam)
         self.csi_cam = csi_cam
-        self.bitrate = 4000000
+        self.bitrate = 10000000
         self.framecnt = 0
         if not self.cam_exist: #Create fake objects if No camera or USB camera
             self.picam2 = virtcam()
@@ -67,6 +67,12 @@ class cam():
             self.picam2 = Picamera2() #2028x1520-pBCC
             self.video_config = self.picam2.create_video_configuration(main={"size": (1024, 768)},lores={"size": (800, 600)},
                                                                        controls={"FrameDurationLimits": (100000, 100000)})
+
+            # self.video_config = self.picam2.create_video_configuration(main={"size": (1640, 1232)},
+            #                                                            lores={"size": (1024, 768)},
+            #                                                            controls={
+            #                                                                "FrameDurationLimits": (100000, 100000)})
+
             # self.video_config.controls.FrameRate = 25.0
             # picam2.set_controls({"ExposureTime": 10000, "AnalogueGain": 1.0})
 
@@ -116,7 +122,7 @@ class cam():
                 print("start WEB stream with "+str(self.bitrate)+" Mbit/s")
                 self.encoderweb = MJPEGEncoder(bitrate=self.bitrate)
                 self.encoderweb.output = self.outputweb
-                self.picam2.start_encoder(self.encoderweb, name='lores')
+                self.picam2.start_encoder(self.encoderweb, name='main')
 
     def stop_file(self):
         if self.fileout_on:

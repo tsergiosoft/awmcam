@@ -58,7 +58,7 @@ class Awm():
         self.wserver.start()  # Thread
         self.pcam = None
         self.pcam = cam(stream=self.wserver.streamout, csi_cam=bool(self.CSI_CAM), usb_cam=bool(self.USB_CAM))
-        self.pcam.start_stream(webbitrate=4000000)
+        self.pcam.start_stream(webbitrate=10000000)
         if self.MAV_USE:
             self.kamik = Kamikaze(conn=self.MAV_DRONEKIT, paused=False)
             self.kamik.start()
