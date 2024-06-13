@@ -25,8 +25,7 @@ class Awm():
         self.MAV_USE = int(self.config['DEFAULT']['MAV_USE'])
         #MAVPROXY_IP_PORT=config['DEFAULT']['MAVPROXY_IP_PORT'] #may be delete and use 127.0.0.1:14550
         self.MAV_DRONEKIT=self.config['DEFAULT']['MAV_DRONEKIT']
-        self.CAM_EXISTS =int(self.config['DEFAULT']['CAM_EXISTS'])
-        self.HQ_CAM =int(self.config['DEFAULT']['HQ_CAM'])
+        self.CSI_CAM =int(self.config['DEFAULT']['CSI_CAM'])
         self.USB_CAM =int(self.config['DEFAULT']['USB_CAM'])
 
         print("TALON_SN="+self.TALON_SN+" CLOUD_IP="+self.CLOUD_IP)
@@ -55,10 +54,10 @@ class Awm():
             #     os.system('screen -dmS usbcam bash -c "/home/j/awmcam/service/cam_run.sh"')
 
         self.wserver = None
-        self.wserver = webserverjpg(host="0.0.0.0", port=8080)
+        self.wserver = webserverjpg(host="0.0.0.0", port=8080, CSI=bool(self.CSI_CAM))
         self.wserver.start()  # Thread
         self.pcam = None
-        self.pcam = cam(stream=self.wserver.streamout, cam_exist=bool(self.CAM_EXISTS), usb_cam=bool(self.USB_CAM))
+        self.pcam = cam(stream=self.wserver.streamout, csi_cam=bool(self.CSI_CAM), usb_cam=bool(self.USB_CAM))
         self.pcam.start_stream(webbitrate=4000000)
         if self.MAV_USE:
             self.kamik = Kamikaze(conn=self.MAV_DRONEKIT, paused=False)
@@ -138,11 +137,18 @@ class Awm():
                     else:
                         self.pcam.apply_timestamp(video_frame)
                         self.wserver.streamout.write(buf=video_frame)
-                else:
+                if self.CSI_CAM:
+                    print("run..")
+                    time.sleep(5.0)
+                    # frame = frame_home.copy()
+                    # self.pcam.apply_timestamp(frame)
+                    # self.wserver.streamout.write(buf=frame)
+                    # time.sleep(0.05)
+                if not (self.CSI_CAM or self.USB_CAM):
                     frame = frame_home.copy()
                     self.pcam.apply_timestamp(frame)
                     self.wserver.streamout.write(buf=frame)
-                    time.sleep(0.05)
+                    time.sleep(0.1)
             except:
                 print("\033[91m" + "Exception in run" + "\033[0m")
                 time.sleep(2)

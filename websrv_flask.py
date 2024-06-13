@@ -12,13 +12,13 @@ import cv2
 
 
 class webserverjpg(threading.Thread):
-    def __init__(self, host="0.0.0.0", port=5000):
+    def __init__(self, host="0.0.0.0", port=5000, CSI = False):
         super().__init__()
         self.daemon = True
         self.stop_event = threading.Event()
         self.host = host
         self.port = port
-        self.streamout = self.StreamingOutput()
+        self.streamout = self.StreamingOutput(CSI=CSI)
         self.frame_cnt = 0
         self.app = Flask(__name__)
 
@@ -30,7 +30,9 @@ class webserverjpg(threading.Thread):
     def get_frames(self):
         while True:
             with self.streamout.condition:
+                # print("streamout.condition.wait()")
                 self.streamout.condition.wait()
+                # print("streamout get new frame")
                 frame = self.streamout.jpgframe
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
@@ -43,29 +45,25 @@ class webserverjpg(threading.Thread):
         self.stop_event.set()
 
     class StreamingOutput(io.BufferedIOBase):
-        def __init__(self):
+        def __init__(self, CSI = False):
             self.frame = None
             self.condition = Condition()
             self.clear_interval = 30  # Set the clear interval to 60 seconds
             self.last_clear_time = time.time()
             self.frame_cnt = 0
+            self.CSI = CSI
 
         def write(self, buf):
+            # print("StreamingOutput->write")
+            # print(f"buf={buf}")
             with self.condition:
-                img = buf.copy()
-
-                # colour = (255, 10, 20)
-                # origin = (0, 40)
-                # font = cv2.FONT_HERSHEY_SIMPLEX
-                # scale = 0.5
-                # thickness = 1
-                # self.frame_cnt += 1
-                # timestamp = time.strftime("%Y-%m-%d %X")
-                # timestamp = timestamp + f" frame={self.frame_cnt}"
-                # cv2.putText(img, timestamp, origin, font, scale, colour, thickness)
-
-                ret, buffer = cv2.imencode('.jpg', img)
-                self.jpgframe = buffer.tobytes()
+                # for USB or Simulation
+                if not self.CSI:
+                    img = buf.copy()
+                    ret, buffer = cv2.imencode('.jpg', img)
+                    self.jpgframe = buffer.tobytes()
+                if self.CSI:
+                    self.jpgframe = buf
 
                 # Check if it's time to clear the buffer
                 current_time = time.time()
